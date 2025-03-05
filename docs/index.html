@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p t . s d /title>
+    <title>p t . s d</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
     <link rel="stylesheet" href="https://franken-ui.dev/css/franken-ui.min.css">
@@ -34,18 +34,9 @@
             justify-content: center;
             align-items: center;
             z-index: 10;
-        }
-        .enter-button {
-            padding: 10px 20px;
-            background-color: transparent;
-            border: 2px solid white;
             color: white;
-            font-size: 16px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .enter-button:hover {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
         }
         .ascii-art {
             display: none;
@@ -67,8 +58,8 @@
     </style>
 </head>
 <body>
-    <div class="splash-screen">
-        <button class="enter-button" id="enterButton">Click to enter..</button>
+    <div class="splash-screen" id="splashScreen">
+        <div>Click anywhere to enter...</div>
     </div>
     
     <div class="ascii-art" id="asciiArt">
@@ -85,15 +76,13 @@
                     ░            ░      
                                         
         </pre>
-        <div class="glow"> pvvv was here...</div>
+        <div class="glow">pvvv was here...</div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const enterButton = document.getElementById('enterButton');
-            const splashScreen = document.querySelector('.splash-screen');
+            const splashScreen = document.getElementById('splashScreen');
             const asciiArt = document.getElementById('asciiArt');
-            const snowCanvas = document.getElementById('snowCanvas');
 
             const songs = [
                 "https://r2.interrupted.me/F/uUGSDSOd.mp3",
@@ -101,7 +90,7 @@
                 "https://r2.interrupted.me/F/3mRRLND4.mp3"
             ];
 
-            enterButton.addEventListener('click', function() {
+            splashScreen.addEventListener('click', function() {
                 const randomSong = songs[Math.floor(Math.random() * songs.length)];
                 const audio = new Audio(randomSong);
                 audio.play();
