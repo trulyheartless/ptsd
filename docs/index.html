@@ -55,7 +55,6 @@
             height: 100%;
             pointer-events: none;
         }
-
         .link-container {
             margin-top: 20px;
         }
@@ -68,7 +67,8 @@
         .market-link {
             color: white;
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 1.1em; /* Increased size */
+            font-weight: bold; /* Made bold */
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
@@ -115,13 +115,16 @@
         .close-btn:hover {
             color: #888;
         }
+        .disclaimer {
+            font-size: 0.8em;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <div class="splash-screen" id="splashScreen">
         <div>Click anywhere to enter...</div>
     </div>
-    
     <div class="ascii-art" id="asciiArt">
         <pre>
  ██▓███  ▄▄▄█████▓       ██████ ▓█████▄ 
@@ -138,24 +141,20 @@
         </pre>
         <div class="glow">pvvv was here...</div>
         <div class="glow">7 years to heal these wounds...</div>
-        
         <div class="link-container">
             <div class="separator"></div>
             <div class="market-link" id="marketLink">O1O1 Market</div>
             <div class="separator"></div>
         </div>
     </div>
-
-
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <div class="close-btn" id="closeBtn">&times;</div>
             <p>This is a market for services such as scripts, ddos attacks, & other useful tools</p>
-            <p><strong>Disclaimer:</strong> Tor is required to access the site.</p>
+            <p class="disclaimer"><strong>Disclaimer:</strong> Tor is required to access the site.</p>
             <a href="https://O1O1.org" target="_blank" class="market-link">o1o1.org</a>
         </div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const splashScreen = document.getElementById('splashScreen');
@@ -184,7 +183,6 @@
                 }, 1000);
             });
 
-            // Modal functionality
             marketLink.addEventListener('click', function() {
                 modalOverlay.style.display = 'flex';
                 setTimeout(() => {
@@ -208,7 +206,6 @@
         });
 
         function startSnow() {
-            // Existing snow implementation
             const canvas = document.getElementById('snowCanvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
