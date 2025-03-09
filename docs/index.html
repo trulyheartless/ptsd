@@ -138,6 +138,7 @@
                     ░        ░     ░    
                     ░            ░      
                                         
+
         </pre>
         <div class="glow">pvvv was here...</div>
         <div class="glow">7 years to heal these wounds...</div>
@@ -170,18 +171,73 @@
                 "https://r2.interrupted.me/F/3mRRLND4.mp3"
             ];
 
+            const alternateSongs = [
+                "https://r2.interrupted.me/F/kMzarhDb.mp3",
+                "https://r2.interrupted.me/F/d6P8kEGG.mp3"
+            ];
+
             splashScreen.addEventListener('click', function() {
-                const randomSong = songs[Math.floor(Math.random() * songs.length)];
+                const randomNum = Math.random();
+                const randomSong = randomNum < 0.75 ? songs[Math.floor(Math.random() * songs.length)] : alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
                 const audio = new Audio(randomSong);
                 audio.play();
 
-                splashScreen.style.opacity = '0';
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                    asciiArt.style.display = 'block';
-                    startSnow();
-                }, 1000);
+                if (randomNum < 0.75) {
+                    splashScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        asciiArt.style.display = 'block';
+                        startSnow();
+                    }, 1000);
+                } else {
+                    displayAlternateContent();
+                }
             });
+
+            function displayAlternateContent() {
+                document.body.innerHTML = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>antisoci.al</title>
+                        <style>
+                            body {
+                                background: #000;
+                                color: #fff;
+                                font-family: monospace;
+                                margin: 40px auto;
+                                max-width: 650px;
+                                line-height: 1.6;
+                                padding: 0 20px;
+                                font-size: 16px;
+                            }
+                            .blink {
+                                animation: blink 1s step-end infinite;
+                            }
+                            @keyframes blink {
+                                50% { opacity: 0; }
+                            }
+                            .text-block {
+                                margin: 2em 0;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="text-block">
+                            <span> pt.sd<span class="blink">█</span></span>
+                        </div>
+                        <div style="margin-top: 40px; font-size: 12px; color: #444;">
+                            2025-forever
+                        </div>
+                    </body>
+                    </html>
+                `;
+                const alternateSong = alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
+                const audio = new Audio(alternateSong);
+                audio.play();
+            }
 
             marketLink.addEventListener('click', function() {
                 modalOverlay.style.display = 'flex';
