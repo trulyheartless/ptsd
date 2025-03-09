@@ -119,6 +119,11 @@
             font-size: 0.8em;
             margin: 10px 0;
         }
+        .glow-text {
+            display: inline-block;
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
+        }
     </style>
 </head>
 <body>
@@ -138,7 +143,6 @@
                     ░        ░     ░    
                     ░            ░      
                                         
-
         </pre>
         <div class="glow">pvvv was here...</div>
         <div class="glow">7 years to heal these wounds...</div>
@@ -176,11 +180,18 @@
                 "https://r2.interrupted.me/F/d6P8kEGG.mp3"
             ];
 
+            let currentAudio = null;
+
             splashScreen.addEventListener('click', function() {
                 const randomNum = Math.random();
                 const randomSong = randomNum < 0.75 ? songs[Math.floor(Math.random() * songs.length)] : alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
-                const audio = new Audio(randomSong);
-                audio.play();
+                
+                if (currentAudio) {
+                    currentAudio.pause();
+                }
+                
+                currentAudio = new Audio(randomSong);
+                currentAudio.play();
 
                 if (randomNum < 0.75) {
                     splashScreen.style.opacity = '0';
@@ -222,11 +233,16 @@
                             .text-block {
                                 margin: 2em 0;
                             }
+                            .glow-text {
+                                display: inline-block;
+                                color: white;
+                                text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
+                            }
                         </style>
                     </head>
                     <body>
                         <div class="text-block">
-                            <span> pt.sd<span class="blink">█</span></span>
+                            <span class="glow-text">pt.sd<span class="blink">█</span></span>
                         </div>
                         <div style="margin-top: 40px; font-size: 12px; color: #444;">
                             2025-forever
@@ -234,9 +250,12 @@
                     </body>
                     </html>
                 `;
+                if (currentAudio) {
+                    currentAudio.pause();
+                }
                 const alternateSong = alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
-                const audio = new Audio(alternateSong);
-                audio.play();
+                currentAudio = new Audio(alternateSong);
+                currentAudio.play();
             }
 
             marketLink.addEventListener('click', function() {
