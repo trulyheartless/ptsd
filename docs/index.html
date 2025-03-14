@@ -36,6 +36,13 @@
             color: white;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
         }
+        .blink {
+            animation: blink-animation 1s steps(1, end) infinite;
+        }
+        @keyframes blink-animation {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         .social-links {
             margin-top: 20px;
             opacity: 0.8;
