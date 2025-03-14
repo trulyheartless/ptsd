@@ -23,30 +23,6 @@
             text-align: center;
             overflow: hidden;
         }
-        .splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            transition: opacity 1s ease;
-        }
-        .ascii-art {
-            display: none;
-            color: #d1d1d1;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            margin-top: 20px;
-        }
-        .glow {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
         #snowCanvas {
             position: fixed;
             top: 0;
@@ -55,231 +31,39 @@
             height: 100%;
             pointer-events: none;
         }
-        .link-container {
-            margin-top: 20px;
-        }
-        .separator {
-            width: 200px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-            margin: 15px auto;
-        }
-        .market-link {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1em; 
-            font-weight: bold; 
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-        .market-link:hover {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(3px);
-        }
-        .modal-content {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .modal-content.active {
-            transform: scale(1);
-            opacity: 1;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: white;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        .close-btn:hover {
-            color: #888;
-        }
-        .disclaimer {
-            font-size: 0.8em;
-            margin: 10px 0;
-        }
         .glow-text {
             display: inline-block;
             color: white;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
         }
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-link {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5em;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <div class="splash-screen" id="splashScreen">
-        <div>Click anywhere to enter...</div>
+    <div class="text-block">
+        <span class="glow-text">pt.sd<span class="blink">█</span></span>
     </div>
-    <div class="ascii-art" id="asciiArt">
-        <pre>
- ██▓███  ▄▄▄█████▓       ██████ ▓█████▄ 
-▓██░  ██▒▓  ██▒ ▓▒     ▒██    ▒ ▒██▀ ██▌
-▓██░ ██▓▒▒ ▓██░ ▒░     ░ ▓██▄   ░██   █▌
-▒██▄█▓▒ ▒░ ▓██▓ ░        ▒   ██▒░▓█▄   ▌
-▒██▒ ░  ░  ▒██▒ ░  ██▓ ▒██████▒▒░▒████▓ 
-▒▓▒░ ░  ░  ▒ ░░    ▒▓▒ ▒ ▒▓▒ ▒ ░ ▒▒▓  ▒ 
-░▒ ░         ░     ░▒  ░ ░▒  ░ ░ ░ ▒  ▒ 
-░░         ░       ░   ░  ░  ░   ░ ░  ░ 
-                    ░        ░     ░    
-                    ░            ░      
-                                        
-        </pre>
-        <div class="glow">pvvv was here...</div>
-        <div class="glow">7 years to heal these wounds...</div>
-        <div class="link-container">
-            <div class="separator"></div>
-            <div class="market-link" id="marketLink">O1O1 Market</div>
-            <div class="separator"></div>
-        </div>
+    <div style="margin-top: 40px; font-size: 12px; color: #444;">
+        2025-forever
     </div>
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content" id="modalContent">
-            <div class="close-btn" id="closeBtn">&times;</div>
-            <p>This is a market for services such as scripts, ddos attacks, & other useful tools</p>
-            <p class="disclaimer"><strong>Disclaimer:</strong> They use Session for contact</p>
-            <a href="https://O1O1.org" target="_blank" class="market-link">o1o1.org</a>
-        </div>
+    <div class="social-links">
+        <a href="https://x.com/p1O11O10101" target="_blank" class="social-link">
+            <i class="fab fa-x"></i>
+        </a>
+        <a href="https://t.me/legalizing" target="_blank" class="social-link">
+            <i class="fab fa-telegram"></i>
+        </a>
     </div>
+    <canvas id="snowCanvas"></canvas>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const splashScreen = document.getElementById('splashScreen');
-            const asciiArt = document.getElementById('asciiArt');
-            const marketLink = document.getElementById('marketLink');
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalContent = document.getElementById('modalContent');
-            const closeBtn = document.getElementById('closeBtn');
-
-            const songs = [
-                "https://r2.interrupted.me/F/uUGSDSOd.mp3",
-                "https://r2.interrupted.me/F/KfaYyciz.mp3",
-                "https://r2.interrupted.me/F/3mRRLND4.mp3"
-            ];
-
-            const alternateSongs = [
-                "https://r2.interrupted.me/F/kMzarhDb.mp3",
-                "https://r2.interrupted.me/F/d6P8kEGG.mp3"
-            ];
-
-            let currentAudio = null;
-
-            splashScreen.addEventListener('click', function() {
-                const randomNum = Math.random();
-                const randomSong = randomNum < 0.75 ? songs[Math.floor(Math.random() * songs.length)] : alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
-                
-                if (currentAudio) {
-                    currentAudio.pause();
-                }
-                
-                currentAudio = new Audio(randomSong);
-                currentAudio.play();
-
-                if (randomNum < 0.75) {
-                    splashScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        splashScreen.style.display = 'none';
-                        asciiArt.style.display = 'block';
-                        startSnow();
-                    }, 1000);
-                } else {
-                    displayAlternateContent();
-                }
-            });
-
-            function displayAlternateContent() {
-                document.body.innerHTML = `
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>antisoci.al</title>
-                        <style>
-                            body {
-                                background: #000;
-                                color: #fff;
-                                font-family: monospace;
-                                margin: 40px auto;
-                                max-width: 650px;
-                                line-height: 1.6;
-                                padding: 0 20px;
-                                font-size: 16px;
-                            }
-                            .blink {
-                                animation: blink 1s step-end infinite;
-                            }
-                            @keyframes blink {
-                                50% { opacity: 0; }
-                            }
-                            .text-block {
-                                margin: 2em 0;
-                            }
-                            .glow-text {
-                                display: inline-block;
-                                color: white;
-                                text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="text-block">
-                            <span class="glow-text">pt.sd<span class="blink">█</span></span>
-                        </div>
-                        <div style="margin-top: 40px; font-size: 12px; color: #444;">
-                            2025-forever
-                        </div>
-                    </body>
-                    </html>
-                `;
-                if (currentAudio) {
-                    currentAudio.pause();
-                }
-                const alternateSong = alternateSongs[Math.floor(Math.random() * alternateSongs.length)];
-                currentAudio = new Audio(alternateSong);
-                currentAudio.play();
-            }
-
-            marketLink.addEventListener('click', function() {
-                modalOverlay.style.display = 'flex';
-                setTimeout(() => {
-                    modalContent.classList.add('active');
-                }, 10);
-            });
-
-            closeBtn.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-
-            function closeModal() {
-                modalContent.classList.remove('active');
-                setTimeout(() => {
-                    modalOverlay.style.display = 'none';
-                }, 300);
-            }
-        });
-
         function startSnow() {
             const canvas = document.getElementById('snowCanvas');
             const ctx = canvas.getContext('2d');
@@ -341,11 +125,12 @@
             draw();
 
             window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
+                canvas.width = window .innerWidth;
                 canvas.height = window.innerHeight;
             });
         }
+
+        startSnow();
     </script>
-    <canvas id="snowCanvas"></canvas>
 </body>
 </html>
