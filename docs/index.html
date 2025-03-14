@@ -38,12 +38,20 @@
         }
         .social-links {
             margin-top: 20px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
         }
         .social-link {
             color: white;
             margin: 0 10px;
             font-size: 1.5em;
             text-decoration: none;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
+        .social-link:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 1);
         }
     </style>
 </head>
@@ -125,7 +133,7 @@
             draw();
 
             window.addEventListener('resize', () => {
-                canvas.width = window .innerWidth;
+                canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             });
         }
@@ -134,3 +142,8 @@
     </script>
 </body>
 </html>
+            margin: 0 10px;
+            font-size: 1.5em;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, text-shad
