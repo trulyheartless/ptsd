@@ -174,36 +174,25 @@
             const mainContent = document.getElementById('mainContent');
             const splashScreen = document.getElementById('splashScreen');
 
-            const song1 = "https://r2.interrupted.me/F/c92r0rCT.mp3";
-            const song2 = "https://r2.interrupted.me/F/bn9llCVE.mp3";
-            const song3 = "https://r2.interrupted.me/F/x4bSKcT8.mp3";
+            const songs = [
+                "https://r2.interrupted.me/F/c92r0rCT.mp3",
+                "https://r2.interrupted.me/F/bn9llCVE.mp3",
+                "https://r2.interrupted.me/F/x4bSKcT8.mp3",
+                "https://r2.interrupted.me/F/jPXlxJNZ.mp3",
+                "https://r2.interrupted.me/F/L7KjpA0N.mp3",
+                "https://r2.interrupted.me/F/NwGaYT3d.mp3",
+                "https://r2.interrupted.me/F/SyauTk0Q.mp3"
+            ];
 
-            let randomSong;
-            const randomNum = Math.random();
-            if (randomNum < 0.25) {
-                randomSong = song1;
-            } else if (randomNum < 0.5) {
-                randomSong = song2;
-            } else {
-                randomSong = song3;
-            }
+            let audio = new Audio();
+            let playNextSong = () => {
+                const randomIndex = Math.floor(Math.random() * songs.length);
+                audio.src = songs[randomIndex];
+                audio.play();
+            };
 
-            const audio = new Audio(randomSong);
-            audio.play();
-
-            audio.addEventListener('ended', function() {
-                let nextSong;
-                const nextRandomNum = Math.random();
-                if (nextRandomNum < 0.25) {
-                    nextSong = song1;
-                } else if (nextRandomNum < 0.5) {
-                    nextSong = song2;
-                } else {
-                    nextSong = song3;
-                }
-                const nextAudio = new Audio(nextSong);
-                nextAudio.play();
-            });
+            audio.addEventListener('ended', playNextSong);
+            playNextSong();
 
             splashScreen.style.transition = "opacity 1s ease";
             splashScreen.style.opacity = '0';
