@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pvvv | Digital Forensics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0a0a0a;
@@ -16,6 +17,12 @@
             --gradient-accent: linear-gradient(135deg, #000000, #0a0a0a);
             --project-gradient: linear-gradient(145deg, #000000, #0a0a0a, #121212);
             --glow-color: rgba(255, 255, 255, 0.1);
+            --tailwind-color: #06B6D4;
+            --css-color: #264DE4;
+            --html-color: #E34F26;
+            --js-color: #F7DF1E;
+            --design-color: #0ACF83;
+            --minecraft-color: #9c27b0;
         }
         
         * {
@@ -23,13 +30,11 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-        
-        /* Apple Emoji Support */
-        .emoji {
-            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
-            font-style: normal;
-            font-weight: normal;
+            user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         
         body {
@@ -37,12 +42,74 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            overflow-y: hidden;
+            cursor: none;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        img {
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .emoji {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            color: initial;
+        }
+        
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        
+        .splash-content {
+            text-align: center;
+        }
+        
+        .hello-text {
+            font-size: 4rem;
+            font-weight: 300;
+            opacity: 0;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease;
+            color: var(--text-color);
+        }
+        
+        .hello-text.active {
+            opacity: 1;
+        }
+        
+        .splash-instruction {
+            position: absolute;
+            bottom: 10%;
+            font-size: 1rem;
+            color: var(--highlight);
+            opacity: 0;
+            animation: fadeInOut 2s infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        #mainContent {
+            display: none;
         }
         
         header {
@@ -56,12 +123,6 @@
             border-bottom: 1px solid var(--border-color);
         }
         
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
@@ -69,11 +130,6 @@
             background: linear-gradient(to right, var(--text-color), var(--highlight));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
         }
         
         .nav-links a {
@@ -104,12 +160,8 @@
             height: 50vh;
             display: flex;
             align-items: center;
-            padding-top: 4rem;
+            padding-top: 8rem;
             background: var(--gradient-dark);
-        }
-        
-        .hero-content {
-            max-width: 800px;
         }
         
         .hero h1 {
@@ -123,15 +175,16 @@
             -webkit-text-fill-color: transparent;
         }
         
+        .pronunciation {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+        
         .hero p {
             font-size: 1.5rem;
             color: var(--highlight);
-        }
-        
-        section {
-            padding: 5rem 0;
-            position: relative;
-            z-index: 1;
         }
         
         .section-title {
@@ -141,13 +194,6 @@
             background: linear-gradient(to right, var(--text-color), var(--highlight));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            position: relative;
         }
         
         .project-card {
@@ -223,18 +269,6 @@
             width: 100%;
         }
         
-        .about-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        .about-content {
-            max-width: 800px;
-            text-align: center;
-        }
-        
         .about-content h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -244,9 +278,9 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .about-content p {
-            margin-bottom: 1rem;
-            color: var(--highlight);
+        .about-content h2 .emoji {
+            background: none;
+            -webkit-text-fill-color: initial;
         }
         
         .minecraft-avatar {
@@ -257,27 +291,37 @@
             margin: 0 auto 1rem;
             position: relative;
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .minecraft-avatar:hover {
+            box-shadow: 0 0 25px rgba(156, 39, 176, 0.6);
+            border-color: var(--minecraft-color);
+            transform: scale(1.02);
         }
         
         .minecraft-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
         
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1rem;
-            justify-content: center;
+        .minecraft-avatar:hover img {
+            transform: scale(1.05);
         }
         
-        .social-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-links a:hover .social-icon {
+            transform: scale(1.2);
         }
         
         .social-links a::after {
@@ -307,23 +351,6 @@
             text-shadow: 0 0 5px rgba(41, 151, 255, 0.5);
         }
         
-        footer {
-            padding: 2rem 0;
-            background: var(--gradient-accent);
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
         .footer-links a {
             color: var(--highlight);
             text-decoration: none;
@@ -350,21 +377,6 @@
             width: 100%;
         }
         
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .hero p {
-                font-size: 1.2rem;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-        }
-        
         .cursor {
             position: fixed;
             width: 20px;
@@ -378,99 +390,491 @@
             z-index: 9999;
             opacity: 0.7;
         }
+        
+        .skills-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .skills-section h3 .emoji {
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+        
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .skill-icon.tailwind {
+            box-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
+        }
+        
+        .skill-icon.tailwind:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+            border-color: var(--tailwind-color);
+        }
+        
+        .skill-icon.css {
+            box-shadow: 0 0 5px rgba(38, 77, 228, 0.3);
+        }
+        
+        .skill-icon.css:hover {
+            box-shadow: 0 0 15px rgba(38, 77, 228, 0.5);
+            border-color: var(--css-color);
+        }
+        
+        .skill-icon.html {
+            box-shadow: 0 0 5px rgba(227, 79, 38, 0.3);
+        }
+        
+        .skill-icon.html:hover {
+            box-shadow: 0 0 15px rgba(227, 79, 38, 0.5);
+            border-color: var(--html-color);
+        }
+        
+        .skill-icon.js {
+            box-shadow: 0 0 5px rgba(247, 223, 30, 0.3);
+        }
+        
+        .skill-icon.js:hover {
+            box-shadow: 0 0 15px rgba(247, 223, 30, 0.5);
+            border-color: var(--js-color);
+        }
+        
+        .skill-icon.design {
+            box-shadow: 0 0 5px rgba(10, 207, 131, 0.3);
+        }
+        
+        .skill-icon.design:hover {
+            box-shadow: 0 0 15px rgba(10, 207, 131, 0.5);
+            border-color: var(--design-color);
+        }
+        
+        .skill-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .skill-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--text-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            width: 200px;
+            font-size: 0.85rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+        
+        .skill-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+        
+        .skill-item:hover .skill-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .skill-icon img {
+            transition: transform 0.3s ease;
+        }
+        
+        .skill-item:hover .skill-icon img {
+            transform: scale(1.2);
+        }
+        
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+        
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .audio-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .song-info {
+            font-size: 0.8rem;
+            color: var(--highlight);
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
-    <div class="cursor"></div>
-    
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">pvvv</div>
-                <div class="nav-links">
-                    <a href="#projects">Projects</a>
-                    <a href="#about">About</a>
-                </div>
-            </nav>
+    <div id="splashScreen">
+        <div class="splash-content">
+            <div class="hello-text" lang="en">Hello</div>
+            <div class="hello-text" lang="zh">你好</div>
+            <div class="hello-text" lang="ja">こんにちは</div>
+            <div class="hello-text" lang="ko">안녕하세요</div>
+            <div class="hello-text" lang="es">Hola</div>
+            <div class="hello-text" lang="fr">Bonjour</div>
+            <div class="hello-text" lang="de">Hallo</div>
+            <div class="hello-text" lang="it">Ciao</div>
+            <div class="hello-text" lang="ru">Привет</div>
+            <div class="hello-text" lang="ar">مرحبا</div>
         </div>
-    </header>
+        <div class="splash-instruction">Click anywhere to continue</div>
+    </div>
     
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Digital Forensics Specialist <span class="emoji">👋</span></h1>
-                <p>#1 com femboy</p>
+    <div id="mainContent">
+        <div class="cursor"></div>
+        
+        <header>
+            <div class="container mx-auto px-6">
+                <nav class="flex justify-between items-center">
+                    <div class="logo">pvvv</div>
+                    <div class="nav-links flex gap-8">
+                        <a href="#projects">Projects</a>
+                        <a href="#about">About</a>
+                    </div>
+                </nav>
             </div>
-        </div>
-    </section>
-    
-    <section id="projects">
-        <div class="container">
-            <h2 class="section-title">Projects</h2>
-            <div class="projects">
-                <div class="project-card">
-                    <h3><span class="emoji">✉️</span>og.email</h3>
-                    <p>A private email service with enhanced security features and end-to-end encryption.</p>
-                    <a href="https://og.email" class="project-link">View project →</a>
-                </div>
-                <div class="project-card">
-                    <h3><span class="emoji">🔍</span>csint.ing</h3>
-                    <p>Advanced CSINT/OSINT tool for digital investigations and intelligence gathering.</p>
-                    <a href="https://csint.ing" class="project-link">View project →</a>
-                </div>
-                <div class="project-card">
-                    <h3><span class="emoji">🎵</span>musiclibrary.lol</h3>
-                    <p>Platform designed to host and archive leaked music collections.</p>
-                    <a href="https://musiclibrary.lol" class="project-link">View project →</a>
-                </div>
-                <div class="project-card">
-                    <h3><span class="emoji">🔒</span>Auth_</h3>
-                    <p>Working on a secure authentication tool with multi-factor authentication.</p>
-                    <a href="#" class="project-link">Coming soon →</a>
+        </header>
+        
+        <section class="hero">
+            <div class="container mx-auto px-6">
+                <div class="hero-content">
+                    <h1>Hi, I'm Pvvv <span class="emoji">👋</span></h1>
+                    <div class="pronunciation">pronounced as "pevi"</div>
+                    <p>#1 com femboy</p>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <section id="about">
-        <div class="container">
-            <div class="about-section">
-                <div class="minecraft-avatar">
-                    <img src="https://www.mc-heads.net/body/60683767-02fa-4d71-9f2a-62ac4b11ed38/left" alt="Minecraft Skin">
-                </div>
-                <div class="about-content">
-                    <h2>About Me <span class="emoji">🔍</span></h2>
-                    <p>Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
-                    <div class="social-links">
-                        <a href="https://x.com/religiousfraud" target="_blank">Twitter <span class="emoji">🐦</span></a>
-                        <a href="https://t.me/mysqltable" target="_blank">Telegram <span class="emoji">📱</span></a>
-                        <a href="https://doxbin.com/user/pvvv" target="_blank">Doxbin <span class="emoji">📂</span></a>
+        </section>
+        
+        <section id="projects" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="project-card">
+                        <h3><span class="emoji">✉️</span>og.email</h3>
+                        <p>A private email service with enhanced security features and end-to-end encryption.</p>
+                        <a href="https://og.email" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🔍</span>csint.ing</h3>
+                        <p>Advanced CSINT/OSINT tool for digital investigations and intelligence gathering.</p>
+                        <a href="https://csint.ing" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🎵</span>musiclibrary.lol</h3>
+                        <p>Platform designed to host and archive leaked music collections.</p>
+                        <a href="https://musiclibrary.lol" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🔒</span>Auth_</h3>
+                        <p>Working on a secure authentication tool with multi-factor authentication.</p>
+                        <a href="#" class="project-link">Coming soon →</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="logo">pvvv <span class="emoji">🌐</span></div>
-                <div class="footer-links">
-                    <a href="#projects">Projects</a>
-                    <a href="#about">About</a>
+        </section>
+        
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col items-center">
+                    <div class="minecraft-avatar">
+                        <img src="https://www.mc-heads.net/body/60683767-02fa-4d71-9f2a-62ac4b11ed38/left" alt="Minecraft Skin">
+                    </div>
+                    <div class="about-content max-w-3xl text-center">
+                        <h2>About Me <span class="emoji">🔍</span></h2>
+                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
+                        <div class="skills-section my-6">
+                            <h3>Skills <span class="emoji">💻</span></h3>
+                            <p class="text-white mb-6">I'm proficient with <strong>Tailwind CSS</strong> and <strong>CSS</strong>, decent at <strong>HTML</strong> and <strong>JavaScript</strong>, and currently learning <strong>design</strong> to enhance my projects.</p>
+                            <div class="flex flex-wrap justify-center gap-6">
+                                <div class="skill-item">
+                                    <div class="skill-icon tailwind">
+                                        <img src="https://tailwindcss.com/favicons/favicon.ico" alt="Tailwind CSS" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">Tailwind CSS</span>
+                                    <div class="skill-tooltip">
+                                        A utility-first CSS framework that allows for rapid custom designs without leaving your HTML.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon css">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">CSS</span>
+                                    <div class="skill-tooltip">
+                                        Cascading Style Sheets is the language used to style and layout web pages.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon html">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">HTML</span>
+                                    <div class="skill-tooltip">
+                                        HyperText Markup Language is the standard markup language for documents designed to be displayed in a web browser.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon js">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">JavaScript</span>
+                                    <div class="skill-tooltip">
+                                        A programming language that enables interactive web pages and is an essential part of web applications.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon design">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Design" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">Design</span>
+                                    <div class="skill-tooltip">
+                                        Currently learning UI/UX design principles and tools like Figma to create better user experiences.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="social-links flex gap-6 justify-center mt-4">
+                            <a href="https://x.com/religiousfraud" target="_blank" class="flex items-center gap-2 text-white">
+                                <div class="social-icon">
+                                    <img src="https://abs.twimg.com/responsive-web/client-web/icon-default.522d363a.png" alt="Twitter" width="24" height="24">
+                                </div>
+                                Twitter
+                            </a>
+                            <a href="https://t.me/mysqltable" target="_blank" class="flex items-center gap-2 text-white">
+                                <div class="social-icon">
+                                    <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" width="24" height="24">
+                                </div>
+                                Telegram
+                            </a>
+                            <a href="https://doxbin.com/user/pvvv" target="_blank" class="flex items-center gap-2 text-white">
+                                <div class="social-icon">
+                                    <img src="https://r2.interrupted.me/F/JxsMo7nk.jpg" alt="Doxbin" width="24" height="24">
+                                </div>
+                                Doxbin
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
+        
+        <footer class="py-8" style="background: var(--gradient-accent); border-top: 1px solid var(--border-color);">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-center flex-col md:flex-row gap-6">
+                    <div class="logo">pvvv <span class="emoji">🌐</span></div>
+                    <div class="footer-links flex gap-8">
+                        <a href="#projects">Projects</a>
+                        <a href="#about">About</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <div class="audio-controls">
+            <button class="audio-btn" id="playPauseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+            <button class="audio-btn" id="nextSongBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+            </button>
+            <div class="song-info" id="songInfo">Loading...</div>
         </div>
-    </footer>
+    </div>
     
     <script>
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.querySelector('.cursor');
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 's')) {
+                e.preventDefault();
+                return false;
+            }
         });
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
+            const helloTexts = document.querySelectorAll('.hello-text');
+            let currentIndex = 0;
+            
+            function showNextHello() {
+                if (currentIndex > 0) {
+                    helloTexts[currentIndex - 1].classList.remove('active');
+                }
+                
+                helloTexts[currentIndex].classList.add('active');
+                currentIndex++;
+                
+                if (currentIndex < helloTexts.length) {
+                    setTimeout(showNextHello, 1000);
+                }
+            }
+            
+            showNextHello();
+            
+            const splashScreen = document.getElementById('splashScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            splashScreen.addEventListener('click', function() {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    
+                    mainContent.style.display = 'block';
+                    document.body.style.overflowY = 'auto';
+                    
+                    initAudio();
+                    initAnimations();
+                }, 500);
+            });
+        });
+        
+        function initAudio() {
+            const songs = [
+                "https://r2.interrupted.me/F/c92r0rCT.mp3",
+                "https://r2.interrupted.me/F/bn9llCVE.mp3",
+                "https://r2.interrupted.me/F/x4bSKcT8.mp3",
+                "https://r2.interrupted.me/F/jPXlxJNZ.mp3",
+                "https://r2.interrupted.me/F/L7KjpA0N.mp3",
+                "https://r2.interrupted.me/F/NwGaYT3d.mp3",
+                "https://r2.interrupted.me/F/SyauTk0Q.mp3"
+            ];
+            
+            const songNames = [
+                "Track 1",
+                "Track 2",
+                "Track 3",
+                "Track 4",
+                "Track 5",
+                "Track 6",
+                "Track 7"
+            ];
+            
+            let currentSongIndex = 0;
+            let audio = new Audio();
+            let isPlaying = false;
+            
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const nextSongBtn = document.getElementById('nextSongBtn');
+            const songInfo = document.getElementById('songInfo');
+            
+            function playNextSong() {
+                currentSongIndex = Math.floor(Math.random() * songs.length);
+                audio.src = songs[currentSongIndex];
+                songInfo.textContent = songNames[currentSongIndex];
+                audio.play();
+                isPlaying = true;
+                updatePlayPauseIcon();
+            }
+            
+            function togglePlayPause() {
+                if (audio.src === '') {
+                    playNextSong();
+                } else if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                }
+                updatePlayPauseIcon();
+            }
+            
+            function updatePlayPauseIcon() {
+                if (isPlaying) {
+                    playPauseBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    `;
+                } else {
+                    playPauseBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    `;
+                }
+            }
+            
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            nextSongBtn.addEventListener('click', playNextSong);
+            audio.addEventListener('ended', playNextSong);
+            
+            playNextSong();
+        }
+        
+        function initAnimations() {
+            const cursor = document.querySelector('.cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-links a, .social-links a, .project-link, .game-link');
             
@@ -498,8 +902,9 @@
                     link.style.textShadow = 'none';
                 });
             });
-        });
+        }
     </script>
 </body>
 </html>
+
 
