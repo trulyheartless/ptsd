@@ -700,6 +700,8 @@
             width: 300px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(0);
         }
         
         .audio-controls:hover {
@@ -839,6 +841,50 @@
             scroll-behavior: smooth;
         }
 
+/* Pull tab for music player */
+.audio-pull-tab {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.audio-pull-tab:hover {
+    background: rgba(10, 10, 10, 0.9);
+}
+
+.audio-pull-tab svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* Animation for music player */
+.audio-controls {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(0);
+}
+
+.audio-controls.hidden {
+    transform: translateY(calc(100% - 15px));
+}
+
+.audio-controls.hidden .audio-pull-tab svg {
+    transform: rotate(180deg);
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
     /* Hide sidebar on mobile */
@@ -957,6 +1003,19 @@
     
     .mobile-nav a:hover, .mobile-nav a:active {
         background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .audio-controls.hidden {
+        transform: translateY(calc(100% - 15px));
+    }
+    
+    .audio-controls.hidden + .mobile-nav {
+        transform: translateY(calc(100% - 15px));
+    }
+    
+    .mobile-nav {
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(0);
     }
 }
 
@@ -1211,48 +1270,54 @@
             </div>
         </footer>
         
-        <div class="audio-controls">
-            <div class="song-info" id="songInfo">Loading...</div>
-            <div class="next-song" id="nextSongInfo">Next: Loading...</div>
-            
-            <div class="audio-top">
-                <div class="audio-buttons">
-                    <button class="audio-btn" id="prevSongBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                            <line x1="5" y1="19" x2="5" y2="5"></line>
-                        </svg>
-                    </button>
-                    <button class="audio-btn" id="playPauseBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg>
-                    </button>
-                    <button class="audio-btn" id="nextSongBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                            <line x1="19" y1="5" x2="19" y2="19"></line>
-                        </svg>
-                    </button>
-                </div>
-                <div class="volume-control">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                    <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider">
-                </div>
-            </div>
-            
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="time-display">
-                <span id="currentTime">00:00</span>
-                <span id="totalTime">00:00</span>
-            </div>
+        
+<div class="audio-controls">
+    <div class="audio-pull-tab" id="audioPullTab">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </div>
+    <div class="song-info" id="songInfo">Loading...</div>
+    <div class="next-song" id="nextSongInfo">Next: Loading...</div>
+    
+    <div class="audio-top">
+        <div class="audio-buttons">
+            <button class="audio-btn" id="prevSongBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                    <line x1="5" y1="19" x2="5" y2="5"></line>
+                </svg>
+            </button>
+            <button class="audio-btn" id="playPauseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+            <button class="audio-btn" id="nextSongBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+            </button>
         </div>
+        <div class="volume-control">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider">
+        </div>
+    </div>
+    
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="time-display">
+        <span id="currentTime">00:00</span>
+        <span id="totalTime">00:00</span>
+    </div>
+</div>
     </div>
     
     <!-- Mobile Navigation -->
@@ -1317,6 +1382,7 @@
                     
                     initAudio();
                     initAnimations();
+                    initMusicPlayerToggle(); // Initialize the music player toggle
                 }, 500);
             });
             
@@ -1401,6 +1467,7 @@ updateViewportMeta();
             const currentTimeEl = document.getElementById('currentTime');
             const totalTimeEl = document.getElementById('totalTime');
             const volumeSlider = document.getElementById('volumeSlider');
+            const audioControls = document.querySelector('.audio-controls');
             
             function updateNextSongIndex() {
                 nextSongIndex = (currentSongIndex + 1) % songs.length;
@@ -1490,6 +1557,49 @@ updateViewportMeta();
             
             currentSongIndex = Math.floor(Math.random() * songs.length);
             loadAndPlaySong();
+
+            // Music player hide/show
+            const audioPullTab = document.querySelector('.audio-pull-tab');
+
+            function toggleAudioControls() {
+                audioControls.classList.toggle('hidden');
+            }
+
+            audioPullTab.addEventListener('click', toggleAudioControls);
+        }
+        
+        // Add this code to the JavaScript section, after the initAnimations function
+
+        // Toggle music player visibility
+        function initMusicPlayerToggle() {
+            const audioControls = document.querySelector('.audio-controls');
+            const audioPullTab = document.getElementById('audioPullTab');
+            const mobileNav = document.querySelector('.mobile-nav');
+            
+            // Check if there's a saved state in localStorage
+            const savedState = localStorage.getItem('audioPlayerHidden');
+            if (savedState === 'true') {
+                audioControls.classList.add('hidden');
+                if (mobileNav) {
+                    mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                }
+            }
+            
+            audioPullTab.addEventListener('click', () => {
+                audioControls.classList.toggle('hidden');
+                
+                // Save state to localStorage
+                localStorage.setItem('audioPlayerHidden', audioControls.classList.contains('hidden'));
+                
+                // Also move the mobile nav if it exists
+                if (mobileNav) {
+                    if (audioControls.classList.contains('hidden')) {
+                        mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                    } else {
+                        mobileNav.style.transform = 'translateY(0)';
+                    }
+                }
+            });
         }
         
         function initAnimations() {
@@ -1530,6 +1640,8 @@ updateViewportMeta();
     </script>
 </body>
 </html>
+
+
 
 
 
