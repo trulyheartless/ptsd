@@ -1143,7 +1143,7 @@
                     </div>
                     <div class="about-content max-w-3xl text-center">
                         <h2>About Me <span class="emoji">🔍</span></h2>
-                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/games/13488637865/Blood-Engine" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
+                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
                         <div class="skills-section my-6">
                             <h3>Skills <span class="emoji">💻</span></h3>
                             <p class="text-white mb-6">I'm proficient with <strong>Tailwind CSS</strong> and <strong>CSS</strong>, decent at <strong>HTML</strong> and <strong>JavaScript</strong>, and currently learning <strong>design</strong> to enhance my projects.</p>
@@ -1382,7 +1382,11 @@
                     
                     initAudio();
                     initAnimations();
-                    initMusicPlayerToggle(); // Initialize the music player toggle
+                    
+                    // Initialize music player toggle after a slight delay to ensure DOM is ready
+                    setTimeout(() => {
+                        initMusicPlayerToggle();
+                    }, 100);
                 }, 500);
             });
             
@@ -1555,17 +1559,30 @@ updateViewportMeta();
             progressContainer.addEventListener('click', setProgress);
             volumeSlider.addEventListener('input', setVolume);
             
-            currentSongIndex = Math.floor(Math.random() * songs.length);
+            // Prioritize "intro - malone" (index 7) as the initial song
+            currentSongIndex = 7; // This is the index for "intro - malone"
             loadAndPlaySong();
 
             // Music player hide/show
             const audioPullTab = document.querySelector('.audio-pull-tab');
 
-            function toggleAudioControls() {
+            audioPullTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 audioControls.classList.toggle('hidden');
-            }
-
-            audioPullTab.addEventListener('click', toggleAudioControls);
+                
+                // Save state to localStorage
+                localStorage.setItem('audioPlayerHidden', audioControls.classList.contains('hidden'));
+                
+                // Also move the mobile nav if it exists
+                if (mobileNav) {
+                    if (audioControls.classList.contains('hidden')) {
+                        mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                    } else {
+                        mobileNav.style.transform = 'translateY(0)';
+                    }
+                }
+            });
         }
         
         // Add this code to the JavaScript section, after the initAnimations function
@@ -1640,7 +1657,6 @@ updateViewportMeta();
     </script>
 </body>
 </html>
-
 
 
 
