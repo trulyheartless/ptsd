@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kapi</title>
+  <meta name="description" content="Personal bio site">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.155.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: black;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .blog-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .blog-popup.active {
+      display: block;
+    }
+
+    .close-popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1001;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .close-popup:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .image-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+    }
+
+    .image-popup.active {
+      display: flex;
+    }
+
+    .image-popup img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-black text-white">
+  <main class="min-h-screen">
+    <div class="relative min-h-screen">
+      <div id="scene-container" class="fixed inset-0"></div>
+      
+      <div class="absolute inset-0 z-10 flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl space-y-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Profile Card -->
+            <div id="profile-card" class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300">
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-6 space-y-4">
+                <div class="flex items-center space-x-4">
+                  <img id="discord-avatar" src="/placeholder.svg" alt="Profile" class="w-16 h-16 rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-300">
+                  <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Kapi</h1>
+                    <p id="discord-username" class="text-zinc-400 text-sm">@username</p>
+                  </div>
+                </div>
+
+                <div class="shrink-0 bg-white/10 h-[1px] w-full"></div>
+
+                <div class="space-y-2">
+                  <div class="flex items-center space-x-2">
+                    <div id="status-indicator" class="w-2 h-2 rounded-full bg-zinc-500"></div>
+                    <span id="status-text" class="text-sm text-zinc-400">Offline</span>
+                  </div>
+                  <div id="spotify-container" class="text-sm text-zinc-400 hidden">
+                    Listening to <span id="spotify-song"></span> by <span id="spotify-artist"></span>
+                  </div>
+                </div>
+
+                <div class="shrink-0 bg-white/10 h-[1px] w-full"></div>
+
+                <div class="space-y-2">
+                  <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-red-400"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    <span class="text-sm text-zinc-400">tailz</span>
+                  </div>
+                  
+                  <a href="https://x.com/0x96E7" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 text-sm text-zinc-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                    <span>@0x96E7</span>
+                  </a>
+
+                  <a href="mailto:kapi@murderi.ng" class="flex items-center space-x-2 text-sm text-zinc-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                    <span>kapi@murderi.ng</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Background Card -->
+            <div class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300 h-full">
+              <div class="absolute inset-0 bg-gradient-to-br from-red-500/10 via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-6 space-y-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-red-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path><path d="m3.5 8.9 2.9.7"></path><path d="m17.6 9.6 2.9.7"></path><path d="m9 9.5 1.5 6"></path><path d="M13.5 9.5 12 15.5"></path></svg>
+                    <span class="text-sm font-medium">Past</span>
+                  </div>
+                  <span class="text-xs text-zinc-500">2022</span>
+                </div>
+
+                <div class="space-y-4">
+                  <p class="text-sm text-zinc-400 leading-relaxed">
+                    Previously involved in the doxbin community, a chapter of my past that I've since moved away from.
+                  </p>
+                </div>
+
+                <div class="pt-4 border-t border-white/5">
+                  <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+                    <div>
+                      <span class="text-sm font-medium">Present</span>
+                      <p class="text-sm text-zinc-400 mt-1">
+                        Now working as a Private Investigator, using my skills for legitimate and ethical purposes.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- Minecraft Profile -->
+            <div class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-4 space-y-4">
+                <div class="flex items-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-purple-400"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" x2="12" y1="22" y2="12"></line></svg>
+                  <span class="text-sm font-medium">Minecraft</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <div class="relative w-16 h-16">
+                    <img src="https://crafatar.com/avatars/60683767-02fa-4d71-9f2a-62ac4b11ed38?overlay=true" alt="Minecraft Skin" class="rounded-md group-hover:scale-110 transition-transform duration-300">
+                  </div>
+                  <div class="space-y-1">
+                    <p class="text-sm font-medium">federalizing</p>
+                    <p id="minecraft-uuid" class="text-xs text-zinc-400 font-mono">60683767</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Article Link -->
+            <div id="article-link" class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300 cursor-pointer h-full">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-4 space-y-4 h-full flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-purple-400"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <span class="text-sm font-medium">Latest Article</span>
+                  </div>
+                  <div class="block text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">
+                    An Investigation Into KT/Kayte
+                  </div>
+                </div>
+                <p class="text-sm text-zinc-400">
+                  Explore the actions of KT/Kayte and their involvement with Doxbin.
+                </p>
+              </div>
+            </div>
+
+            <!-- Server Stats -->
+            <div class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300 h-full">
+              <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-4 space-y-4 h-full flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-400"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+                    <span class="text-sm font-medium">Vercel Hosting Stats</span>
+                  </div>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-zinc-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                      <span class="text-sm">Region: Washington State</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-zinc-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      <span class="text-sm">Runtime: Edge Network</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-zinc-400"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M13 2v7h7"></path></svg>
+                      <span class="text-sm">Framework: Next.js</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-zinc-400"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+                      <span class="text-sm">Deployment: Continuous</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Games List -->
+            <div class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300">
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-4 space-y-4">
+                <div class="flex items-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-400"><rect width="20" height="12" x="2" y="6" rx="2"></rect><path d="M12 12h.01"></path><path d="M7 12h.01"></path><path d="M17 12h.01"></path></svg>
+                  <span class="text-sm font-medium">Games</span>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2 text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-200">
+                    <span>🗺️</span>
+                    <span>Hearts of Iron IV</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-200">
+                    <span>🟥</span>
+                    <span>Roblox</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-200">
+                    <span>🔫</span>
+                    <span>Pixel Gun 3D</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Music Profile -->
+            <div class="rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm group relative overflow-hidden hover:border-white/20 transition-all duration-300">
+              <div class="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="p-4 space-y-4">
+                <div class="flex items-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-pink-400"><path d="M8 18V6l10 6-10 6Z"></path></svg>
+                  <span class="text-sm font-medium">Now Playing</span>
+                </div>
+                <div id="lastfm-container" class="flex items-center gap-3">
+                  <img id="lastfm-image" src="/placeholder.svg" alt="Album Art" class="w-12 h-12 rounded-md group-hover:scale-110 transition-transform duration-300">
+                  <div>
+                    <p id="lastfm-track" class="text-sm font-medium truncate max-w-[180px]">Loading...</p>
+                    <p id="lastfm-artist" class="text-xs text-zinc-400 truncate max-w-[180px]">Loading...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Audio Player -->
+  <div class="fixed bottom-4 left-4 z-50 bg-black/80 p-2 rounded-full border border-white/10">
+    <audio id="audio-player"></audio>
+    <div class="flex items-center space-x-2">
+      <button id="play-pause-btn" class="p-2 rounded-full hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect width="4" height="16" x="6" y="4"></rect><rect width="4" height="16" x="14" y="4"></rect></svg>
+      </button>
+      <button id="next-song-btn" class="p-2 rounded-full hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M13 5v14l7-7-7-7z"></path><path d="M4 5v14l7-7-7-7z"></path></svg>
+      </button>
+      <button id="mute-btn" class="p-2 rounded-full hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Blog Popup -->
+  <div id="blog-popup" class="blog-popup">
+    <div class="close-popup" id="close-blog">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <div class="max-w-4xl mx-auto">
+      <article class="space-y-6 relative">
+        <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('https://r2.interrupted.me/F/EuSmWpHE.png')"></div>
+        <div class="relative z-10 bg-black/80 p-8 rounded-lg">
+          <header>
+            <h1 class="text-3xl font-bold mb-2">An Investigation Into KT/Kayte</h1>
+            <h4 class="text-xl text-gray-400">Hunting The Wolf.</h4>
+          </header>
+
+          <p class="mt-4">
+            We do not care who KT/Kayte is, nor do we care about shutting down Doxbin; this investigation is solely to
+            tear apart their lies.
+          </p>
+
+          <p class="mt-2">
+            Thank you to everyone who has shared their thoughts and additional information. This investigation aims to
+            explore the actions of KT/Kayte, now known as Poorskid, and the reasons behind the scrutiny surrounding their
+            involvement with Doxbin.
+          </p>
+
+          <hr class="border-gray-700 my-4" />
+
+          <section>
+            <h4 class="text-xl font-semibold mb-2">Why This Investigation Matters</h4>
+            <p>
+              KT/Kayte's role in the revival of Doxbin raises significant questions about the motivations behind their
+              actions. The platform has a controversial history, and understanding why KT/Kayte has chosen to associate
+              with it is crucial. This investigation seeks to uncover the truth behind their claims and the implications
+              of their actions, without focusing on their identity or the platform's existence.
+            </p>
+            
+            <p>
+              As we delve deeper into the history of Doxbin, we must consider the ethical implications of doxing and the
+              potential harm it can cause to individuals whose information is exposed. The revival of such a platform
+              under KT/Kayte's leadership could indicate a troubling trend in the online community, where personal
+              information is weaponized for various purposes.
+            </p>
+          </section>
+
+          <hr class="border-gray-700 my-4" />
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">The History of Doxbin</h2>
+            <p>
+              Doxbin was originally launched in 2011 as a .onion service on the Tor network. It became known for hosting
+              sensitive personal information, making it a target for law enforcement. The site was seized during Operation
+              Onymous in 2014 but was revived in 2019 by Brenton.
+            </p>
+
+            <p>
+              During its initial run, Doxbin became infamous for allowing users to post personal information about others
+              without consent, leading to severe consequences for many individuals. The site's unchecked spread of private
+              information made it a focal point for discussions about privacy, ethics, and the responsibilities of online
+              platforms.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">New Information on KT/Kayte</h2>
+            <p>
+              Recent findings suggest that KT/Kayte, now known as Poorskid, has a complex history tied to the Doxbin
+              platform. Here are some key points:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2">
+              <li>
+                There are claims that the original Doxbin was created by an individual known as Drugz before KT took over.
+                <img src="https://r2.interrupted.me/F/kwbGzeaU.webp" alt="Ryan describing Drugz" class="mt-2 max-w-full h-auto">
+              </li>
+              <li>
+                The KT stated that it was made in May of 2018, however, the site says different.
+                <img src="https://r2.interrupted.me/F/4pCkQtbl.webp" alt="Doxbin site information" class="mt-2 max-w-full h-auto">
+              </li>
+              <li>
+                Domain registration records indicate that doxbin.org was registered in 2016, modified in 2017, and expired
+                in 2018.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">Evidence of Domain Registration</h2>
+            <p>
+              According to Ryan from Lizard Squad, the original registration for doxbin.org was from November 21, 2016, to
+              November 21, 2018. This information is crucial in understanding the timeline of Doxbin's ownership and the
+              potential motivations behind KT/Kayte's actions.
+            </p>
+            <img src="https://r2.interrupted.me/F/uYHze5jQ.webp" alt="Domain Registration Evidence" class="mt-2 max-w-full h-auto">
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">Implications of Doxbin's Revival</h2>
+            <p>
+              The revival of Doxbin under KT/Kayte's leadership raises concerns about the potential for increased doxing
+              activities. With the rise of online harassment and the weaponization of personal information, it is
+              essential to scrutinize the motivations behind such platforms. Are they merely providing a service, or are
+              they contributing to a culture of harm?
+            </p>
+
+            <p>
+              Furthermore, the ethical considerations surrounding the revival of Doxbin cannot be overlooked. The
+              platform's history is marred by instances of abuse, and its return could signal a troubling trend in the
+              online community. As we continue this investigation, we aim to shed light on these issues and hold those
+              responsible accountable.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">Who Kayte Used to Be: Rootmeskid</h2>
+            <p>Before adopting the identity of KT/Kayte, this individual was known as Rootmeskid.</p>
+            <p>Here are some images related to Kayte's past (click to enlarge):</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 my-4">
+              <div class="cursor-pointer" onclick="openImagePopup('https://r2.interrupted.me/F/yr580SaS.png')">
+                <img src="https://r2.interrupted.me/F/yr580SaS.png" alt="KT's Face" class="w-24 h-24 rounded-md hover:opacity-80 transition-opacity">
+              </div>
+              <div class="cursor-pointer" onclick="openImagePopup('https://r2.interrupted.me/F/jVeeKEY3.png')">
+                <img src="https://r2.interrupted.me/F/jVeeKEY3.png" alt="KT's Face 2" class="w-24 h-24 rounded-md hover:opacity-80 transition-opacity">
+              </div>
+              <div class="cursor-pointer" onclick="openImagePopup('https://r2.interrupted.me/F/L5IHKtPN.png')">
+                <img src="https://r2.interrupted.me/F/L5IHKtPN.png" alt="KT admitting dox" class="w-24 h-24 rounded-md hover:opacity-80 transition-opacity">
+              </div>
+              <div class="cursor-pointer" onclick="openImagePopup('https://r2.interrupted.me/F/R7ZwwAZL.png')">
+                <img src="https://r2.interrupted.me/F/R7ZwwAZL.png" alt="KT's Tweets" class="w-24 h-24 rounded-md hover:opacity-80 transition-opacity">
+              </div>
+              <div class="cursor-pointer" onclick="openImagePopup('https://r2.interrupted.me/F/orTpGuLw.png')">
+                <img src="https://r2.interrupted.me/F/orTpGuLw.png" alt="KT's Old Profile" class="w-24 h-24 rounded-md hover:opacity-80 transition-opacity">
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="text-2xl font-bold mb-4">Conclusion</h2>
+            <p>
+              This investigation into KT/Kayte, now known as Poorskid, is ongoing. The connections to Doxbin and the
+              history surrounding it are complex and require further exploration. As more information becomes available,
+              updates will be provided. Our focus remains on the implications of their actions rather than on identifying
+              individuals or shutting down platforms.
+            </p>
+          </section>
+
+          <section>
+            <h1 class="text-3xl font-bold mb-4">Contact Information</h1>
+            <p>Writer & Investigator: Kapi</p>
+            <p>
+              Email:
+              <a href="mailto:kapi@murderi.ng" class="text-blue-400 hover:underline">
+                kapi@murderi.ng
+              </a>
+            </p>
+            <p>Session: 0517040222a0cee812e396ed52cbbd77d6079ed61b2fcbac6f8c683cc656d0676</p>
+            <p>
+              Ryan's Discord: <b>@lizardpatrol</b>
+            </p>
+            <br />
+            <img src="https://hurtingmyself.github.io/kt/assets/kapi.png" alt="Kapi" class="w-48 h-48">
+          </section>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Image Popup -->
+  <div id="image-popup" class="image-popup">
+    <div class="close-popup" id="close-image">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <img id="popup-image" src="/placeholder.svg" alt="Enlarged Image">
+  </div>
+
+  <script>
+    // API Functions
+    async function fetchMinecraftProfile() {
+      const uuid = "60683767-02fa-4d71-9f2a-62ac4b11ed38";
+      try {
+        const res = await fetch(`https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`);
+        return res.json();
+      } catch (error) {
+        console.error("Error fetching Minecraft profile:", error);
+        return null;
+      }
+    }
+
+    async function fetchLastFm() {
+      try {
+        const res = await fetch(
+          `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=lossofclarity&api_key=bfc17f7b5284dbd2fa2ae4ee3d84d379&format=json&limit=1`
+        );
+        return res.json();
+      } catch (error) {
+        console.error("Error fetching Last.fm data:", error);
+        return null;
+      }
+    }
+
+    // 3D Scene Setup
+    function setupScene() {
+      const container = document.getElementById('scene-container');
+      if (!container) return;
+
+      // Create scene, camera, and renderer
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+
+      // Add fog
+      scene.fog = new THREE.Fog(0x000000, 5, 15);
+
+      // Add lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(5, 5, 5);
+      scene.add(directionalLight);
+
+      // Add Japanese landmarks
+      const landmarks = createJapaneseLandmarks();
+      scene.add(landmarks);
+
+      // Add orbit controls
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.maxPolarAngle = Math.PI / 2;
+      controls.minPolarAngle = Math.PI / 3;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.5;
+
+      // Set camera position
+      camera.position.set(0, 2, 10);
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+        landmarks.rotation.y += 0.001;
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    }
+
+    function createJapaneseLandmarks() {
+      const group = new THREE.Group();
+
+      // Tokyo Tower
+      const tokyoTower = new THREE.Group();
+      tokyoTower.position.set(2, 0, -2);
+      
+      const towerBase = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.1, 0.3, 4, 4),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      towerBase.position.set(0, 2, 0);
+      
+      const towerTop = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.05, 0.1, 1, 4),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      towerTop.position.set(0, 4.5, 0);
+      
+      tokyoTower.add(towerBase, towerTop);
+      group.add(tokyoTower);
+
+      // Mount Fuji
+      const mountFuji = new THREE.Group();
+      mountFuji.position.set(-3, -1, -5);
+      
+      const mountain = new THREE.Mesh(
+        new THREE.ConeGeometry(2, 2, 4),
+        new THREE.MeshStandardMaterial({ color: 0xe0e0e0 })
+      );
+      mountain.position.set(0, 1, 0);
+      
+      const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.2, 2.5, 0.2, 32),
+        new THREE.MeshStandardMaterial({ color: 0x4caf50 })
+      );
+      base.position.set(0, 0.1, 0);
+      
+      mountFuji.add(mountain, base);
+      group.add(mountFuji);
+
+      // Torii Gate
+      const toriiGate = new THREE.Group();
+      toriiGate.position.set(0, -1, -3);
+      
+      const topBar = new THREE.Mesh(
+        new THREE.BoxGeometry(2, 0.2, 0.2),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      topBar.position.set(0, 1, 0);
+      
+      const topBar2 = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 0.2, 0.2),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      topBar2.position.set(0, 0.9, 0);
+      
+      const leftPillar = new THREE.Mesh(
+        new THREE.BoxGeometry(0.2, 1, 0.2),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      leftPillar.position.set(-0.9, 0.5, 0);
+      
+      const rightPillar = new THREE.Mesh(
+        new THREE.BoxGeometry(0.2, 1, 0.2),
+        new THREE.MeshStandardMaterial({ color: 0xff4500 })
+      );
+      rightPillar.position.set(0.9, 0.5, 0);
+      
+      toriiGate.add(topBar, topBar2, leftPillar, rightPillar);
+      group.add(toriiGate);
+
+      return group;
+    }
+
+    // Audio Player Setup
+    function setupAudioPlayer() {
+      const audioPlayer = document.getElementById('audio-player');
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      const nextSongBtn = document.getElementById('next-song-btn');
+      const muteBtn = document.getElementById('mute-btn');
+      
+      if (!audioPlayer || !playPauseBtn || !nextSongBtn || !muteBtn) return;
+
+      const songs = [
+        'https://r2.interrupted.me/F/3mRRLND4.mp3',
+        'https://r2.interrupted.me/F/x3EnaBa7.mp3'
+      ];
+      
+      let currentSongIndex = 0;
+      let isPlaying = false;
+      let isMuted = true;
+
+      // Initialize audio
+      audioPlayer.src = songs[currentSongIndex];
+      audioPlayer.volume = 0.4;
+      audioPlayer.muted = isMuted;
+
+      // Play/Pause button
+      playPauseBtn.addEventListener('click', () => {
+        if (isPlaying) {
+          audioPlayer.pause();
+          playPauseBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+        } else {
+          audioPlayer.play();
+          playPauseBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect width="4" height="16" x="6" y="4"></rect><rect width="4" height="16" x="14" y="4"></rect></svg>';
+        }
+        isPlaying = !isPlaying;
+      });
+
+      // Next song button
+      nextSongBtn.addEventListener('click', () => {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        audioPlayer.src = songs[currentSongIndex];
+        if (isPlaying) {
+          audioPlayer.play();
+        }
+      });
+
+      // Mute button
+      muteBtn.addEventListener('click', () => {
+        isMuted = !isMuted;
+        audioPlayer.muted = isMuted;
+        if (isMuted) {
+          muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+        } else {
+          muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+        }
+      });
+
+      // Auto play
+      audioPlayer.addEventListener('canplaythrough', () => {
+        audioPlayer.play().catch(error => {
+          console.error('Autoplay prevented:', error);
+          isPlaying = false;
+        });
+        isPlaying = true;
+        playPauseBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect width="4" height="16" x="6" y="4"></rect><rect width="4" height="16" x="14" y="4"></rect></svg>';
+      });
+    }
+
+    // Lanyard API Integration
+    async function fetchLanyardData() {
+      const discordAvatar = document.getElementById('discord-avatar');
+      const discordUsername = document.getElementById('discord-username');
+      const statusIndicator = document.getElementById('status-indicator');
+      const statusText = document.getElementById('status-text');
+      const spotifyContainer = document.getElementById('spotify-container');
+      const spotifySong = document.getElementById('spotify-song');
+      const spotifyArtist = document.getElementById('spotify-artist');
+      
+      if (!discordAvatar || !discordUsername || !statusIndicator || !statusText) return;
+
+      try {
+        const response = await fetch('https://api.lanyard.rest/v1/users/1323434210123452480');
+        const data = await response.json();
+        
+        // Update Discord info
+        discordAvatar.src = `https://cdn.discordapp.com/avatars/${data.data.discord_user.id}/${data.data.discord_user.avatar}`;
+        discordUsername.textContent = `@${data.data.discord_user.username}`;
+        
+        // Update status
+        const status = data.data.discord_status;
+        let statusColor = 'bg-zinc-500';
+        
+        if (status === 'online') statusColor = 'bg-green-500';
+        else if (status === 'idle') statusColor = 'bg-yellow-500';
+        else if (status === 'dnd') statusColor = 'bg-red-500';
+        
+        statusIndicator.className = `w-2 h-2 rounded-full ${statusColor}`;
+        statusText.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        
+        // Update Spotify info if available
+        if (data.data.spotify) {
+          spotifyContainer.classList.remove('hidden');
+          spotifySong.textContent = data.data.spotify.song;
+          spotifyArtist.textContent = data.data.spotify.artist;
+        } else {
+          spotifyContainer.classList.add('hidden');
+        }
+      } catch (error) {
+        console.error('Error fetching Lanyard data:', error);
+      }
+    }
+
+    // Last.fm API Integration
+    async function fetchLastFmData() {
+      const lastfmContainer = document.getElementById('lastfm-container');
+      const lastfmImage = document.getElementById('lastfm-image');
+      const lastfmTrack = document.getElementById('lastfm-track');
+      const lastfmArtist = document.getElementById('lastfm-artist');
+      
+      if (!lastfmContainer || !lastfmImage || !lastfmTrack || !lastfmArtist) return;
+
+      try {
+        const data = await fetchLastFm();
+        
+        const currentTrack = data.recenttracks.track[0];
+        
+        if (currentTrack) {
+          lastfmImage.src = currentTrack.image[1]['#text'] || '/placeholder.svg';
+          lastfmTrack.textContent = currentTrack.name;
+          lastfmArtist.textContent = currentTrack.artist['#text'];
+        }
+      } catch (error) {
+        console.error('Error fetching Last.fm data:', error);
+      }
+    }
+
+    // Minecraft Profile Integration
+    async function fetchMinecraftData() {
+      const minecraftUuid = document.getElementById('minecraft-uuid');
+      
+      if (!minecraftUuid) return;
+
+      try {
+        const data = await fetchMinecraftProfile();
+        if (data && data.id) {
+          minecraftUuid.textContent = data.id.slice(0, 8);
+        }
+      } catch (error) {
+        console.error('Error fetching Minecraft data:', error);
+      }
+    }
+
+    // Blog Popup Functions
+    function setupBlogPopup() {
+      const articleLink = document.getElementById('article-link');
+      const blogPopup = document.getElementById('blog-popup');
+      const closeBlog = document.getElementById('close-blog');
+      
+      if (!articleLink || !blogPopup || !closeBlog) return;
+
+      articleLink.addEventListener('click', () => {
+        blogPopup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      closeBlog.addEventListener('click', () => {
+        blogPopup.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+
+    // Image Popup Functions
+    function openImagePopup(imageUrl) {
+      const imagePopup = document.getElementById('image-popup');
+      const popupImage = document.getElementById('popup-image');
+      
+      if (!imagePopup || !popupImage) return;
+
+      popupImage.src = imageUrl;
+      imagePopup.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function setupImagePopup() {
+      const closeImage = document.getElementById('close-image');
+      const imagePopup = document.getElementById('image-popup');
+      
+      if (!closeImage || !imagePopup) return;
+
+      closeImage.addEventListener('click', () => {
+        imagePopup.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+
+    // Initialize everything when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      setupScene();
+      setupAudioPlayer();
+      fetchLanyardData();
+      fetchLastFmData();
+      fetchMinecraftData();
+      setupBlogPopup();
+      setupImagePopup();
+      
+      // Refresh data every minute
+      setInterval(fetchLanyardData, 60000);
+      setInterval(fetchLastFmData, 60000);
+    });
+  </script>
+</body>
+</html>
+
