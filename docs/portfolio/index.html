@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pvvv | Digital Forensics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #f5f5f7;
+            --accent-color: #000000;
+            --border-color: #333333;
+            --highlight: #6e6e73;
+            --primary: #2997ff;
+            --gradient-dark: linear-gradient(135deg, #000000, #121212);
+            --gradient-accent: linear-gradient(135deg, #000000, #0a0a0a);
+            --project-gradient: linear-gradient(145deg, #000000, #0a0a0a, #121212);
+            --glow-color: rgba(255, 255, 255, 0.1);
+            --tailwind-color: #06B6D4;
+            --css-color: #264DE4;
+            --html-color: #E34F26;
+            --js-color: #F7DF1E;
+            --design-color: #0ACF83;
+            --minecraft-color: #9c27b0;
+            --ghostmountein-color: #ff4d4d;
+            --ryan-color: #4dff4d;
+            --eljefe-color: #4d4dff;
+            --hasan-color: #ffff4d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            cursor: none;
+        }
+        
+        img {
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            will-change: transform;
+        }
+        
+        .emoji {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            color: initial;
+        }
+        
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+        
+        .splash-content {
+            text-align: center;
+        }
+        
+        .hello-text {
+            font-size: 4rem;
+            font-weight: 300;
+            opacity: 0;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease;
+            color: var(--text-color);
+        }
+        
+        .hello-text.active {
+            opacity: 1;
+        }
+        
+        .splash-instruction {
+            position: absolute;
+            bottom: 10%;
+            font-size: 1rem;
+            color: var(--highlight);
+            opacity: 0;
+            animation: fadeInOut 2s infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        #mainContent {
+            display: none;
+        }
+        
+        header {
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.8));
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary), var(--text-color));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            padding-top: 8rem;
+            background: var(--gradient-dark);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pronunciation {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--highlight);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .project-card {
+            background: var(--project-gradient);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            will-change: transform;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 14px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            z-index: -1;
+            animation: trace 3s linear infinite;
+        }
+        
+        @keyframes trace {
+            0% {
+                background-position: -300px 0;
+            }
+            100% {
+                background-position: 300px 0;
+            }
+        }
+        
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .project-card p {
+            color: var(--highlight);
+            margin-bottom: 0.75rem;
+        }
+        
+        .project-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .project-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary), var(--text-color));
+            transition: width 0.3s ease;
+        }
+        
+        .project-link:hover {
+            transform: translateX(5px);
+        }
+        
+        .project-link:hover::after {
+            width: 100%;
+        }
+        
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .about-content h2 .emoji {
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+        
+        .minecraft-avatar {
+            width: 140px;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            position: relative;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
+            transition: all 0.3s ease;
+            will-change: transform;
+        }
+        
+        .minecraft-avatar:hover {
+            box-shadow: 0 0 25px rgba(156, 39, 176, 0.6);
+            border-color: var(--minecraft-color);
+            transform: scale(1.02);
+        }
+        
+        .minecraft-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .minecraft-avatar:hover img {
+            transform: scale(1.05);
+        }
+        
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-links a:hover .social-icon {
+            transform: scale(1.2);
+        }
+        
+        .social-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary), var(--text-color));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 5px var(--glow-color);
+        }
+        
+        .social-links a:hover::after {
+            width: 100%;
+        }
+        
+        .game-link {
+            color: var(--primary);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .game-link:hover {
+            text-shadow: 0 0 5px rgba(41, 151, 255, 0.5);
+        }
+        
+        .footer-links a {
+            color: var(--highlight);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary), var(--text-color));
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-color);
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            pointer-events: none;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 9999;
+            opacity: 0.7;
+            will-change: transform;
+        }
+        
+        .skills-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .skills-section h3 .emoji {
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+        
+        .skill-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .skill-icon.tailwind {
+            box-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
+        }
+        
+        .skill-icon.tailwind:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+            border-color: var(--tailwind-color);
+        }
+        
+        .skill-icon.css {
+            box-shadow: 0 0 5px rgba(38, 77, 228, 0.3);
+        }
+        
+        .skill-icon.css:hover {
+            box-shadow: 0 0 15px rgba(38, 77, 228, 0.5);
+            border-color: var(--css-color);
+        }
+        
+        .skill-icon.html {
+            box-shadow: 0 0 5px rgba(227, 79, 38, 0.3);
+        }
+        
+        .skill-icon.html:hover {
+            box-shadow: 0 0 15px rgba(227, 79, 38, 0.5);
+            border-color: var(--html-color);
+        }
+        
+        .skill-icon.js {
+            box-shadow: 0 0 5px rgba(247, 223, 30, 0.3);
+        }
+        
+        .skill-icon.js:hover {
+            box-shadow: 0 0 15px rgba(247, 223, 30, 0.5);
+            border-color: var(--js-color);
+        }
+        
+        .skill-icon.design {
+            box-shadow: 0 0 5px rgba(10, 207, 131, 0.3);
+        }
+        
+        .skill-icon.design:hover {
+            box-shadow: 0 0 15px rgba(10, 207, 131, 0.5);
+            border-color: var(--design-color);
+        }
+        
+        .skill-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .skill-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--text-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            width: 200px;
+            font-size: 0.85rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 50;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            margin-bottom: 10px;
+        }
+        
+        .skill-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+        
+        .skill-item:hover .skill-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px);
+        }
+        
+        .skill-icon img {
+            transition: transform 0.3s ease;
+        }
+        
+        .skill-item:hover .skill-icon img {
+            transform: scale(1.2);
+        }
+        
+        .sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 90;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 60px;
+            overflow: hidden;
+            will-change: width, transform;
+        }
+        
+        .sidebar:hover {
+            width: 200px;
+            padding: 15px 20px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-color);
+        }
+        
+        .sidebar-text {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .sidebar:hover .sidebar-text {
+            opacity: 1;
+        }
+        
+        .friends-section {
+            margin-top: 3rem;
+        }
+        
+        .friends-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--text-color), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .friend-card {
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            will-change: transform;
+        }
+        
+        .friend-card.ghostmountein {
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+        }
+        
+        .friend-card.ghostmountein:hover {
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+            border-color: var(--ghostmountein-color);
+            transform: translateY(-5px);
+        }
+        
+        .friend-card.ryan {
+            box-shadow: 0 0 10px rgba(77, 255, 77, 0.2);
+        }
+        
+        .friend-card.ryan:hover {
+            box-shadow: 0 0 15px rgba(77, 255, 77, 0.4);
+            border-color: var(--ryan-color);
+            transform: translateY(-5px);
+        }
+        
+        .friend-card.eljefe {
+            box-shadow: 0 0 10px rgba(77, 77, 255, 0.2);
+        }
+        
+        .friend-card.eljefe:hover {
+            box-shadow: 0 0 15px rgba(77, 77, 255, 0.4);
+            border-color: var(--eljefe-color);
+            transform: translateY(-5px);
+        }
+        
+        .friend-card.hasan {
+            box-shadow: 0 0 10px rgba(255, 255, 77, 0.2);
+        }
+        
+        .friend-card.hasan:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 77, 0.4);
+            border-color: var(--hasan-color);
+            transform: translateY(-5px);
+        }
+        
+        .friend-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .friend-info {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .friend-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            width: 300px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(0);
+        }
+        
+        .audio-controls:hover {
+            background: rgba(10, 10, 10, 0.8);
+        }
+        
+        .audio-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .audio-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .audio-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .volume-slider:hover::-webkit-slider-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 0 5px var(--primary);
+        }
+        
+        .song-info {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .next-song {
+            font-size: 0.8rem;
+            color: var(--highlight);
+            margin-bottom: 10px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 2px;
+            width: 0;
+            position: relative;
+            transition: width 0.1s linear;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+        
+        .progress-container:hover .progress-bar::after {
+            transform: scale(1);
+        }
+        
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--highlight);
+            margin-top: 5px;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+/* Pull tab for music player */
+.audio-pull-tab {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.audio-pull-tab:hover {
+    background: rgba(10, 10, 10, 0.9);
+}
+
+.audio-pull-tab svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* Animation for music player */
+.audio-controls {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(0);
+}
+
+.audio-controls.hidden {
+    transform: translateY(calc(100% - 15px));
+}
+
+.audio-controls.hidden .audio-pull-tab svg {
+    transform: rotate(180deg);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    /* Hide sidebar on mobile */
+    .sidebar {
+        display: none;
+    }
+    
+    /* Hide header on mobile */
+    header {
+        display: none;
+    }
+    
+    /* Adjust hero section without header */
+    .hero {
+        padding-top: 2rem;
+        height: auto;
+        min-height: 40vh;
+    }
+    
+    /* Adjust music player for mobile */
+    .audio-controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        padding: 10px;
+        z-index: 1000;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Simplify music player on mobile */
+    .audio-controls .next-song {
+        display: none;
+    }
+    
+    .audio-controls .song-info {
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .audio-top {
+        margin-bottom: 5px;
+    }
+    
+    .audio-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .volume-control {
+        display: none;
+    }
+    
+    /* Add padding to the bottom of the page to account for the fixed player */
+    body {
+        padding-bottom: 80px;
+    }
+    
+    /* Make sections take full width */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Adjust section spacing */
+    section {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    
+    /* Make project cards stack on mobile */
+    .grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Adjust footer for mobile */
+    footer {
+        text-align: center;
+    }
+    
+    /* Add a simple mobile navigation at the bottom */
+    .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        z-index: 90;
+    }
+    
+    .mobile-nav a {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .mobile-nav a svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .mobile-nav a:hover, .mobile-nav a:active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .audio-controls.hidden {
+        transform: translateY(calc(100% - 15px));
+    }
+    
+    .audio-controls.hidden + .mobile-nav {
+        transform: translateY(calc(100% - 15px));
+    }
+    
+    .mobile-nav {
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(0);
+    }
+}
+
+/* Hide mobile nav by default on desktop */
+.mobile-nav {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <div id="splashScreen">
+        <div class="splash-content">
+            <div class="hello-text" lang="en">Hello</div>
+            <div class="hello-text" lang="zh">你好</div>
+            <div class="hello-text" lang="ja">こんにちは</div>
+            <div class="hello-text" lang="ko">안녕하세요</div>
+            <div class="hello-text" lang="es">Hola</div>
+            <div class="hello-text" lang="fr">Bonjour</div>
+            <div class="hello-text" lang="de">Hallo</div>
+            <div class="hello-text" lang="it">Ciao</div>
+            <div class="hello-text" lang="ru">Привет</div>
+            <div class="hello-text" lang="ar">مرحبا</div>
+            <div class="hello-text" lang="en">Hello</div>
+            <div class="hello-text" lang="zh">你好</div>
+            <div class="hello-text" lang="ja">こんにちは</div>
+            <div class="hello-text" lang="ko">안녕하세요</div>
+            <div class="hello-text" lang="es">Hola</div>
+            <div class="hello-text" lang="fr">Bonjour</div>
+            <div class="hello-text" lang="de">Hallo</div>
+            <div class="hello-text" lang="it">Ciao</div>
+            <div class="hello-text" lang="ru">Привет</div>
+            <div class="hello-text" lang="ar">مرحبا</div>
+            <div class="hello-text" lang="en">Hello</div>
+            <div class="hello-text" lang="zh">你好</div>
+            <div class="hello-text" lang="ja">こんにちは</div>
+            <div class="hello-text" lang="ko">안녕하세요</div>
+            <div class="hello-text" lang="es">Hola</div>
+            <div class="hello-text" lang="fr">Bonjour</div>
+            <div class="hello-text" lang="de">Hallo</div>
+            <div class="hello-text" lang="it">Ciao</div>
+            <div class="hello-text" lang="ru">Привет</div>
+            <div class="hello-text" lang="ar">مرحبا</div>
+            <div class="hello-text" lang="en">Hello</div>
+            <div class="hello-text" lang="zh">你好</div>
+            <div class="hello-text" lang="ja">こんにちは</div>
+            <div class="hello-text" lang="ko">안녕하세요</div>
+            <div class="hello-text" lang="es">Hola</div>
+            <div class="hello-text" lang="fr">Bonjour</div>
+            <div class="hello-text" lang="de">Hallo</div>
+            <div class="hello-text" lang="it">Ciao</div>
+            <div class="hello-text" lang="ru">Привет</div>
+            <div class="hello-text" lang="ar">مرحبا</div>
+        </div>
+        <div class="splash-instruction">Click anywhere to continue</div>
+    </div>
+    
+    <div id="mainContent">
+        <div class="cursor"></div>
+        
+        <div class="sidebar">
+            <a href="#" class="sidebar-item smooth-scroll">
+                <div class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </div>
+                <span class="sidebar-text">Home</span>
+            </a>
+            <a href="#projects" class="sidebar-item smooth-scroll">
+                <div class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2  stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                </div>
+                <span class="sidebar-text">Projects</span>
+            </a>
+            <a href="#about" class="sidebar-item smooth-scroll">
+                <div class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <span class="sidebar-text">About</span>
+            </a>
+            <a href="#friends" class="sidebar-item smooth-scroll">
+                <div class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <span class="sidebar-text">Friends</span>
+            </a>
+        </div>
+        
+        <header>
+            <div class="container mx-auto px-6">
+                <nav class="flex justify-between items-center">
+                    <div class="logo">pvvv</div>
+                    <div class="nav-links flex gap-8">
+                        <a href="#projects">Projects</a>
+                        <a href="#about">About</a>
+                        <a href="#friends">Friends</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+        <section class="hero">
+            <div class="container mx-auto px-6">
+                <div class="hero-content">
+                    <h1>Hi, I'm Pvvv <span class="emoji">👋</span></h1>
+                    <div class="pronunciation">pronounced as "pevi"</div>
+                    <p>Worst Dev imaginable</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="project-card">
+                        <h3><span class="emoji">✉️</span>og.email</h3>
+                        <p>A private email service with enhanced security features and end-to-end encryption.</p>
+                        <a href="https://og.email" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🔍</span>csint.ing</h3>
+                        <p>Advanced CSINT/OSINT tool for digital investigations and intelligence gathering.</p>
+                        <a href="https://csint.ing" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🎵</span>musiclibrary.lol</h3>
+                        <p>Platform designed to host and archive leaked music collections.</p>
+                        <a href="https://musiclibrary.lol" class="project-link">View project →</a>
+                    </div>
+                    <div class="project-card">
+                        <h3><span class="emoji">🔒</span>Auth_</h3>
+                        <p>Working on a secure authentication tool with multi-factor authentication.</p>
+                        <a href="#" class="project-link">Coming soon →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col items-center">
+                    <div class="minecraft-avatar">
+                        <img src="https://www.mc-heads.net/body/60683767-02fa-4d71-9f2a-62ac4b11ed38/left" alt="Minecraft Skin">
+                    </div>
+                    <div class="about-content max-w-3xl text-center">
+                        <h2>About Me <span class="emoji">🔍</span></h2>
+                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
+                        <div class="skills-section my-6">
+                            <h3>Skills <span class="emoji">💻</span></h3>
+                            <p class="text-white mb-6">I'm proficient with <strong>Tailwind CSS</strong> and <strong>CSS</strong>, decent at <strong>HTML</strong> and <strong>JavaScript</strong>, and currently learning <strong>design</strong> to enhance my projects.</p>
+                            <div class="flex flex-wrap justify-center gap-6">
+                                <div class="skill-item">
+                                    <div class="skill-icon tailwind">
+                                        <img src="https://tailwindcss.com/favicons/favicon.ico" alt="Tailwind CSS" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">Tailwind CSS</span>
+                                    <div class="skill-tooltip">
+                                        A utility-first CSS framework that allows for rapid custom designs without leaving your HTML.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon css">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">CSS</span>
+                                    <div class="skill-tooltip">
+                                        Cascading Style Sheets is the language used to style and layout web pages.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon html">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">HTML</span>
+                                    <div class="skill-tooltip">
+                                        HyperText Markup Language is the standard markup language for documents designed to be displayed in a web browser.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon js">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">JavaScript</span>
+                                    <div class="skill-tooltip">
+                                        A programming language that enables interactive web pages and is an essential part of web applications.
+                                    </div>
+                                </div>
+                                
+                                <div class="skill-item">
+                                    <div class="skill-icon design">
+                                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Design" width="30" height="30" />
+                                    </div>
+                                    <span class="skill-name">Design</span>
+                                    <div class="skill-tooltip">
+                                        Currently learning UI/UX design principles and tools like Figma to create better user experiences.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="friends" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Friends</h2>
+                <div class="friends-grid">
+                    <div class="friend-card ghostmountein">
+                        <img src="https://r2.interrupted.me/F/8ALaYg4e.jpg" alt="Ch/ghostmountein" class="friend-image">
+                        <div class="friend-info">
+                            <div class="friend-name">Ch/ghostmountein</div>
+                        </div>
+                    </div>
+                    <div class="friend-card ryan">
+                        <img src="https://r2.interrupted.me/F/EEg5Ilqz.jpg" alt="Ryan (From lizard squad)" class="friend-image">
+                        <div class="friend-info">
+                            <div class="friend-name">Ryan</div>
+                            <div class="text-sm text-gray-400">From lizard squad</div>
+                        </div>
+                    </div>
+                    <div class="friend-card eljefe">
+                        <img src="https://r2.interrupted.me/F/JWBg7FC4.jpg" alt="Eljefe" class="friend-image">
+                        <div class="friend-info">
+                            <div class="friend-name">Eljefe</div>
+                        </div>
+                    </div>
+                    <div class="friend-card hasan">
+                        <img src="https://r2.interrupted.me/F/Io8y5Moe.png" alt="Hasan" class="friend-image">
+                        <div class="friend-info">
+                            <div class="friend-name">Hasan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="py-8" style="background: var(--gradient-accent); border-top: 1px solid var(--border-color);">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-center flex-col md:flex-row gap-6">
+                    <div class="logo">pvvv <span class="emoji">🌐</span></div>
+                    <div class="footer-links flex gap-8">
+                        <a href="#projects">Projects</a>
+                        <a href="#about">About</a>
+                        <a href="#friends">Friends</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        
+<div class="audio-controls">
+    <div class="audio-pull-tab" id="audioPullTab">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </div>
+    <div class="song-info" id="songInfo">Loading...</div>
+    <div class="next-song" id="nextSongInfo">Next: Loading...</div>
+    
+    <div class="audio-top">
+        <div class="audio-buttons">
+            <button class="audio-btn" id="prevSongBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                    <line x1="5" y1="19" x2="5" y2="5"></line>
+                </svg>
+            </button>
+            <button class="audio-btn" id="playPauseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+            <button class="audio-btn" id="nextSongBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="volume-control">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider">
+        </div>
+    </div>
+    
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="time-display">
+        <span id="currentTime">00:00</span>
+        <span id="totalTime">00:00</span>
+    </div>
+</div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="#" class="smooth-scroll">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Home
+        </a>
+        <a href="#projects" class="smooth-scroll">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            Projects
+        </a>
+        <a href="#about" class="smooth-scroll">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            About
+        </a>
+        <a href="#friends" class="smooth-scroll">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            Friends
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 's')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const helloTexts = document.querySelectorAll('.hello-text');
+            let currentIndex = 0;
+            
+            function showNextHello() {
+                if (currentIndex > 0) {
+                    helloTexts[currentIndex - 1].classList.remove('active');
+                }
+                
+                helloTexts[currentIndex].classList.add('active');
+                currentIndex++;
+                
+                if (currentIndex < helloTexts.length) {
+                    setTimeout(showNextHello, 1000);
+                }
+            }
+            
+            showNextHello();
+            
+            const splashScreen = document.getElementById('splashScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            splashScreen.addEventListener('click', function() {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    
+                    mainContent.style.display = 'block';
+                    document.body.style.overflowY = 'auto';
+                    
+                    initAudio();
+                    initAnimations();
+                    
+                    // Initialize music player toggle after a slight delay to ensure DOM is ready
+                    setTimeout(() => {
+                        initMusicPlayerToggle();
+                    }, 100);
+                }, 500);
+            });
+            
+            // Add smooth scrolling to all links
+            document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+// Add viewport meta tag to ensure proper mobile scaling
+function updateViewportMeta() {
+    let viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+        viewportMeta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+    }
+}
+updateViewportMeta();
+        });
+        
+        function initAudio() {
+            const songs = [
+                "https://r2.interrupted.me/F/c92r0rCT.mp3",
+                "https://r2.interrupted.me/F/bn9llCVE.mp3",
+                "https://r2.interrupted.me/F/x4bSKcT8.mp3",
+                "https://r2.interrupted.me/F/jPXlxJNZ.mp3",
+                "https://r2.interrupted.me/F/L7KjpA0N.mp3",
+                "https://r2.interrupted.me/F/NwGaYT3d.mp3",
+                "https://r2.interrupted.me/F/SyauTk0Q.mp3",
+                "https://r2.interrupted.me/F/1AP5UsDq.mp3"
+            ];
+            
+            const songNames = [
+                "goodtime - rari kari",
+                "tell me - ze66y",
+                "misery - d4wn",
+                "nope your too late i already died - wfifskeleton",
+                "i hope u end urself tonight - lovenate",
+                "girl - ari",
+                "YOU ARE PRESSED !! - lieu",
+                "intro - malone"
+            ];
+            
+            const songDurations = [
+                "3:45",
+                "2:58",
+                "4:12",
+                "3:22",
+                "2:45",
+                "3:10",
+                "4:05",
+                "2:30"  // Estimated duration for the 8th song
+            ];
+            
+            let currentSongIndex = 0;
+            let nextSongIndex = 0;
+            let audio = new Audio();
+            let isPlaying = false;
+            
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const nextSongBtn = document.getElementById('nextSongBtn');
+            const prevSongBtn = document.getElementById('prevSongBtn');
+            const songInfo = document.getElementById('songInfo');
+            const nextSongInfo = document.getElementById('nextSongInfo');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const currentTimeEl = document.getElementById('currentTime');
+            const totalTimeEl = document.getElementById('totalTime');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const audioControls = document.querySelector('.audio-controls');
+            
+            function updateNextSongIndex() {
+                nextSongIndex = (currentSongIndex + 1) % songs.length;
+                nextSongInfo.textContent = `Next: ${songNames[nextSongIndex]} (${songDurations[nextSongIndex]})`;
+            }
+            
+            function playNextSong() {
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                loadAndPlaySong();
+            }
+            
+            function playPrevSong() {
+                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                loadAndPlaySong();
+            }
+            
+            function loadAndPlaySong() {
+                audio.src = songs[currentSongIndex];
+                songInfo.textContent = `${songNames[currentSongIndex]} (${songDurations[currentSongIndex]})`;
+                updateNextSongIndex();
+                audio.play();
+                isPlaying = true;
+                updatePlayPauseIcon();
+                
+                totalTimeEl.textContent = songDurations[currentSongIndex];
+            }
+            
+            function togglePlayPause() {
+                if (audio.src === '') {
+                    loadAndPlaySong();
+                } else if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                } else {
+                    audio.play();
+                    isPlaying = true;
+                }
+                updatePlayPauseIcon();
+            }
+            
+            function updatePlayPauseIcon() {
+                if (isPlaying) {
+                    playPauseBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    `;
+                } else {
+                    playPauseBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    `;
+                }
+            }
+            
+            function updateProgress() {
+                if (audio.duration) {
+                    const progressPercent = (audio.currentTime / audio.duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                    
+                    const minutes = Math.floor(audio.currentTime / 60);
+                    const seconds = Math.floor(audio.currentTime % 60);
+                    currentTimeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+            
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            }
+            
+            function setVolume() {
+                audio.volume = volumeSlider.value / 100;
+            }
+            
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            nextSongBtn.addEventListener('click', playNextSong);
+            prevSongBtn.addEventListener('click', playPrevSong);
+            audio.addEventListener('ended', playNextSong);
+            audio.addEventListener('timeupdate', updateProgress);
+            progressContainer.addEventListener('click', setProgress);
+            volumeSlider.addEventListener('input', setVolume);
+            
+            // Prioritize "intro - malone" (index 7) as the initial song
+            currentSongIndex = 7; // This is the index for "intro - malone"
+            loadAndPlaySong();
+
+            // Music player hide/show
+            const audioPullTab = document.querySelector('.audio-pull-tab');
+
+            audioPullTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                audioControls.classList.toggle('hidden');
+                
+                // Save state to localStorage
+                localStorage.setItem('audioPlayerHidden', audioControls.classList.contains('hidden'));
+                
+                // Also move the mobile nav if it exists
+                if (mobileNav) {
+                    if (audioControls.classList.contains('hidden')) {
+                        mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                    } else {
+                        mobileNav.style.transform = 'translateY(0)';
+                    }
+                }
+            });
+        }
+        
+        // Add this code to the JavaScript section, after the initAnimations function
+
+        // Toggle music player visibility
+        function initMusicPlayerToggle() {
+            const audioControls = document.querySelector('.audio-controls');
+            const audioPullTab = document.getElementById('audioPullTab');
+            const mobileNav = document.querySelector('.mobile-nav');
+            
+            // Check if there's a saved state in localStorage
+            const savedState = localStorage.getItem('audioPlayerHidden');
+            if (savedState === 'true') {
+                audioControls.classList.add('hidden');
+                if (mobileNav) {
+                    mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                }
+            }
+            
+            audioPullTab.addEventListener('click', () => {
+                audioControls.classList.toggle('hidden');
+                
+                // Save state to localStorage
+                localStorage.setItem('audioPlayerHidden', audioControls.classList.contains('hidden'));
+                
+                // Also move the mobile nav if it exists
+                if (mobileNav) {
+                    if (audioControls.classList.contains('hidden')) {
+                        mobileNav.style.transform = 'translateY(calc(100% - 15px))';
+                    } else {
+                        mobileNav.style.transform = 'translateY(0)';
+                    }
+                }
+            });
+        }
+        
+        function initAnimations() {
+            const cursor = document.querySelector('.cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a, .social-links a, .project-link, .game-link');
+            
+            const fadeIn = (element, delay = 0) => {
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, delay);
+            };
+            
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                
+                fadeIn(section, index * 200);
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    link.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+                });
+                
+                link.addEventListener('mouseleave', () => {
+                    link.style.textShadow = 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
