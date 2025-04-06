@@ -328,10 +328,17 @@
             transition: transform 0.3s ease;
         }
         
-        .social-links a:hover .social-icon {
-            transform: scale(1.2);
+        .social-links a {
+            position: relative;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
-        
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
         .social-links a::after {
             content: '';
             position: absolute;
@@ -343,7 +350,7 @@
             transition: width 0.3s ease;
             box-shadow: 0 0 5px var(--glow-color);
         }
-        
+
         .social-links a:hover::after {
             width: 100%;
         }
@@ -699,6 +706,8 @@
         }
         
         .audio-controls {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(0);
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -710,8 +719,6 @@
             border: 1px solid var(--border-color);
             width: 300px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(0);
         }
         
         .audio-controls:hover {
@@ -852,49 +859,8 @@
         }
 
 /* Pull tab for music player */
-.audio-pull-tab {
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 15px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 5px 5px 0 0;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-    border-top: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
-    z-index: 101;
-}
-
-.audio-pull-tab:hover {
-    background: rgba(10, 10, 10, 0.9);
-}
-
-.audio-pull-tab svg {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s ease;
-}
 
 /* Animation for music player */
-.audio-controls {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    transform: translateY(0);
-}
-
-.audio-controls.hidden {
-    transform: translateY(calc(100% - 15px));
-}
-
-.audio-controls.hidden .audio-pull-tab svg {
-    transform: rotate(180deg);
-}
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
@@ -916,19 +882,21 @@
     }
     
     /* Adjust music player for mobile */
-    .audio-controls {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
-        padding: 10px;
-        z-index: 1000;
-        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    @media (max-width: 768px) {
+        .audio-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+        }
     }
     
     /* Simplify music player on mobile */
@@ -1154,7 +1122,7 @@
                     </div>
                     <div class="about-content max-w-3xl text-center">
                         <h2>About Me <span class="emoji">🔍</span></h2>
-                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸</p>
+                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸. I'm trying to reach 7 figures before the age of 18.</p>
                         <div class="skills-section my-6">
                             <h3>Skills <span class="emoji">💻</span></h3>
                             <p class="text-white mb-6">I'm proficient with <strong>Tailwind CSS</strong> and <strong>CSS</strong>, decent at <strong>HTML</strong> and <strong>JavaScript</strong>, and currently learning <strong>design</strong> to enhance my projects.</p>
@@ -1265,9 +1233,9 @@
                         </div>
                     </div>
                     <div class="friend-card thisco">
-                        <img src="https://sjc.microlink.io/1tStQHyQiwN11BT3xW3EiFitCRl2oIzOI11_WUsMCHHOlzCIoqjHIA5OXqG003_UxDVHqPlnVo5oMNwqCKZjgw.jpeg" alt="thisco" class="friend-image">
+                        <img src="https://sjc.microlink.io/1tStQHyQiwN11BT3xW3EiFitCRl2oIzOI11_WUsMCHHOlzCIoqjHIA5OXqG003_UxDVHqPlnVo5oMNwqCKZjgw.jpeg" alt="Thisco" class="friend-image" style="object-fit: contain; background-color: #000;">
                         <div class="friend-info">
-                            <div class="friend-name">thisco</div>
+                            <div class="friend-name">Thisco</div>
                         </div>
                     </div>
                 </div>
@@ -1290,11 +1258,6 @@
         
 
 <div class="audio-controls" id="audioControls">
-    <div class="audio-pull-tab" id="audioPullTab">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-    </div>
     <div class="song-info" id="songInfo">Loading...</div>
     <div class="next-song" id="nextSongInfo">Next: Loading...</div>
     
@@ -1485,7 +1448,6 @@
             const totalTimeEl = document.getElementById('totalTime');
             const volumeSlider = document.getElementById('volumeSlider');
             const audioControls = document.getElementById('audioControls');
-            const audioPullTab = document.getElementById('audioPullTab');
             const mobileNav = document.querySelector('.mobile-nav');
             
             function updateNextSongIndex() {
@@ -1566,57 +1528,6 @@
                 audio.volume = volumeSlider.value / 100;
             }
             
-            // Toggle music player visibility
-            function toggleAudioPlayer() {
-                audioControls.classList.toggle('hidden');
-                
-                // Update the arrow direction
-                const arrow = audioPullTab.querySelector('svg');
-                if (audioControls.classList.contains('hidden')) {
-                    arrow.style.transform = 'rotate(180deg)';
-                } else {
-                    arrow.style.transform = 'rotate(0deg)';
-                }
-                
-                // Save state to localStorage
-                localStorage.setItem('audioPlayerHidden', audioControls.classList.contains('hidden'));
-                
-                // Also move the mobile nav if it exists
-                if (mobileNav) {
-                    if (audioControls.classList.contains('hidden')) {
-                        mobileNav.style.transform = 'translateY(calc(100% - 15px))';
-                    } else {
-                        mobileNav.style.transform = 'translateY(0)';
-                    }
-                }
-            }
-            
-            // Initialize audio player state
-            const savedState = localStorage.getItem('audioPlayerHidden');
-            if (savedState === 'true') {
-                audioControls.classList.add('hidden');
-                audioPullTab.querySelector('svg').style.transform = 'rotate(180deg)';
-                if (mobileNav) {
-                    mobileNav.style.transform = 'translateY(calc(100% - 15px))';
-                }
-            }
-            
-            // Add event listeners
-            playPauseBtn.addEventListener('click', togglePlayPause);
-            nextSongBtn.addEventListener('click', playNextSong);
-            prevSongBtn.addEventListener('click', playPrevSong);
-            audio.addEventListener('ended', playNextSong);
-            audio.addEventListener('timeupdate', updateProgress);
-            progressContainer.addEventListener('click', setProgress);
-            volumeSlider.addEventListener('input', setVolume);
-            
-            // Make sure the pull tab works to toggle the player
-            audioPullTab.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleAudioPlayer();
-            });
-            
             // Prioritize "intro - malone" (index 7) as the initial song
             currentSongIndex = 7; // This is the index for "intro - malone"
             loadAndPlaySong();
@@ -1660,5 +1571,6 @@
     </script>
 </body>
 </html>
+
 
 
