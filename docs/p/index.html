@@ -1288,6 +1288,7 @@
         </footer>
         
         
+
 <div class="audio-controls" id="audioControls">
     <div class="audio-pull-tab" id="audioPullTab">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1608,7 +1609,13 @@
             audio.addEventListener('timeupdate', updateProgress);
             progressContainer.addEventListener('click', setProgress);
             volumeSlider.addEventListener('input', setVolume);
-            audioPullTab.addEventListener('click', toggleAudioPlayer);
+            
+            // Make sure the pull tab works to toggle the player
+            audioPullTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleAudioPlayer();
+            });
             
             // Prioritize "intro - malone" (index 7) as the initial song
             currentSongIndex = 7; // This is the index for "intro - malone"
