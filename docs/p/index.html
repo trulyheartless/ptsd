@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>pvvv | Digital Forensics</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -28,6 +28,7 @@
             --eljefe-color: #4d4dff;
             --hasan-color: #ffff4d;
             --thisco-color: #ff0000;
+            --misophobia-color: #9966ff;
         }
         
         * {
@@ -118,893 +119,32 @@
             display: none;
         }
         
-        header {
-            padding: 1.5rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.8));
-            border-bottom: 1px solid var(--border-color);
+        .friend-card.misophobia {
+            box-shadow: 0 0 10px rgba(153, 102, 255, 0.2);
         }
         
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -4px;
-            left: 0;
-            background: linear-gradient(to right, var(--primary), var(--text-color));
-            transition: width 0.3s ease;
-            box-shadow: 0 0 5px var(--glow-color);
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
-            height: 50vh;
-            display: flex;
-            align-items: center;
-            padding-top: 8rem;
-            background: var(--gradient-dark);
-        }
-        
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .pronunciation {
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--highlight);
-            margin-bottom: 0.5rem;
-        }
-        
-        .hero p {
-            font-size: 1.5rem;
-            color: var(--highlight);
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .project-card {
-            background: var(--project-gradient);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            z-index: 2;
-            will-change: transform;
-        }
-        
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 14px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            z-index: -1;
-            animation: trace 3s linear infinite;
-        }
-        
-        @keyframes trace {
-            0% {
-                background-position: -300px 0;
-            }
-            100% {
-                background-position: 300px 0;
-            }
-        }
-        
-        .project-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .project-card p {
-            color: var(--highlight);
-            margin-bottom: 0.75rem;
-        }
-        
-        .project-link {
-            display: inline-block;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-        
-        .project-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background: linear-gradient(to right, var(--primary), var(--text-color));
-            transition: width 0.3s ease;
-        }
-        
-        .project-link:hover {
-            transform: translateX(5px);
-        }
-        
-        .project-link:hover::after {
-            width: 100%;
-        }
-        
-        .about-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .about-content h2 .emoji {
-            background: none;
-            -webkit-text-fill-color: initial;
-        }
-        
-        .minecraft-avatar {
-            width: 140px;
-            height: 300px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 0 auto 1rem;
-            position: relative;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 0 15px rgba(156, 39, 176, 0.3);
-            transition: all 0.3s ease;
-            will-change: transform;
-        }
-        
-        .minecraft-avatar:hover {
-            box-shadow: 0 0 25px rgba(156, 39, 176, 0.6);
-            border-color: var(--minecraft-color);
-            transform: scale(1.02);
-        }
-        
-        .minecraft-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .minecraft-avatar:hover img {
-            transform: scale(1.05);
-        }
-        
-        .social-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .social-links a {
-            position: relative;
-            text-decoration: none;
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--primary);
-        }
-
-        .social-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -4px;
-            left: 0;
-            background: linear-gradient(to right, var(--primary), var(--text-color));
-            transition: width 0.3s ease;
-            box-shadow: 0 0 5px var(--glow-color);
-        }
-
-        .social-links a:hover::after {
-            width: 100%;
-        }
-        
-        .game-link {
-            color: var(--primary);
-            text-decoration: none;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .game-link:hover {
-            text-shadow: 0 0 5px rgba(41, 151, 255, 0.5);
-        }
-        
-        .footer-links a {
-            color: var(--highlight);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-        
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -4px;
-            left: 0;
-            background: linear-gradient(to right, var(--primary), var(--text-color));
-            transition: width 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: var(--text-color);
-        }
-        
-        .footer-links a:hover::after {
-            width: 100%;
-        }
-        
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            pointer-events: none;
-            mix-blend-mode: difference;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
-            z-index: 9999;
-            opacity: 0.7;
-            will-change: transform;
-        }
-        
-        .skills-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .skills-section h3 .emoji {
-            background: none;
-            -webkit-text-fill-color: initial;
-        }
-        
-        .skill-item {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-        
-        .skill-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(10, 10, 10, 0.5);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .skill-icon.tailwind {
-            box-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
-        }
-        
-        .skill-icon.tailwind:hover {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-            border-color: var(--tailwind-color);
-        }
-        
-        .skill-icon.css {
-            box-shadow: 0 0 5px rgba(38, 77, 228, 0.3);
-        }
-        
-        .skill-icon.css:hover {
-            box-shadow: 0 0 15px rgba(38, 77, 228, 0.5);
-            border-color: var(--css-color);
-        }
-        
-        .skill-icon.html {
-            box-shadow: 0 0 5px rgba(227, 79, 38, 0.3);
-        }
-        
-        .skill-icon.html:hover {
-            box-shadow: 0 0 15px rgba(227, 79, 38, 0.5);
-            border-color: var(--html-color);
-        }
-        
-        .skill-icon.js {
-            box-shadow: 0 0 5px rgba(247, 223, 30, 0.3);
-        }
-        
-        .skill-icon.js:hover {
-            box-shadow: 0 0 15px rgba(247, 223, 30, 0.5);
-            border-color: var(--js-color);
-        }
-        
-        .skill-icon.design {
-            box-shadow: 0 0 5px rgba(10, 207, 131, 0.3);
-        }
-        
-        .skill-icon.design:hover {
-            box-shadow: 0 0 15px rgba(10, 207, 131, 0.5);
-            border-color: var(--design-color);
-        }
-        
-        .skill-name {
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        
-        .skill-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            background: rgba(0, 0, 0, 0.8);
-            color: var(--text-color);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            width: 200px;
-            font-size: 0.85rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 50;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-            margin-bottom: 10px;
-        }
-        
-        .skill-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-        }
-        
-        .skill-item:hover .skill-tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(-5px);
-        }
-        
-        .skill-icon img {
-            transition: transform 0.3s ease;
-        }
-        
-        .skill-item:hover .skill-icon img {
-            transform: scale(1.2);
-        }
-        
-        .sidebar {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 90;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 60px;
-            overflow: hidden;
-            will-change: width, transform;
-        }
-        
-        .sidebar:hover {
-            width: 200px;
-            padding: 15px 20px;
-        }
-        
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            color: var(--text-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 10px;
-            border-radius: 10px;
-            white-space: nowrap;
-        }
-        
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar-icon {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .sidebar-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-color);
-        }
-        
-        .sidebar-text {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .sidebar:hover .sidebar-text {
-            opacity: 1;
-        }
-        
-        .friends-section {
-            margin-top: 3rem;
-        }
-        
-        .friends-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, var(--text-color), var(--highlight));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .friends-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .friend-card {
-            background: rgba(10, 10, 10, 0.5);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            will-change: transform;
-        }
-        
-        .friend-card.ghostmountein {
-            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
-        }
-        
-        .friend-card.ghostmountein:hover {
-            box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
-            border-color: var(--ghostmountein-color);
-            transform: translateY(-5px);
-        }
-        
-        .friend-card.ryan {
-            box-shadow: 0 0 10px rgba(77, 255, 77, 0.2);
-        }
-        
-        .friend-card.ryan:hover {
-            box-shadow: 0 0 15px rgba(77, 255, 77, 0.4);
-            border-color: var(--ryan-color);
-            transform: translateY(-5px);
-        }
-        
-        .friend-card.eljefe {
-            box-shadow: 0 0 10px rgba(77, 77, 255, 0.2);
-        }
-        
-        .friend-card.eljefe:hover {
-            box-shadow: 0 0 15px rgba(77, 77, 255, 0.4);
-            border-color: var(--eljefe-color);
-            transform: translateY(-5px);
-        }
-        
-        .friend-card.hasan {
-            box-shadow: 0 0 10px rgba(255, 255, 77, 0.2);
-        }
-        
-        .friend-card.hasan:hover {
-            box-shadow: 0 0 15px rgba(255, 255, 77, 0.4);
-            border-color: var(--hasan-color);
+        .friend-card.misophobia:hover {
+            box-shadow: 0 0 15px rgba(153, 102, 255, 0.4);
+            border-color: var(--misophobia-color);
             transform: translateY(-5px);
         }
         
         .friend-card.thisco {
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            grid-column: span 2;
         }
         
-        .friend-card.thisco:hover {
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-            border-color: var(--thisco-color);
-            transform: translateY(-5px);
+        .friend-card.thisco .friend-image {
+            height: 400px;
         }
         
-        .friend-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        @media (max-width: 768px) {
+            .friend-card.thisco {
+                grid-column: span 1;
+            }
         }
-        
-        .friend-info {
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        .friend-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-        
-        .audio-controls {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(0);
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            width: 300px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .audio-controls:hover {
-            background: rgba(10, 10, 10, 0.8);
-        }
-        
-        .audio-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .audio-buttons {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .audio-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .audio-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .audio-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-        
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .volume-slider {
-            -webkit-appearance: none;
-            width: 60px;
-            height: 4px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            outline: none;
-            transition: all 0.2s ease;
-        }
-        
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .volume-slider:hover::-webkit-slider-thumb {
-            transform: scale(1.2);
-            box-shadow: 0 0 5px var(--primary);
-        }
-        
-        .song-info {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .next-song {
-            font-size: 0.8rem;
-            color: var(--highlight);
-            margin-bottom: 10px;
-        }
-        
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 2px;
-            width: 0;
-            position: relative;
-            transition: width 0.1s linear;
-        }
-        
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.2s ease;
-        }
-        
-        .progress-container:hover .progress-bar::after {
-            transform: scale(1);
-        }
-        
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--highlight);
-            margin-top: 5px;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-
-/* Pull tab for music player */
-
-/* Animation for music player */
-
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
-    /* Hide sidebar on mobile */
-    .sidebar {
-        display: none;
-    }
-    
-    /* Hide header on mobile */
-    header {
-        display: none;
-    }
-    
-    /* Adjust hero section without header */
-    .hero {
-        padding-top: 2rem;
-        height: auto;
-        min-height: 40vh;
-    }
-    
-    /* Adjust music player for mobile */
-    @media (max-width: 768px) {
-        .audio-controls {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            border-radius: 0;
-            border-left: none;
-            border-right: none;
-            border-bottom: none;
-            padding: 10px;
-            z-index: 1000;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
-        }
-    }
-    
-    /* Simplify music player on mobile */
-    .audio-controls .next-song {
-        display: none;
-    }
-    
-    .audio-controls .song-info {
-        font-size: 0.8rem;
-        margin-bottom: 5px;
-    }
-    
-    .audio-top {
-        margin-bottom: 5px;
-    }
-    
-    .audio-btn {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .volume-control {
-        display: none;
-    }
-    
-    /* Add padding to the bottom of the page to account for the fixed player */
-    body {
-        padding-bottom: 80px;
-    }
-    
-    /* Make sections take full width */
-    .container {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    /* Adjust section spacing */
-    section {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-    }
-    
-    /* Make project cards stack on mobile */
-    .grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    /* Adjust footer for mobile */
-    footer {
-        text-align: center;
-    }
-    
-    /* Add a simple mobile navigation at the bottom */
-    .mobile-nav {
-        display: flex;
-        position: fixed;
-        bottom: 80px;
-        left: 0;
-        right: 0;
-        background: rgba(10, 10, 10, 0.8);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid var(--border-color);
-        z-index: 90;
-    }
-    
-    .mobile-nav a {
-        flex: 1;
-        text-align: center;
-        padding: 12px 0;
-        color: var(--text-color);
-        text-decoration: none;
-        font-size: 0.8rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    .mobile-nav a svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .mobile-nav a:hover, .mobile-nav a:active {
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .audio-controls.hidden {
-        transform: translateY(calc(100% - 15px));
-    }
-    
-    .audio-controls.hidden + .mobile-nav {
-        transform: translateY(calc(100% - 15px));
-    }
-    
-    .mobile-nav {
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        transform: translateY(0);
-    }
-}
-
-/* Hide mobile nav by default on desktop */
-.mobile-nav {
-    display: none;
-}
     </style>
 </head>
-<body>
+<body class="bg-black text-gray-100">
     <div id="splashScreen">
         <div class="splash-content">
             <div class="hello-text" lang="en">Hello</div>
@@ -1024,91 +164,91 @@
     <div id="mainContent">
         <div class="cursor"></div>
         
-        <div class="sidebar">
-            <a href="#" class="sidebar-item smooth-scroll">
-                <div class="sidebar-icon">
+        <div class="sidebar fixed right-5 top-1/2 transform -translate-y-1/2 bg-opacity-70 bg-gray-800 backdrop-filter backdrop-blur-lg rounded-3xl py-4 px-2.5 flex flex-col items-center gap-5 z-10 transition-all duration-300 ease-in-out border border-opacity-10 border-white shadow-lg w-15 overflow-hidden">
+            <a href="#" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 </div>
-                <span class="sidebar-text">Home</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">Home</span>
             </a>
-            <a href="#projects" class="sidebar-item smooth-scroll">
-                <div class="sidebar-icon">
+            <a href="#projects" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                 </div>
-                <span class="sidebar-text">Projects</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">Projects</span>
             </a>
-            <a href="#about" class="sidebar-item smooth-scroll">
-                <div class="sidebar-icon">
+            <a href="#about" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </div>
-                <span class="sidebar-text">About</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">About</span>
             </a>
-            <a href="#friends" class="sidebar-item smooth-scroll">
-                <div class="sidebar-icon">
+            <a href="#friends" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 </div>
-                <span class="sidebar-text">Friends</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">Friends</span>
             </a>
-            <a href="https://x.com/religiousfraud" target="_blank" class="sidebar-item">
-                <div class="sidebar-icon">
+            <a href="https://x.com/religiousfraud" target="_blank" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
                 </div>
-                <span class="sidebar-text">Twitter</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">Twitter</span>
             </a>
-            <a href="https://t.me/mysqltable" target="_blank" class="sidebar-item">
-                <div class="sidebar-icon">
+            <a href="https://t.me/mysqltable" target="_blank" class="sidebar-item flex items-center gap-4 w-full text-white no-underline transition-all duration-300 ease-in-out py-2.5 px-2.5 rounded-lg whitespace-nowrap">
+                <div class="sidebar-icon w-7.5 h-7.5 flex items-center justify-center flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 15.5a10 10 0 1 1-11-11l3.5 1 2 4.5-3.5 1.5 2 2 1.5-3.5 4.5 2 1 3.5z"></path></svg>
                 </div>
-                <span class="sidebar-text">Telegram</span>
+                <span class="sidebar-text opacity-0 transition-opacity duration-300 ease-in-out text-sm font-medium">Telegram</span>
             </a>
         </div>
         
-        <header>
+        <header class="fixed w-full top-0 z-20 backdrop-filter backdrop-blur-md bg-opacity-90 bg-black border-b border-gray-800">
             <div class="container mx-auto px-6">
-                <nav class="flex justify-between items-center">
-                    <div class="logo">pvvv</div>
+                <nav class="flex justify-between items-center py-6">
+                    <div class="logo text-2xl font-bold tracking-tighter bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">pvvv</div>
                     <div class="nav-links flex gap-8">
-                        <a href="#projects">Projects</a>
-                        <a href="#about">About</a>
-                        <a href="#friends">Friends</a>
+                        <a href="#projects" class="text-white no-underline text-sm transition-all duration-300 ease-in-out relative">Projects</a>
+                        <a href="#about" class="text-white no-underline text-sm transition-all duration-300 ease-in-out relative">About</a>
+                        <a href="#friends" class="text-white no-underline text-sm transition-all duration-300 ease-in-out relative">Friends</a>
                     </div>
                 </nav>
             </div>
         </header>
         
-        <section class="hero">
+        <section class="hero flex items-center pt-32 h-screen/2 bg-gradient-to-b from-black to-gray-900">
             <div class="container mx-auto px-6">
                 <div class="hero-content">
-                    <h1>Hi, I'm Pvvv <span class="emoji">👋</span></h1>
-                    <div class="pronunciation">pronounced as "pevi"</div>
-                    <p>#1 com femboy</p>
+                    <h1 class="text-6xl font-bold mb-4 leading-tight tracking-tight bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Hi, I'm Pvvv <span class="emoji">👋</span></h1>
+                    <div class="pronunciation text-2xl font-normal text-gray-500 mb-2">pronounced as "pevi"</div>
+                    <p class="text-2xl text-gray-500">#1 com femboy</p>
                 </div>
             </div>
         </section>
         
         <section id="projects" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="section-title">Projects</h2>
+                <h2 class="section-title text-4xl mb-8 tracking-tight bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="project-card">
-                        <h3><span class="emoji">✉️</span>og.email</h3>
-                        <p>A private email service with enhanced security features and end-to-end encryption.</p>
-                        <a href="https://og.email" class="project-link">View project →</a>
+                    <div class="project-card bg-gradient-to-br from-black via-gray-900 to-black p-6 rounded-xl border border-gray-800 relative overflow-hidden z-10">
+                        <h3 class="text-2xl mb-3 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent"><span class="emoji">✉️</span>og.email</h3>
+                        <p class="text-gray-500 mb-3">A private email service with enhanced security features and end-to-end encryption.</p>
+                        <a href="https://og.email" class="project-link inline-block text-blue-400 no-underline text-sm transition-transform duration-300 ease-in-out relative">View project →</a>
                     </div>
-                    <div class="project-card">
-                        <h3><span class="emoji">🔍</span>csint.ing</h3>
-                        <p>Advanced CSINT/OSINT tool for digital investigations and intelligence gathering.</p>
-                        <a href="https://csint.ing" class="project-link">View project →</a>
+                    <div class="project-card bg-gradient-to-br from-black via-gray-900 to-black p-6 rounded-xl border border-gray-800 relative overflow-hidden z-10">
+                        <h3 class="text-2xl mb-3 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent"><span class="emoji">🔍</span>csint.ing</h3>
+                        <p class="text-gray-500 mb-3">Advanced CSINT/OSINT tool for digital investigations and intelligence gathering.</p>
+                        <a href="https://csint.ing" class="project-link inline-block text-blue-400 no-underline text-sm transition-transform duration-300 ease-in-out relative">View project →</a>
                     </div>
-                    <div class="project-card">
-                        <h3><span class="emoji">🎵</span>musiclibrary.lol</h3>
-                        <p>Platform designed to host and archive leaked music collections.</p>
-                        <a href="https://musiclibrary.lol" class="project-link">View project →</a>
+                    <div class="project-card bg-gradient-to-br from-black via-gray-900 to-black p-6 rounded-xl border border-gray-800 relative overflow-hidden z-10">
+                        <h3 class="text-2xl mb-3 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent"><span class="emoji">🎵</span>musiclibrary.lol</h3>
+                        <p class="text-gray-500 mb-3">Platform designed to host and archive leaked music collections.</p>
+                        <a href="https://musiclibrary.lol" class="project-link inline-block text-blue-400 no-underline text-sm transition-transform duration-300 ease-in-out relative">View project →</a>
                     </div>
-                    <div class="project-card">
-                        <h3><span class="emoji">🔒</span>Auth_</h3>
-                        <p>Working on a secure authentication tool with multi-factor authentication.</p>
-                        <a href="#" class="project-link">Coming soon →</a>
+                    <div class="project-card bg-gradient-to-br from-black via-gray-900 to-black p-6 rounded-xl border border-gray-800 relative overflow-hidden z-10">
+                        <h3 class="text-2xl mb-3 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent"><span class="emoji">🔒</span>Auth_</h3>
+                        <p class="text-gray-500 mb-3">Working on a secure authentication tool with multi-factor authentication.</p>
+                        <a href="#" class="project-link inline-block text-blue-400 no-underline text-sm transition-transform duration-300 ease-in-out relative">Coming soon →</a>
                     </div>
                 </div>
             </div>
@@ -1117,82 +257,82 @@
         <section id="about" class="py-20">
             <div class="container mx-auto px-6">
                 <div class="flex flex-col items-center">
-                    <div class="minecraft-avatar">
-                        <img src="https://www.mc-heads.net/body/60683767-02fa-4d71-9f2a-62ac4b11ed38/left" alt="Minecraft Skin">
+                    <div class="minecraft-avatar w-36 h-80 rounded-lg overflow-hidden mx-auto mb-4 relative border border-gray-800 shadow-lg transition-all duration-300 ease-in-out">
+                        <img src="https://www.mc-heads.net/body/60683767-02fa-4d71-9f2a-62ac4b11ed38/left" alt="Minecraft Skin" class="w-full h-full object-cover transition-transform duration-300 ease-in-out">
                     </div>
                     <div class="about-content max-w-3xl text-center">
-                        <h2>About Me <span class="emoji">🔍</span></h2>
-                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸. I'm trying to reach 7 figures before the age of 18.</p>
+                        <h2 class="text-4xl mb-4 tracking-tight bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">About Me <span class="emoji">🔍</span></h2>
+                        <p class="text-white mb-4">Hi, I'm Pvvv(pevi). I enjoy playing games like <a href="https://www.roblox.com/communities/17197064/blood-engine-official" target="_blank" class="game-link text-blue-400 no-underline relative transition-all duration-300 ease-in-out">Blood Engine</a> in my free time. I spend most days learning about digital forsenics and invesitgations. I am Taiwanese🇹🇼 and American🇺🇸. I'm trying to reach 7 figures before the age of 18. I don't have any other socials.</p>
                         <div class="skills-section my-6">
-                            <h3>Skills <span class="emoji">💻</span></h3>
+                            <h3 class="text-2xl mb-4 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Skills <span class="emoji">💻</span></h3>
                             <p class="text-white mb-6">I'm proficient with <strong>Tailwind CSS</strong> and <strong>CSS</strong>, decent at <strong>HTML</strong> and <strong>JavaScript</strong>, and currently learning <strong>design</strong> to enhance my projects.</p>
                             <div class="flex flex-wrap justify-center gap-6">
-                                <div class="skill-item">
-                                    <div class="skill-icon tailwind">
+                                <div class="skill-item relative flex flex-col items-center gap-2 cursor-pointer">
+                                    <div class="skill-icon tailwind w-12 h-12 flex items-center justify-center bg-opacity-50 bg-black rounded-xl border border-gray-800 transition-all duration-300 ease-in-out relative shadow-sm">
                                         <img src="https://tailwindcss.com/favicons/favicon.ico" alt="Tailwind CSS" width="30" height="30" />
                                     </div>
-                                    <span class="skill-name">Tailwind CSS</span>
-                                    <div class="skill-tooltip">
+                                    <span class="skill-name font-medium text-white">Tailwind CSS</span>
+                                    <div class="skill-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2.5 bg-black bg-opacity-80 text-white py-3 px-4 rounded-lg w-50 text-sm opacity-0 invisible transition-all duration-300 ease-in-out z-10 text-center shadow-lg pointer-events-none mb-2.5">
                                         A utility-first CSS framework that allows for rapid custom designs without leaving your HTML.
                                     </div>
                                 </div>
                                 
-                                <div class="skill-item">
-                                    <div class="skill-icon css">
+                                <div class="skill-item relative flex flex-col items-center gap-2 cursor-pointer">
+                                    <div class="skill-icon css w-12 h-12 flex items-center justify-center bg-opacity-50 bg-black rounded-xl border border-gray-800 transition-all duration-300 ease-in-out relative shadow-sm">
                                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" width="30" height="30" />
                                     </div>
-                                    <span class="skill-name">CSS</span>
-                                    <div class="skill-tooltip">
+                                    <span class="skill-name font-medium text-white">CSS</span>
+                                    <div class="skill-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2.5 bg-black bg-opacity-80 text-white py-3 px-4 rounded-lg w-50 text-sm opacity-0 invisible transition-all duration-300 ease-in-out z-10 text-center shadow-lg pointer-events-none mb-2.5">
                                         Cascading Style Sheets is the language used to style and layout web pages.
                                     </div>
                                 </div>
                                 
-                                <div class="skill-item">
-                                    <div class="skill-icon html">
+                                <div class="skill-item relative flex flex-col items-center gap-2 cursor-pointer">
+                                    <div class="skill-icon html w-12 h-12 flex items-center justify-center bg-opacity-50 bg-black rounded-xl border border-gray-800 transition-all duration-300 ease-in-out relative shadow-sm">
                                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="30" height="30" />
                                     </div>
-                                    <span class="skill-name">HTML</span>
-                                    <div class="skill-tooltip">
+                                    <span class="skill-name font-medium text-white">HTML</span>
+                                    <div class="skill-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2.5 bg-black bg-opacity-80 text-white py-3 px-4 rounded-lg w-50 text-sm opacity-0 invisible transition-all duration-300 ease-in-out z-10 text-center shadow-lg pointer-events-none mb-2.5">
                                         HyperText Markup Language is the standard markup language for documents designed to be displayed in a web browser.
                                     </div>
                                 </div>
                                 
-                                <div class="skill-item">
-                                    <div class="skill-icon js">
+                                <div class="skill-item relative flex flex-col items-center gap-2 cursor-pointer">
+                                    <div class="skill-icon js w-12 h-12 flex items-center justify-center bg-opacity-50 bg-black rounded-xl border border-gray-800 transition-all duration-300 ease-in-out relative shadow-sm">
                                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="30" height="30" />
                                     </div>
-                                    <span class="skill-name">JavaScript</span>
-                                    <div class="skill-tooltip">
+                                    <span class="skill-name font-medium text-white">JavaScript</span>
+                                    <div class="skill-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2.5 bg-black bg-opacity-80 text-white py-3 px-4 rounded-lg w-50 text-sm opacity-0 invisible transition-all duration-300 ease-in-out z-10 text-center shadow-lg pointer-events-none mb-2.5">
                                         A programming language that enables interactive web pages and is an essential part of web applications.
                                     </div>
                                 </div>
                                 
-                                <div class="skill-item">
-                                    <div class="skill-icon design">
+                                <div class="skill-item relative flex flex-col items-center gap-2 cursor-pointer">
+                                    <div class="skill-icon design w-12 h-12 flex items-center justify-center bg-opacity-50 bg-black rounded-xl border border-gray-800 transition-all duration-300 ease-in-out relative shadow-sm">
                                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Design" width="30" height="30" />
                                     </div>
-                                    <span class="skill-name">Design</span>
-                                    <div class="skill-tooltip">
+                                    <span class="skill-name font-medium text-white">Design</span>
+                                    <div class="skill-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2.5 bg-black bg-opacity-80 text-white py-3 px-4 rounded-lg w-50 text-sm opacity-0 invisible transition-all duration-300 ease-in-out z-10 text-center shadow-lg pointer-events-none mb-2.5">
                                         Currently learning UI/UX design principles and tools like Figma to create better user experiences.
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="social-links flex gap-6 justify-center mt-4">
-                            <a href="https://x.com/religiousfraud" target="_blank" class="flex items-center gap-2 text-white">
-                                <div class="social-icon">
+                            <a href="https://x.com/religiousfraud" target="_blank" class="flex items-center gap-2 text-white relative transition-all duration-300 ease-in-out hover:text-blue-400">
+                                <div class="social-icon w-6 h-6 rounded-full overflow-hidden transition-transform duration-300 ease-in-out">
                                     <img src="https://abs.twimg.com/responsive-web/client-web/icon-default.522d363a.png" alt="Twitter" width="24" height="24">
                                 </div>
                                 Twitter
                             </a>
-                            <a href="https://t.me/mysqltable" target="_blank" class="flex items-center gap-2 text-white">
-                                <div class="social-icon">
+                            <a href="https://t.me/mysqltable" target="_blank" class="flex items-center gap-2 text-white relative transition-all duration-300 ease-in-out hover:text-blue-400">
+                                <div class="social-icon w-6 h-6 rounded-full overflow-hidden transition-transform duration-300 ease-in-out">
                                     <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" width="24" height="24">
                                 </div>
                                 Telegram
                             </a>
-                            <a href="https://doxbin.com/user/pvvv" target="_blank" class="flex items-center gap-2 text-white">
-                                <div class="social-icon">
+                            <a href="https://doxbin.com/user/pvvv" target="_blank" class="flex items-center gap-2 text-white relative transition-all duration-300 ease-in-out hover:text-blue-400">
+                                <div class="social-icon w-6 h-6 rounded-full overflow-hidden transition-transform duration-300 ease-in-out">
                                     <img src="https://r2.interrupted.me/F/JxsMo7nk.jpg" alt="Doxbin" width="24" height="24">
                                 </div>
                                 Doxbin
@@ -1205,37 +345,43 @@
         
         <section id="friends" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="section-title">Friends</h2>
-                <div class="friends-grid">
-                    <div class="friend-card ghostmountein">
-                        <img src="https://r2.interrupted.me/F/8ALaYg4e.jpg" alt="Ch/ghostmountein" class="friend-image">
-                        <div class="friend-info">
-                            <div class="friend-name">Ch/ghostmountein</div>
+                <h2 class="section-title text-4xl mb-8 tracking-tight bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Friends</h2>
+                <div class="friends-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    <div class="friend-card ghostmountein bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://r2.interrupted.me/F/8ALaYg4e.jpg" alt="Ch/ghostmountein" class="friend-image w-full h-50 object-cover">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Ch/ghostmountein</div>
                         </div>
                     </div>
-                    <div class="friend-card ryan">
-                        <img src="https://r2.interrupted.me/F/EEg5Ilqz.jpg" alt="Ryan (From lizard squad)" class="friend-image">
-                        <div class="friend-info">
-                            <div class="friend-name">Ryan</div>
+                    <div class="friend-card ryan bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://r2.interrupted.me/F/EEg5Ilqz.jpg" alt="Ryan (From lizard squad)" class="friend-image w-full h-50 object-cover">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Ryan</div>
                             <div class="text-sm text-gray-400">From lizard squad</div>
                         </div>
                     </div>
-                    <div class="friend-card eljefe">
-                        <img src="https://r2.interrupted.me/F/JWBg7FC4.jpg" alt="Eljefe" class="friend-image">
-                        <div class="friend-info">
-                            <div class="friend-name">Eljefe</div>
+                    <div class="friend-card eljefe bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://r2.interrupted.me/F/JWBg7FC4.jpg" alt="Eljefe" class="friend-image w-full h-50 object-cover">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Eljefe</div>
                         </div>
                     </div>
-                    <div class="friend-card hasan">
-                        <img src="https://r2.interrupted.me/F/Io8y5Moe.png" alt="Hasan" class="friend-image">
-                        <div class="friend-info">
-                            <div class="friend-name">Hasan</div>
+                    <div class="friend-card hasan bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://r2.interrupted.me/F/Io8y5Moe.png" alt="Hasan" class="friend-image w-full h-50 object-cover">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Hasan</div>
                         </div>
                     </div>
-                    <div class="friend-card thisco">
-                        <img src="https://sjc.microlink.io/1tStQHyQiwN11BT3xW3EiFitCRl2oIzOI11_WUsMCHHOlzCIoqjHIA5OXqG003_UxDVHqPlnVo5oMNwqCKZjgw.jpeg" alt="Thisco" class="friend-image" style="object-fit: contain; background-color: #000;">
-                        <div class="friend-info">
-                            <div class="friend-name">Thisco</div>
+                    <div class="friend-card thisco bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://sjc.microlink.io/1tStQHyQiwN11BT3xW3EiFitCRl2oIzOI11_WUsMCHHOlzCIoqjHIA5OXqG003_UxDVHqPlnVo5oMNwqCKZjgw.jpeg" alt="Thisco" class="friend-image w-full object-contain bg-black">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Thisco</div>
+                        </div>
+                    </div>
+                    <div class="friend-card misophobia bg-opacity-50 bg-black rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 ease-in-out relative shadow-md">
+                        <img src="https://r2.interrupted.me/F/365Tyj59.jpg" alt="Misophobia" class="friend-image w-full h-50 object-cover">
+                        <div class="friend-info p-4 text-center">
+                            <div class="friend-name text-xl font-semibold mb-2 text-white">Misophobia</div>
                         </div>
                     </div>
                 </div>
@@ -1245,78 +391,76 @@
         <footer class="py-8" style="background: var(--gradient-accent); border-top: 1px solid var(--border-color);">
             <div class="container mx-auto px-6">
                 <div class="flex justify-between items-center flex-col md:flex-row gap-6">
-                    <div class="logo">pvvv <span class="emoji">🌐</span></div>
+                    <div class="logo text-2xl font-bold tracking-tighter bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">pvvv <span class="emoji">🌐</span></div>
                     <div class="footer-links flex gap-8">
-                        <a href="#projects">Projects</a>
-                        <a href="#about">About</a>
-                        <a href="#friends">Friends</a>
+                        <a href="#projects" class="text-gray-500 no-underline transition-colors duration-300 ease-in-out relative hover:text-white">Projects</a>
+                        <a href="#about" class="text-gray-500 no-underline transition-colors duration-300 ease-in-out relative hover:text-white">About</a>
+                        <a href="#friends" class="text-gray-500 no-underline transition-colors duration-300 ease-in-out relative hover:text-white">Friends</a>
                     </div>
                 </div>
             </div>
         </footer>
         
-        
-
-<div class="audio-controls" id="audioControls">
-    <div class="song-info" id="songInfo">Loading...</div>
-    <div class="next-song" id="nextSongInfo">Next: Loading...</div>
-    
-    <div class="audio-top">
-        <div class="audio-buttons">
-            <button class="audio-btn" id="prevSongBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                    <line x1="5" y1="19" x2="5" y2="5"></line>
-                </svg>
-            </button>
-            <button class="audio-btn" id="playPauseBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-            </button>
-            <button class="audio-btn" id="nextSongBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                    <line x1="19" y1="5" x2="19" y2="19"></line>
-                </svg>
-            </button>
+        <div class="audio-controls fixed bottom-5 right-5 z-20 bg-black bg-opacity-70 p-4 rounded-xl backdrop-filter backdrop-blur-md border border-gray-800 w-72 shadow-lg transition-transform duration-300 ease-in-out">
+            <div class="song-info text-sm text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis" id="songInfo">Loading...</div>
+            <div class="next-song text-xs text-gray-500 mb-2.5" id="nextSongInfo">Next: Loading...</div>
+            
+            <div class="audio-top flex items-center justify-between mb-2.5">
+                <div class="audio-buttons flex items-center gap-2.5">
+                    <button class="audio-btn bg-white bg-opacity-10 border-none text-white cursor-pointer w-7.5 h-7.5 flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:bg-opacity-20 hover:scale-110" id="prevSongBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                            <line x1="5" y1="19" x2="5" y2="5"></line>
+                        </svg>
+                    </button>
+                    <button class="audio-btn bg-white bg-opacity-10 border-none text-white cursor-pointer w-7.5 h-7.5 flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:bg-opacity-20 hover:scale-110" id="playPauseBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+                    <button class="audio-btn bg-white bg-opacity-10 border-none text-white cursor-pointer w-7.5 h-7.5 flex items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:bg-opacity-20 hover:scale-110" id="nextSongBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                            <line x1="19" y1="5" x2="19" y2="19"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="volume-control flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                    <input type="range" min="0" max="100" value="80" class="volume-slider appearance-none w-15 h-1 rounded bg-white bg-opacity-20 outline-none" id="volumeSlider">
+                </div>
+            </div>
+            
+            <div class="progress-container w-full h-1 bg-white bg-opacity-10 rounded relative cursor-pointer overflow-hidden" id="progressContainer">
+                <div class="progress-bar h-full bg-blue-400 rounded w-0 relative transition-width duration-100 linear" id="progressBar"></div>
+            </div>
+            <div class="time-display flex justify-between text-xs text-gray-500 mt-1.5">
+                <span id="currentTime">00:00</span>
+                <span id="totalTime">00:00</span>
+            </div>
         </div>
-        <div class="volume-control">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-            </svg>
-            <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider">
-        </div>
-    </div>
-    
-    <div class="progress-container" id="progressContainer">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div class="time-display">
-        <span id="currentTime">00:00</span>
-        <span id="totalTime">00:00</span>
-    </div>
-</div>
     </div>
     
     <!-- Mobile Navigation -->
-    <div class="mobile-nav">
-        <a href="#" class="smooth-scroll">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <div class="mobile-nav hidden md:hidden fixed bottom-20 left-0 right-0 bg-black bg-opacity-80 backdrop-filter backdrop-blur-md border-t border-gray-800 z-20 transition-transform duration-300 ease-in-out">
+        <a href="#" class="flex-1 text-center py-3 text-white no-underline text-xs flex flex-col items-center gap-1.5 hover:bg-white hover:bg-opacity-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             Home
         </a>
-        <a href="#projects" class="smooth-scroll">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        <a href="#projects" class="flex-1 text-center py-3 text-white no-underline text-xs flex flex-col items-center gap-1.5 hover:bg-white hover:bg-opacity-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
             Projects
         </a>
-        <a href="#about" class="smooth-scroll">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <a href="#about" class="flex-1 text-center py-3 text-white no-underline text-xs flex flex-col items-center gap-1.5 hover:bg-white hover:bg-opacity-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             About
         </a>
-        <a href="#friends" class="smooth-scroll">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <a href="#friends" class="flex-1 text-center py-3 text-white no-underline text-xs flex flex-col items-center gap-1.5 hover:bg-white hover:bg-opacity-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             Friends
         </a>
     </div>
@@ -1367,7 +511,7 @@
             });
             
             // Add smooth scrolling to all links
-            document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     
@@ -1387,15 +531,6 @@
                     }
                 });
             });
-
-            // Add viewport meta tag to ensure proper mobile scaling
-            function updateViewportMeta() {
-                let viewportMeta = document.querySelector('meta[name="viewport"]');
-                if (viewportMeta) {
-                    viewportMeta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
-                }
-            }
-            updateViewportMeta();
         });
         
         function initAudio() {
@@ -1429,10 +564,10 @@
                 "2:45",
                 "3:10",
                 "4:05",
-                "2:30"  // Estimated duration for the 8th song
+                "2:30"
             ];
             
-            let currentSongIndex = 0;
+            let currentSongIndex = 7; // Start with "intro - malone"
             let nextSongIndex = 0;
             let audio = new Audio();
             let isPlaying = false;
@@ -1447,8 +582,6 @@
             const currentTimeEl = document.getElementById('currentTime');
             const totalTimeEl = document.getElementById('totalTime');
             const volumeSlider = document.getElementById('volumeSlider');
-            const audioControls = document.getElementById('audioControls');
-            const mobileNav = document.querySelector('.mobile-nav');
             
             function updateNextSongIndex() {
                 nextSongIndex = (currentSongIndex + 1) % songs.length;
@@ -1469,15 +602,27 @@
                 audio.src = songs[currentSongIndex];
                 songInfo.textContent = `${songNames[currentSongIndex]} (${songDurations[currentSongIndex]})`;
                 updateNextSongIndex();
-                audio.play();
-                isPlaying = true;
-                updatePlayPauseIcon();
+                
+                // Load audio and play
+                audio.load();
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        isPlaying = true;
+                        updatePlayPauseIcon();
+                    }).catch(error => {
+                        console.log('Playback prevented by browser:', error);
+                        isPlaying = false;
+                        updatePlayPauseIcon();
+                    });
+                }
                 
                 totalTimeEl.textContent = songDurations[currentSongIndex];
             }
             
             function togglePlayPause() {
-                if (audio.src === '') {
+                if (audio.src === '' || audio.src === undefined) {
                     loadAndPlaySong();
                 } else if (isPlaying) {
                     audio.pause();
@@ -1492,14 +637,14 @@
             function updatePlayPauseIcon() {
                 if (isPlaying) {
                     playPauseBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                             <rect x="6" y="4" width="4" height="16"></rect>
                             <rect x="14" y="4" width="4" height="16"></rect>
                         </svg>
                     `;
                 } else {
                     playPauseBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                             <polygon points="5 3 19 12 5 21 5 3"></polygon>
                         </svg>
                     `;
@@ -1521,24 +666,43 @@
                 const width = this.clientWidth;
                 const clickX = e.offsetX;
                 const duration = audio.duration;
-                audio.currentTime = (clickX / width) * duration;
+                
+                if (duration) {
+                    audio.currentTime = (clickX / width) * duration;
+                }
             }
             
             function setVolume() {
                 audio.volume = volumeSlider.value / 100;
             }
             
-            // Prioritize "intro - malone" (index 7) as the initial song
-            currentSongIndex = 7; // This is the index for "intro - malone"
+            // Add event listeners
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            nextSongBtn.addEventListener('click', playNextSong);
+            prevSongBtn.addEventListener('click', playPrevSong);
+            audio.addEventListener('ended', playNextSong);
+            audio.addEventListener('timeupdate', updateProgress);
+            progressContainer.addEventListener('click', setProgress);
+            volumeSlider.addEventListener('input', setVolume);
+            
+            // Initialize with the first song
             loadAndPlaySong();
+            
+            // Make sure volume is set correctly initially
+            setVolume();
+            
+            // Return the audio object for potential use elsewhere
+            return audio;
         }
         
         function initAnimations() {
             const cursor = document.querySelector('.cursor');
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-            });
+            if (cursor) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+            }
             
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-links a, .social-links a, .project-link, .game-link');
@@ -1567,10 +731,35 @@
                     link.style.textShadow = 'none';
                 });
             });
+            
+            // Initialize sidebar hover effect
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.addEventListener('mouseenter', () => {
+                    sidebar.style.width = '200px';
+                    sidebar.style.padding = '15px 20px';
+                    
+                    const sidebarTexts = sidebar.querySelectorAll('.sidebar-text');
+                    sidebarTexts.forEach(text => {
+                        text.style.opacity = '1';
+                    });
+                });
+                
+                sidebar.addEventListener('mouseleave', () => {
+                    sidebar.style.width = '60px';
+                    sidebar.style.padding = '15px 10px';
+                    
+                    const sidebarTexts = sidebar.querySelectorAll('.sidebar-text');
+                    sidebarTexts.forEach(text => {
+                        text.style.opacity = '0';
+                    });
+                });
+            }
         }
     </script>
 </body>
 </html>
+
 
 
 
