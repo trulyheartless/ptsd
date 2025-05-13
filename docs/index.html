@@ -3,197 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p t . s d</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
+    <title>pt.sd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#030303',
+                            900: '#050505',
+                            850: '#080808',
+                            800: '#0a0a0a',
+                            700: '#0f0f0f',
+                            600: '#121212',
+                        },
+                        glass: {
+                            border: 'rgba(255, 255, 255, 0.03)',
+                            highlight: 'rgba(255, 255, 255, 0.06)',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 15s infinite alternate ease-in-out',
+                        'float-reverse': 'float-reverse 20s infinite alternate-reverse ease-in-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%': { transform: 'translate(0, 0)' },
+                            '100%': { transform: 'translate(50px, -30px)' },
+                        },
+                        'float-reverse': {
+                            '0%': { transform: 'translate(0, 0)' },
+                            '100%': { transform: 'translate(-50px, 30px)' },
+                        }
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            },
+            plugins: [],
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            background-color: black;
-            color: white;
-            font-family: 'VCR OSD Mono', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #030303;
+            color: #fff;
             overflow: hidden;
-            position: relative;
+            height: 100vh;
+            width: 100vw;
         }
+        
         .splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            transition: opacity 1s ease;
-        }
-        .main-content {
-            display: none;
-            z-index: 5;
-        }
-        #snowCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background-color: #030303;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            cursor: pointer;
         }
-        .glow-text {
-            display: inline-block;
-            color: white;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
+        
+        .splash-content {
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .blink {
-            animation: blink-animation 1s steps(1, end) infinite;
+        
+        .splash-screen:hover .splash-content {
+            transform: translateY(-10px);
         }
-        @keyframes blink-animation {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        
+        .card-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: -1;
+            filter: blur(20px);
+            transform: scale(0.9);
         }
-        .social-links {
-            margin-top: 20px;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+        
+        .card-container:hover .card-glow {
+            opacity: 1;
+            transform: scale(1.05);
         }
-        .social-link {
-            color: white;
-            margin: 0 10px;
-            font-size: 1.5em;
-            text-decoration: none;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, 
+                transparent, 
+                rgba(255, 255, 255, 0.03), 
+                transparent);
         }
-        .social-link:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        
+        ::-webkit-scrollbar {
+            width: 2px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tag {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tag::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .tag:hover::after {
+            transform: translateX(100%);
         }
     </style>
 </head>
-<body>
-    <div class="splash-screen" id="splashScreen">
-        <div>Click to enter ^^...</div>
+<body class="bg-dark-950 flex justify-center items-center min-h-screen">
+    <div class="fixed inset-0 -z-10 opacity-20 pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-white/5 blur-[80px] animate-float"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-white/5 blur-[60px] animate-float-reverse"></div>
     </div>
-    <div class="main-content" id="mainContent">
-        <div class="text-block">
-            <span class="glow-text">pt.sd<span class="blink">█</span></span>
-        </div>
-        <div style="margin-top: 10px; font-size: 12px; color: #444;">
-            2025-forever
-        </div>
-        <div class="social-links">
-            <a href="https://t.me/@mysqltable" target="_blank" class="social-link">
-                <i class="fab fa-telegram"></i>
-            </a>
+
+    <div class="fixed inset-0 -z-5 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
+    
+    <div class="splash-screen" id="splash">
+        <div class="splash-content">
+            <div class="text-4xl md:text-5xl font-extralight tracking-[0.8rem] animate-pulse-slow">pt.sd</div>
+            <div class="text-xs md:text-sm mt-4 opacity-50 tracking-widest">click to enter</div>
         </div>
     </div>
-    <canvas id="snowCanvas"></canvas>
+
+    <audio id="background-music" loop preload="auto">
+        <source src="https://files.catbox.moe/gq6iup.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container mx-auto px-4 hidden opacity-0 transition-all duration-1000 ease-out" id="main-content">
+        <div class="flex justify-center items-center">
+            <div class="card-container relative group">
+             <div class="card-glow"></div>
+
+                <div class="relative z-10 bg-dark-850/40 backdrop-blur-md border border-glass-border rounded-xl w-[90vw] max-w-[340px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5">
+                    <div class="p-5">
+                        <div class="flex items-center space-x-4 mb-3">
+                            <div class="w-16 h-16 rounded-full overflow-hidden border border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight">
+                                <img src="https://files.catbox.moe/e3n1hn.png" alt="Profile" class="w-full h-full object-cover">
+                            </div>
+                            
+                            <div>
+                                <h2 class="text-lg font-medium tracking-wide text-white/90">Lain</h2>
+                                <div class="mt-1 px-2 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[10px] tracking-wider text-white/70 border border-glass-border inline-block">
+                                    Admin @ breachforums
+                                </div>
+                                <p class="mt-1 text-[10px] tracking-wider text-white/40">I hate myself</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start mb-3">
+                            <a href="https://twitter.com/BreachedHQ" target="_blank" 
+                               class="w-8 h-8 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
+                                <i class="fab fa-twitter text-xs text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="divider mb-3"></div>
+                        
+                        <div class="flex flex-wrap gap-1.5">
+                            <div class="tag px-2 py-1 bg-dark-700/50 backdrop-blur-xs rounded text-[10px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                <i class="fas fa-map-marker-alt mr-1.5 opacity-60"></i>Canada
+                            </div>
+                            <div class="tag px-2 py-1 bg-dark-700/50 backdrop-blur-xs rounded text-[10px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                <i class="fas fa-heart mr-1.5 opacity-60"></i>Bi
+                            </div>
+                            <div class="tag px-2 py-1 bg-dark-700/50 backdrop-blur-xs rounded text-[10px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                <i class="fas fa-user mr-1.5 opacity-60"></i>Femboy
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function startSnow() {
-            const canvas = document.getElementById('snowCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const snowflakes = [];
-            const numFlakes = 200;
-
-            class Snowflake {
-                constructor(x, y, speed, size, opacity) {
-                    this.x = x;
-                    this.y = y;
-                    this.speed = speed;
-                    this.size = size;
-                    this.opacity = opacity;
-                    this.angle = Math.random() * 2 * Math.PI;
-                    this.spin = Math.random() * 0.02 - 0.01;
-                }
-                update() {
-                    this.y += this.speed;
-                    this.x += Math.sin(this.angle) * 0.5;
-                    this.angle += this.spin;
-                    if (this.y > canvas.height) {
-                        this.y = -this.size;
-                        this.x = Math.random() * canvas.width;
-                        this.opacity = 1;
-                    }
-                }
-                draw() {
-                    ctx.save();
-                    ctx.translate(this.x, this.y);
-                    ctx.rotate(this.angle);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
-                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-                    ctx.restore();
-                }
-            }
-
-            for (let i = 0; i < numFlakes; i++) {
-                snowflakes.push(new Snowflake(
-                    Math.random() * canvas.width,
-                    Math.random() * -canvas.height,
-                    Math.random() * 3 + 1,
-                    Math.random() * 2 + 1,
-                    1
-                ));
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                snowflakes.forEach(flake => {
-                    flake.update();
-                    flake.draw();
-                });
-                requestAnimationFrame(draw);
-            }
-            draw();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash');
+            const mainContent = document.getElementById('main-content');
+            const backgroundMusic = document.getElementById('background-music');
+            
+            splash.addEventListener('click', () => {
+                splash.style.opacity = '0';
+                
+                backgroundMusic.play().catch(e => console.log('Audio playback failed:', e));
+                
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    mainContent.classList.remove('hidden');
+                    
+                    void mainContent.offsetWidth;
+                    
+                    mainContent.style.opacity = '1';
+                }, 1200);
             });
-        }
-
-        document.getElementById('splashScreen').addEventListener('click', function() {
-            const mainContent = document.getElementById('mainContent');
-            const splashScreen = document.getElementById('splashScreen');
-
-            const songs = [
-              "https://files.catbox.moe/ut8dz4.mp3"
-            ];
-
-            let audio = new Audio();
-            let playNextSong = () => {
-                const randomIndex = Math.floor(Math.random() * songs.length);
-                audio.src = songs[randomIndex];
-                audio.play();
-            };
-
-            audio.addEventListener('ended', playNextSong);
-            playNextSong();
-
-            splashScreen.style.transition = "opacity 1s ease";
-            splashScreen.style.opacity = '0';
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-                mainContent.style.display = 'block';
-            }, 1000);
+            
+            const cardContainer = document.querySelector('.card-container');
+            const card = cardContainer.querySelector('.relative');
+            const cardGlow = document.querySelector('.card-glow');
+            
+            document.addEventListener('mousemove', (e) => {
+                if (mainContent.style.opacity === '1') {
+                    const x = e.clientX / window.innerWidth;
+                    const y = e.clientY / window.innerHeight;
+                    
+                    const moveX = (x - 0.5) * 6; 
+                    const moveY = (y - 0.5) * 6;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${-moveY}deg) rotateY(${moveX}deg) translateZ(5px)`;
+                    cardGlow.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 255, 255, 0.05), transparent 70%)`;
+                }
+            });
+            
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
         });
-
-        startSnow();
     </script>
 </body>
 </html>
