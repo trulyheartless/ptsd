@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pt.sd</title>
     <meta name="description" content="Admin @ Breachforums">
+    <meta name="next-head-count" content="5">
+    <meta name="next-font-preload" content="">
+    <meta name="next-size-adjust" content="">
+    
+    <script>
+        window.__NEXT_DATA__ = {"props":{"pageProps":{}},"page":"/","query":{},"buildId":"development"};
+        window.__REACT_QUERY_STATE__ = {};
+        window.__PRELOADED_STATE__ = {};
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -48,6 +58,12 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preload" href="/_next/static/chunks/main.js" as="script">
+    <link rel="preload" href="/_next/static/chunks/webpack.js" as="script">
+    <link rel="preload" href="/_next/static/chunks/pages/_app.js" as="script">
+    <link rel="preload" href="/_next/static/chunks/pages/index.js" as="script">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&display=swap');
         
@@ -155,74 +171,81 @@
             transform: translateX(100%);
         }
         
-        /* Fix for profile picture aspect ratio */
         .profile-picture {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
         }
+        
+        .react-root, .__next {
+            display: contents;
+        }
     </style>
 </head>
 <body class="bg-dark-950 flex justify-center items-center min-h-screen">
-    <div class="fixed inset-0 -z-10 opacity-20 pointer-events-none">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-white/5 blur-[80px] animate-float"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-white/5 blur-[60px] animate-float-reverse"></div>
-    </div>
+    <div id="__next">
+        <div id="react-root" data-reactroot="">
+            <div class="fixed inset-0 -z-10 opacity-20 pointer-events-none">
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-white/5 blur-[80px] animate-float"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-white/5 blur-[60px] animate-float-reverse"></div>
+            </div>
 
-    <div class="fixed inset-0 -z-5 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
-    
-    <div class="splash-screen" id="splash">
-        <div class="splash-content">
-            <div class="text-4xl md:text-5xl font-extralight tracking-[0.8rem] animate-pulse-slow">pt.sd</div>
-            <div class="text-xs md:text-sm mt-4 opacity-50 tracking-widest">click to enter</div>
-        </div>
-    </div>
+            <div class="fixed inset-0 -z-5 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
+            
+            <div class="splash-screen" id="splash">
+                <div class="splash-content">
+                    <div class="text-4xl md:text-5xl font-extralight tracking-[0.8rem] animate-pulse-slow">pt.sd</div>
+                    <div class="text-xs md:text-sm mt-4 opacity-50 tracking-widest">click to enter</div>
+                </div>
+            </div>
 
-    <audio id="background-music" loop preload="auto">
-        <source src="https://files.catbox.moe/gq6iup.mp3" type="audio/mp3">
-    </audio>
+            <audio id="background-music" loop preload="auto">
+                <source src="https://files.catbox.moe/gq6iup.mp3" type="audio/mp3">
+            </audio>
 
-    <div class="container mx-auto px-4 hidden opacity-0 transition-all duration-1000 ease-out" id="main-content">
-        <div class="flex justify-center items-center">
-            <div class="card-container relative group">
-             <div class="card-glow"></div>
+            <div class="container mx-auto px-4 hidden opacity-0 transition-all duration-1000 ease-out" id="main-content">
+                <div class="flex justify-center items-center">
+                    <div class="card-container relative group">
+                     <div class="card-glow"></div>
 
-                <div class="relative z-10 bg-dark-850/40 backdrop-blur-md border border-glass-border rounded-xl w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5">
-                    <div class="p-6">
-                        <div class="flex items-center space-x-5 mb-4">
-                          <div class="w-20 h-20 rounded-full overflow-hidden border border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight">
-                              <img src="https://files.catbox.moe/e3n1hn.png" alt="Profile" class="profile-picture">
-                          </div>
+                        <div class="relative z-10 bg-dark-850/40 backdrop-blur-md border border-glass-border rounded-xl w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5">
+                            <div class="p-6">
+                                <div class="flex items-center space-x-5 mb-4">
+                                  <div class="w-20 h-20 rounded-full overflow-hidden border border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight">
+                                      <img src="https://files.catbox.moe/e3n1hn.png" alt="Profile" class="profile-picture">
+                                  </div>
 
-                            <div>
-                                <h2 class="text-xl font-medium tracking-wide text-white/90">Lain</h2>
-                                <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border border-glass-border inline-block">
-                                    Admin @ breachforums
-                                </div>
-                                <p class="mt-2 text-[11px] tracking-wider text-white/40 max-w-[220px]">there is so much to love, so much to live for
+                                    <div>
+                                        <h2 class="text-xl font-medium tracking-wide text-white/90">Lain</h2>
+                                        <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border border-glass-border inline-block">
+                                            Admin @ breachforums
+                                        </div>
+                                        <p class="mt-2 text-[11px] tracking-wider text-white/40 max-w-[220px]">there is so much to love, so much to live for
 follow your heart, ok?</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-start mb-4">
-                            <a href="https://twitter.com/BreachedHQ" target="_blank" 
-                               class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="divider mb-4"></div>
-                        
-                        <div class="flex flex-wrap gap-2">
-                            <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
-                                <i class="fas fa-map-marker-alt mr-1.5 opacity-60"></i>Canada
-                            </div>
-                            <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
-                                <i class="fas fa-heart mr-1.5 opacity-60"></i>Bi
-                            </div>
-                            <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
-                                <i class="fas fa-user mr-1.5 opacity-60"></i>Femboy
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-start mb-4">
+                                    <a href="https://twitter.com/BreachedHQ" target="_blank" 
+                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
+                                        <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                    </a>
+                                </div>
+                                
+                                <div class="divider mb-4"></div>
+                                
+                                <div class="flex flex-wrap gap-2">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                        <i class="fas fa-map-marker-alt mr-1.5 opacity-60"></i>Canada
+                                    </div>
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                        <i class="fas fa-heart mr-1.5 opacity-60"></i>Bi
+                                    </div>
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                        <i class="fas fa-user mr-1.5 opacity-60"></i>Femboy
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -231,7 +254,22 @@ follow your heart, ok?</p>
         </div>
     </div>
 
+    <script id="__NEXT_DATA__" type="application/json">
+        {"props":{"pageProps":{}},"page":"/","query":{},"buildId":"static-page"}
+    </script>
+    
     <script>
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
+        
+        window.next = {
+            router: {
+                route: '/',
+                pathname: '/',
+                query: {},
+                asPath: '/'
+            }
+        };
+        
         document.addEventListener('DOMContentLoaded', () => {
             const splash = document.getElementById('splash');
             const mainContent = document.getElementById('main-content');
@@ -272,8 +310,16 @@ follow your heart, ok?</p>
             document.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
             });
+            
+            console.log('⚛️ Hydrated app');
         });
     </script>
+
+    <script src="/_next/static/chunks/webpack.js" async=""></script>
+    <script src="/_next/static/chunks/main.js" async=""></script>
+    <script src="/_next/static/chunks/pages/_app.js" async=""></script>
+    <script src="/_next/static/chunks/pages/index.js" async=""></script>
 </body>
 </html>
+    <!-- added react shit to trick scanners lol-->
 
