@@ -64,124 +64,124 @@
     <link rel="preload" href="/_next/static/chunks/pages/_app.js" as="script">
     <link rel="preload" href="/_next/static/chunks/pages/index.js" as="script">
     
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: #030303;
-            color: #fff;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
-        
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #030303;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-            cursor: pointer;
-        }
-        
-        .splash-content {
-            text-align: center;
-            transform: translateY(0);
-            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        
-        .splash-screen:hover .splash-content {
-            transform: translateY(-10px);
-        }
-        
-        .card-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: -1;
-            filter: blur(20px);
-            transform: scale(0.9);
-        }
-        
-        .card-container:hover .card-glow {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-        
-        .divider {
-            height: 1px;
-            background: linear-gradient(to right, 
-                transparent, 
-                rgba(255, 255, 255, 0.03), 
-                transparent);
-        }
-        
-        ::-webkit-scrollbar {
-            width: 2px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 1px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .tag {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tag::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-        
-        .tag:hover::after {
-            transform: translateX(100%);
-        }
-        
-        .profile-picture {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-        
-        .react-root, .__next {
-            display: contents;
-        }
-    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'JetBrains Mono', monospace;
+        background-color: #030303;
+        color: #fff;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    .splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #030303;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        cursor: pointer;
+    }
+    
+    .splash-content {
+        text-align: center;
+        transform: translateY(0);
+        transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    
+    .splash-screen:hover .splash-content {
+        transform: translateY(-10px);
+    }
+    
+    .card-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        z-index: -1;
+        filter: blur(20px);
+        transform: scale(0.9);
+    }
+    
+    .card-container:hover .card-glow {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    
+    .divider {
+        height: 1px;
+        background: linear-gradient(to right, 
+            transparent, 
+            rgba(255, 255, 255, 0.03), 
+            transparent);
+    }
+    
+    ::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .tag {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .tag::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.5s ease;
+    }
+    
+    .tag:hover::after {
+        transform: translateX(100%);
+    }
+    
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .react-root, .__next {
+        display: contents;
+    }
+</style>
 </head>
 <body class="bg-dark-950 flex justify-center items-center min-h-screen">
     <div id="__next">
@@ -226,19 +226,16 @@ follow your heart, ok?</p>
                                     </div>
                                 </div>
                                 
-                                <div class="flex justify-start mb-4">
-                                    <a href="https://twitter.com/BreachedHQ" target="_blank" 
-                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                        <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                                    </a>
-                                </div>
-                                
-                                <div class="flex justify-start mb-4">
-                                    <a href="mailto:femboy@mailhaven.su" target="_blank" 
-                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                        <i class="fab fa-mail text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                                    </a>
-                                </div>
+                            <div class="flex justify-start space-x-2 mb-4">
+                                <a href="https://twitter.com/BreachedHQ" target="_blank" 
+                                   class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
+                                    <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                </a>
+                                <a href="mailto:femboy@mailhaven.su" target="_blank" 
+                                   class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
+                                    <i class="fab fa-envelope text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                </a>
+                            </div>
 
                                 <div class="divider mb-4"></div>
                                 
