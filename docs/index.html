@@ -375,7 +375,7 @@ follow your heart, ok?
                 </div>
             </div>
 
-            <audio id="background-music" loop preload="auto" data-volume="0.5">
+            <audio id="background-music" loop preload="auto" data-volume="0.5" crossorigin="anonymous">
                 <source src="https://qu.ax/NGtUL.mp3" type="audio/mp3">
             </audio>
 
@@ -585,8 +585,8 @@ function handleSplashClick() {
     // Try playing audio again after content is visible
     setTimeout(forcePlayAudio, 500)
 
-    // Start audio visualization if supported
-    if (supportsWebAudio) {
+    // Start audio visualization if supported and available
+    if (supportsWebAudio && audioAnalyser) {
       startAudioVisualization()
     }
   })
@@ -599,19 +599,27 @@ function initializeAudioContext() {
     audioContext = new (window.AudioContext || window.webkitAudioContext)()
 
     if (elements.backgroundMusic) {
-      const source = audioContext.createMediaElementSource(elements.backgroundMusic)
-      audioAnalyser = audioContext.createAnalyser()
-      const gainNode = audioContext.createGain()
+      try {
+        const source = audioContext.createMediaElementSource(elements.backgroundMusic)
+        audioAnalyser = audioContext.createAnalyser()
+        const gainNode = audioContext.createGain()
 
-      audioAnalyser.fftSize = 256
-      audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
+        audioAnalyser.fftSize = 256
+        audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
 
-      source.connect(audioAnalyser)
-      audioAnalyser.connect(gainNode)
-      gainNode.connect(audioContext.destination)
+        source.connect(audioAnalyser)
+        audioAnalyser.connect(gainNode)
+        gainNode.connect(audioContext.destination)
 
-      const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
-      gainNode.gain.value = volume
+        const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
+        gainNode.gain.value = volume
+      } catch (corsError) {
+        console.warn("CORS restriction detected, audio will play without Web Audio API features:", corsError)
+        // Reset audio context since we can't use it
+        audioContext = null
+        audioAnalyser = null
+        audioDataArray = null
+      }
     }
   } catch (error) {
     console.warn("Web Audio API initialization failed:", error)
@@ -641,18 +649,14 @@ function playBackgroundMusic() {
       })
       .catch((error) => {
         console.warn("Audio playback failed:", error)
-        // Show play button as fallback for browsers with strict autoplay policies
         createPlayButton()
       })
   }
 }
 
-// Add this new function to force audio playback with multiple attempts
 function forcePlayAudio() {
-  // Try to play audio immediately
   playBackgroundMusic()
   
-  // Set up multiple attempts to play audio
   let attempts = 0;
   const maxAttempts = 5;
   
@@ -661,7 +665,6 @@ function forcePlayAudio() {
       attempts++;
       console.log(`Attempt ${attempts} to play audio...`);
       
-      // Try to unlock audio context
       if (audioContext?.state === "suspended") {
         audioContext.resume().catch(console.error);
       }
@@ -679,15 +682,12 @@ function forcePlayAudio() {
         });
     }
   };
-  
-  // Start attempt sequence after a short delay
+
   setTimeout(attemptPlay, 500);
   
-  // Add user interaction listener to unlock audio
   const unlockAudio = () => {
     if (elements.backgroundMusic && elements.backgroundMusic.paused) {
       playBackgroundMusic();
-      // Remove the event listener once played
       if (!elements.backgroundMusic.paused) {
         document.removeEventListener('click', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
@@ -696,15 +696,12 @@ function forcePlayAudio() {
     }
   };
   
-  // Add event listeners to unlock audio on any user interaction
   document.addEventListener('click', unlockAudio, { once: false });
   document.addEventListener('keydown', unlockAudio, { once: false });
   document.addEventListener('touchstart', unlockAudio, { once: false });
 }
 
-// Modify the createPlayButton function to be more prominent
 function createPlayButton() {
-  // Remove any existing play button first
   const existingButton = document.getElementById('music-play-button');
   if (existingButton) {
     existingButton.remove();
@@ -720,8 +717,7 @@ function createPlayButton() {
     playButton.remove();
   });
   document.body.appendChild(playButton);
-  
-  // Add pulsing animation to draw attention
+
   playButton.animate(
     [
       { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
@@ -820,7 +816,10 @@ function applyPixelArtFilter() {
 }
 
 function startAudioVisualization() {
-  if (!audioAnalyser || !audioDataArray) return
+  if (!audioAnalyser || !audioDataArray) {
+    console.log("Audio visualization not available due to CORS restrictions")
+    return
+  }
 
   let canvas = document.getElementById("audio-visualizer")
   if (!canvas) {
@@ -905,4 +904,3 @@ function fallbackInitialization() {
 </script>
 </body>
 </html>
-
