@@ -37,7 +37,7 @@ follow your heart, ok?
                             600: '#121212',
                         },
                         glass: {
-                            border: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.02)',
                             highlight: 'rgba(255, 255, 255, 0.06)',
                         },
                         primary: 'hsl(var(--color-primary))',
@@ -375,7 +375,7 @@ follow your heart, ok?
                 </div>
             </div>
 
-            <audio id="background-music" loop preload="auto" data-volume="0.5" crossorigin="anonymous">
+            <audio id="background-music" loop preload="auto" data-volume="0.5">
                 <source src="https://qu.ax/NGtUL.mp3" type="audio/mp3">
             </audio>
 
@@ -384,16 +384,16 @@ follow your heart, ok?
                     <div class="card-container relative group perspective-[1000px]">
                         <div class="card-glow"></div>
 
-                        <div class="card-inner relative z-10 bg-dark-850/40 backdrop-blur-md border-[1px] border-glass-border rounded-xl pixel-corners w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5 transform-gpu">
+                        <div class="card-inner relative z-10 bg-dark-850/40 backdrop-blur-md border-[1px] border-[rgba(20,20,20,0.5)] rounded-xl pixel-corners w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5 transform-gpu">
                             <div class="p-6">
                                 <div class="profile-info flex items-center space-x-5 mb-4">
-                                    <div class="w-20 h-20 rounded-full overflow-hidden border-[1px] border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight pixel-borders">
+                                    <div class="w-20 h-20 rounded-full overflow-hidden shadow-md transition-all duration-500 ease-out hover:scale-105">
                                         <img src="https://qu.ax/moppG.jpg" alt="Profile" class="profile-picture">
                                     </div>
 
                                     <div>
                                         <h2 class="text-xl font-medium tracking-wide text-white/90 pixel-text">Lain</h2>
-                                        <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border-[1px] border-glass-border inline-block pixel-borders">
+                                        <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border-[0.5px] border-[rgba(20,20,20,0.8)] inline-block">
                                             Staff @ Breachforums
                                         </div>
                                         <p class="mt-2 text-[11px] tracking-wider text-white/40 max-w-[220px] pixel-text">{'there is so much to love, so much to live for follow your heart, ok?'}</p>
@@ -418,13 +418,13 @@ follow your heart, ok?
                                 <div class="divider mb-4"></div>
                                 
                                 <div class="flex flex-wrap gap-2">
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-[rgba(20,20,20,0.5)] transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-map-marker-alt mr-1.5 opacity-60"></i>Taiwan
                                     </div>
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-[rgba(20,20,20,0.5)] transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-heart mr-1.5 opacity-60"></i>Bi
                                     </div>
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border-[1px] border-[rgba(20,20,20,0.5)] transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-user mr-1.5 opacity-60"></i>Femboy
                                     </div>
                                 </div>
@@ -498,7 +498,6 @@ function initializeApp() {
 
     applyPixelArtFilter()
     
-    // Preload audio
     if (elements.backgroundMusic) {
       elements.backgroundMusic.load();
     }
@@ -548,16 +547,12 @@ function handleSplashClick() {
 
   perfMetrics.firstInteraction = performance.now()
 
-  // Initialize audio context on user interaction
   initializeAudioContext()
 
-  // Fade out splash screen
   elements.splash.style.opacity = "0"
 
-  // Force audio to play with multiple attempts
-  forcePlayAudio()
+  playBackgroundMusic()
 
-  // Hide splash and show content
   const hidePromise = new Promise((resolve) => {
     setTimeout(() => {
       elements.splash.style.display = "none"
@@ -568,13 +563,10 @@ function handleSplashClick() {
   hidePromise.then(() => {
     elements.mainContent.classList.remove("hidden")
 
-    // Force reflow for animation
     void elements.mainContent.offsetWidth
 
-    // Show main content
     elements.mainContent.style.opacity = "1"
 
-    // Add pixel animation classes with staggered timing
     const animatables = [elements.cardInner, elements.profilePicture, ...elements.tags]
     animatables.forEach((el, index) => {
       setTimeout(() => {
@@ -582,11 +574,7 @@ function handleSplashClick() {
       }, index * 50)
     })
 
-    // Try playing audio again after content is visible
-    setTimeout(forcePlayAudio, 500)
-
-    // Start audio visualization if supported and available
-    if (supportsWebAudio && audioAnalyser) {
+    if (supportsWebAudio) {
       startAudioVisualization()
     }
   })
@@ -599,27 +587,19 @@ function initializeAudioContext() {
     audioContext = new (window.AudioContext || window.webkitAudioContext)()
 
     if (elements.backgroundMusic) {
-      try {
-        const source = audioContext.createMediaElementSource(elements.backgroundMusic)
-        audioAnalyser = audioContext.createAnalyser()
-        const gainNode = audioContext.createGain()
+      const source = audioContext.createMediaElementSource(elements.backgroundMusic)
+      audioAnalyser = audioContext.createAnalyser()
+      const gainNode = audioContext.createGain()
 
-        audioAnalyser.fftSize = 256
-        audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
+      audioAnalyser.fftSize = 256
+      audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
 
-        source.connect(audioAnalyser)
-        audioAnalyser.connect(gainNode)
-        gainNode.connect(audioContext.destination)
+      source.connect(audioAnalyser)
+      audioAnalyser.connect(gainNode)
+      gainNode.connect(audioContext.destination)
 
-        const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
-        gainNode.gain.value = volume
-      } catch (corsError) {
-        console.warn("CORS restriction detected, audio will play without Web Audio API features:", corsError)
-        // Reset audio context since we can't use it
-        audioContext = null
-        audioAnalyser = null
-        audioDataArray = null
-      }
+      const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
+      gainNode.gain.value = volume
     }
   } catch (error) {
     console.warn("Web Audio API initialization failed:", error)
@@ -630,15 +610,12 @@ function initializeAudioContext() {
 function playBackgroundMusic() {
   if (!elements.backgroundMusic) return
 
-  // Resume audio context if suspended
   if (audioContext?.state === "suspended") {
-    audioContext.resume().catch(console.error)
+    audioContext.resume()
   }
 
-  // Set volume to ensure it's audible
   elements.backgroundMusic.volume = 0.5
   
-  // Play with promise to handle autoplay restrictions
   const playPromise = elements.backgroundMusic.play()
 
   if (playPromise !== undefined) {
@@ -654,53 +631,6 @@ function playBackgroundMusic() {
   }
 }
 
-function forcePlayAudio() {
-  playBackgroundMusic()
-  
-  let attempts = 0;
-  const maxAttempts = 5;
-  
-  const attemptPlay = () => {
-    if (attempts < maxAttempts && elements.backgroundMusic && elements.backgroundMusic.paused) {
-      attempts++;
-      console.log(`Attempt ${attempts} to play audio...`);
-      
-      if (audioContext?.state === "suspended") {
-        audioContext.resume().catch(console.error);
-      }
-      
-      // Try to play again
-      elements.backgroundMusic.play()
-        .then(() => console.log("Audio playback succeeded on retry"))
-        .catch(e => {
-          console.warn(`Audio playback failed on attempt ${attempts}:`, e);
-          if (attempts === maxAttempts) {
-            createPlayButton();
-          } else {
-            setTimeout(attemptPlay, 1000);
-          }
-        });
-    }
-  };
-
-  setTimeout(attemptPlay, 500);
-  
-  const unlockAudio = () => {
-    if (elements.backgroundMusic && elements.backgroundMusic.paused) {
-      playBackgroundMusic();
-      if (!elements.backgroundMusic.paused) {
-        document.removeEventListener('click', unlockAudio);
-        document.removeEventListener('keydown', unlockAudio);
-        document.removeEventListener('touchstart', unlockAudio);
-      }
-    }
-  };
-  
-  document.addEventListener('click', unlockAudio, { once: false });
-  document.addEventListener('keydown', unlockAudio, { once: false });
-  document.addEventListener('touchstart', unlockAudio, { once: false });
-}
-
 function createPlayButton() {
   const existingButton = document.getElementById('music-play-button');
   if (existingButton) {
@@ -710,25 +640,13 @@ function createPlayButton() {
   const playButton = document.createElement("button");
   playButton.id = 'music-play-button';
   playButton.className =
-    "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-4 bg-dark-700/90 rounded-lg border border-glass-border minecraft-btn flex items-center justify-center";
-  playButton.innerHTML = '<i class="fas fa-play mr-2"></i> Click to Play Music';
+    "fixed bottom-4 right-4 z-50 p-2 bg-dark-700/80 rounded-full border border-glass-border minecraft-btn";
+  playButton.innerHTML = '<i class="fas fa-play"></i>';
   playButton.addEventListener("click", () => {
     playBackgroundMusic();
     playButton.remove();
   });
   document.body.appendChild(playButton);
-
-  playButton.animate(
-    [
-      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-      { transform: 'translate(-50%, -50%) scale(1.05)', opacity: 0.9 },
-      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
-    ], 
-    { 
-      duration: 1500,
-      iterations: Infinity
-    }
-  );
 }
 
 function handleMouseMove(e) {
@@ -816,10 +734,7 @@ function applyPixelArtFilter() {
 }
 
 function startAudioVisualization() {
-  if (!audioAnalyser || !audioDataArray) {
-    console.log("Audio visualization not available due to CORS restrictions")
-    return
-  }
+  if (!audioAnalyser || !audioDataArray) return
 
   let canvas = document.getElementById("audio-visualizer")
   if (!canvas) {
