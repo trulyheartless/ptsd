@@ -497,6 +497,11 @@ function initializeApp() {
     }
 
     applyPixelArtFilter()
+    
+    // Preload audio
+    if (elements.backgroundMusic) {
+      elements.backgroundMusic.load();
+    }
 
     console.log(`App initialized in ${(perfMetrics.domLoaded - perfMetrics.startTime).toFixed(2)}ms`)
 
@@ -543,12 +548,16 @@ function handleSplashClick() {
 
   perfMetrics.firstInteraction = performance.now()
 
+  // Initialize audio context on user interaction
   initializeAudioContext()
 
+  // Fade out splash screen
   elements.splash.style.opacity = "0"
 
-  playBackgroundMusic()
+  // Force audio to play with multiple attempts
+  forcePlayAudio()
 
+  // Hide splash and show content
   const hidePromise = new Promise((resolve) => {
     setTimeout(() => {
       elements.splash.style.display = "none"
@@ -559,10 +568,13 @@ function handleSplashClick() {
   hidePromise.then(() => {
     elements.mainContent.classList.remove("hidden")
 
+    // Force reflow for animation
     void elements.mainContent.offsetWidth
 
+    // Show main content
     elements.mainContent.style.opacity = "1"
 
+    // Add pixel animation classes with staggered timing
     const animatables = [elements.cardInner, elements.profilePicture, ...elements.tags]
     animatables.forEach((el, index) => {
       setTimeout(() => {
@@ -570,6 +582,10 @@ function handleSplashClick() {
       }, index * 50)
     })
 
+    // Try playing audio again after content is visible
+    setTimeout(forcePlayAudio, 500)
+
+    // Start audio visualization if supported
     if (supportsWebAudio) {
       startAudioVisualization()
     }
@@ -606,10 +622,15 @@ function initializeAudioContext() {
 function playBackgroundMusic() {
   if (!elements.backgroundMusic) return
 
+  // Resume audio context if suspended
   if (audioContext?.state === "suspended") {
-    audioContext.resume()
+    audioContext.resume().catch(console.error)
   }
 
+  // Set volume to ensure it's audible
+  elements.backgroundMusic.volume = 0.5
+  
+  // Play with promise to handle autoplay restrictions
   const playPromise = elements.backgroundMusic.play()
 
   if (playPromise !== undefined) {
@@ -620,21 +641,98 @@ function playBackgroundMusic() {
       })
       .catch((error) => {
         console.warn("Audio playback failed:", error)
+        // Show play button as fallback for browsers with strict autoplay policies
         createPlayButton()
       })
   }
 }
 
+// Add this new function to force audio playback with multiple attempts
+function forcePlayAudio() {
+  // Try to play audio immediately
+  playBackgroundMusic()
+  
+  // Set up multiple attempts to play audio
+  let attempts = 0;
+  const maxAttempts = 5;
+  
+  const attemptPlay = () => {
+    if (attempts < maxAttempts && elements.backgroundMusic && elements.backgroundMusic.paused) {
+      attempts++;
+      console.log(`Attempt ${attempts} to play audio...`);
+      
+      // Try to unlock audio context
+      if (audioContext?.state === "suspended") {
+        audioContext.resume().catch(console.error);
+      }
+      
+      // Try to play again
+      elements.backgroundMusic.play()
+        .then(() => console.log("Audio playback succeeded on retry"))
+        .catch(e => {
+          console.warn(`Audio playback failed on attempt ${attempts}:`, e);
+          if (attempts === maxAttempts) {
+            createPlayButton();
+          } else {
+            setTimeout(attemptPlay, 1000);
+          }
+        });
+    }
+  };
+  
+  // Start attempt sequence after a short delay
+  setTimeout(attemptPlay, 500);
+  
+  // Add user interaction listener to unlock audio
+  const unlockAudio = () => {
+    if (elements.backgroundMusic && elements.backgroundMusic.paused) {
+      playBackgroundMusic();
+      // Remove the event listener once played
+      if (!elements.backgroundMusic.paused) {
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('keydown', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+      }
+    }
+  };
+  
+  // Add event listeners to unlock audio on any user interaction
+  document.addEventListener('click', unlockAudio, { once: false });
+  document.addEventListener('keydown', unlockAudio, { once: false });
+  document.addEventListener('touchstart', unlockAudio, { once: false });
+}
+
+// Modify the createPlayButton function to be more prominent
 function createPlayButton() {
-  const playButton = document.createElement("button")
+  // Remove any existing play button first
+  const existingButton = document.getElementById('music-play-button');
+  if (existingButton) {
+    existingButton.remove();
+  }
+  
+  const playButton = document.createElement("button");
+  playButton.id = 'music-play-button';
   playButton.className =
-    "fixed bottom-4 right-4 z-50 p-2 bg-dark-700/80 rounded-full border border-glass-border minecraft-btn"
-  playButton.innerHTML = '<i class="fas fa-play"></i>'
+    "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-4 bg-dark-700/90 rounded-lg border border-glass-border minecraft-btn flex items-center justify-center";
+  playButton.innerHTML = '<i class="fas fa-play mr-2"></i> Click to Play Music';
   playButton.addEventListener("click", () => {
-    playBackgroundMusic()
-    playButton.remove()
-  })
-  document.body.appendChild(playButton)
+    playBackgroundMusic();
+    playButton.remove();
+  });
+  document.body.appendChild(playButton);
+  
+  // Add pulsing animation to draw attention
+  playButton.animate(
+    [
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+      { transform: 'translate(-50%, -50%) scale(1.05)', opacity: 0.9 },
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
+    ], 
+    { 
+      duration: 1500,
+      iterations: Infinity
+    }
+  );
 }
 
 function handleMouseMove(e) {
@@ -807,3 +905,4 @@ function fallbackInitialization() {
 </script>
 </body>
 </html>
+
