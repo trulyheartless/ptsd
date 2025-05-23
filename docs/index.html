@@ -15,20 +15,18 @@ follow your heart, ok?
     <meta name="title" content="Lain">
     <meta name="description" content="Admin @ Breachforums">
     <meta name="next-head-count" content="5">
-    <meta name="next-font-preload" content="">
-    <meta name="next-size-adjust" content="">
+    
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/minecraft-font@1.0.0/font/minecraft.woff2" as="font" type="font/woff2" crossorigin>
     
     <script>
-        window.__NEXT_DATA__ = {"props":{"pageProps":{}},"page":"/","query":{},"buildId":"development"};
-        window.__REACT_QUERY_STATE__ = {};
-        window.__PRELOADED_STATE__ = {};
-    </script>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
+        window.tailwindConfig = {
+            mode: 'jit',
             theme: {
                 extend: {
+                    fontFamily: {
+                        minecraft: ['Minecraft', 'monospace'],
+                        pixel: ['Minecraft', 'JetBrains Mono', 'monospace']
+                    },
                     colors: {
                         dark: {
                             950: '#030303',
@@ -41,12 +39,18 @@ follow your heart, ok?
                         glass: {
                             border: 'rgba(255, 255, 255, 0.03)',
                             highlight: 'rgba(255, 255, 255, 0.06)',
-                        }
+                        },
+                        primary: 'hsl(var(--color-primary))',
+                        secondary: 'hsl(var(--color-secondary))',
+                        accent: 'hsl(var(--color-accent))',
                     },
                     animation: {
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 15s infinite alternate ease-in-out',
                         'float-reverse': 'float-reverse 20s infinite alternate-reverse ease-in-out',
+                        'pixel-fade': 'pixel-fade 0.5s steps(5) forwards',
+                        'glitch': 'glitch 3s infinite',
+                        'scanline': 'scanline 2s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -56,60 +60,138 @@ follow your heart, ok?
                         'float-reverse': {
                             '0%': { transform: 'translate(0, 0)' },
                             '100%': { transform: 'translate(-50px, 30px)' },
+                        },
+                        'pixel-fade': {
+                            '0%': { opacity: 0, transform: 'scale(0.95) translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'scale(1) translateY(0)' },
+                        },
+                        'glitch': {
+                            '0%, 100%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                        },
+                        'scanline': {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
                         }
                     },
                     backdropBlur: {
                         xs: '2px',
+                    },
+                    spacing: {
+                        'pixel': '1px',
+                        'pixel-2': '2px',
+                        'pixel-4': '4px',
+                        'pixel-8': '8px',
                     }
                 }
             },
-            plugins: [],
+            variants: {
+                extend: {
+                    backgroundColor: ['active', 'group-focus'],
+                    textColor: ['active', 'group-focus'],
+                    borderColor: ['active', 'group-focus'],
+                    ringColor: ['active', 'group-focus'],
+                    opacity: ['active', 'group-focus'],
+                    transform: ['active', 'group-focus'],
+                }
+            },
+            plugins: [
+                function({ addUtilities }) {
+                    const newUtilities = {
+                        '.pixel-borders': {
+                            'image-rendering': 'pixelated',
+                            'border-style': 'solid',
+                            'border-width': '1px',
+                        },
+                        '.pixel-text': {
+                            'text-shadow': '1px 1px 0px rgba(0,0,0,0.2)',
+                            'letter-spacing': '0.5px',
+                        },
+                        '.minecraft-btn': {
+                            'image-rendering': 'pixelated',
+                            'border-style': 'solid',
+                            'border-width': '2px',
+                            'border-color': '#555 #333 #333 #555',
+                            'background-color': '#8b8b8b',
+                            'color': '#fff',
+                            'text-shadow': '2px 2px #000',
+                            'box-shadow': 'inset -2px -4px #0006, inset 2px 2px #fff7',
+                        },
+                        '.minecraft-btn:active': {
+                            'border-color': '#333 #555 #555 #333',
+                            'box-shadow': 'inset 2px 4px #0006, inset -2px -2px #fff7',
+                        }
+                    }
+                    addUtilities(newUtilities)
+                }
+            ],
         }
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="preload" href="/_next/static/chunks/main.js" as="script">
-    <link rel="preload" href="/_next/static/chunks/webpack.js" as="script">
-    <link rel="preload" href="/_next/static/chunks/pages/_app.js" as="script">
-    <link rel="preload" href="/_next/static/chunks/pages/index.js" as="script">
-    
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&display=swap');
+    :root {
+        --color-primary: 0 0% 100%;
+        --color-secondary: 0 0% 90%;
+        --color-accent: 210 100% 50%;
+        --font-minecraft: 'Minecraft', monospace;
+        --animation-speed: 300ms;
+        --animation-function: cubic-bezier(0.19, 1, 0.22, 1);
+        --pixel-size: 1px;
+        --scanline-size: 1px;
+        --scanline-intensity: 0.03;
+        --glitch-intensity: 0.02;
+    }
     
-    * {
+    @font-face {
+        font-family: 'Minecraft';
+        src: url('https://cdn.jsdelivr.net/npm/minecraft-font@1.0.0/font/minecraft.woff2') format('woff2'),
+             url('https://cdn.jsdelivr.net/npm/minecraft-font@1.0.0/font/minecraft.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+    
+    *, *::before, *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-font-smoothing: none;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     body {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: var(--font-minecraft);
         background-color: #030303;
         color: #fff;
         overflow: hidden;
         height: 100vh;
         width: 100vw;
+        image-rendering: pixelated;
+        position: relative;
     }
     
     .splash-screen {
         position: fixed;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         background-color: #030303;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        place-items: center;
         z-index: 9999;
-        transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        transition: opacity var(--animation-speed) var(--animation-function);
         cursor: pointer;
     }
     
     .splash-content {
         text-align: center;
         transform: translateY(0);
-        transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        transition: transform calc(var(--animation-speed) * 0.8) var(--animation-function);
     }
     
     .splash-screen:hover .splash-content {
@@ -121,9 +203,15 @@ follow your heart, ok?
         width: 100%;
         height: 100%;
         border-radius: 12px;
-        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+        background: radial-gradient(
+            circle at center, 
+            rgba(255, 255, 255, calc(var(--glitch-intensity) * 2.5)), 
+            transparent 70%
+        );
         opacity: 0;
-        transition: opacity 0.5s ease, transform 0.5s ease;
+        transition: 
+            opacity var(--animation-speed) var(--animation-function), 
+            transform var(--animation-speed) var(--animation-function);
         z-index: -1;
         filter: blur(20px);
         transform: scale(0.9);
@@ -135,15 +223,17 @@ follow your heart, ok?
     }
     
     .divider {
-        height: 1px;
-        background: linear-gradient(to right, 
+        height: var(--pixel-size);
+        background: linear-gradient(
+            to right, 
             transparent, 
-            rgba(255, 255, 255, 0.03), 
-            transparent);
+            rgba(255, 255, 255, var(--glitch-intensity)), 
+            transparent
+        );
     }
     
     ::-webkit-scrollbar {
-        width: 2px;
+        width: calc(var(--pixel-size) * 2);
     }
     
     ::-webkit-scrollbar-track {
@@ -151,12 +241,12 @@ follow your heart, ok?
     }
     
     ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 1px;
+        background: rgba(255, 255, 255, var(--glitch-intensity));
+        border-radius: var(--pixel-size);
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, calc(var(--glitch-intensity) * 2));
     }
     
     .tag {
@@ -167,13 +257,15 @@ follow your heart, ok?
     .tag::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+        inset: 0;
+        background: linear-gradient(
+            to right, 
+            transparent, 
+            rgba(255, 255, 255, var(--glitch-intensity)), 
+            transparent
+        );
         transform: translateX(-100%);
-        transition: transform 0.5s ease;
+        transition: transform var(--animation-speed) var(--animation-function);
     }
     
     .tag:hover::after {
@@ -185,14 +277,88 @@ follow your heart, ok?
         height: 100%;
         object-fit: cover;
         object-position: center;
+        image-rendering: pixelated;
     }
     
     .react-root, .__next {
         display: contents;
     }
+    
+    .scanline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--scanline-size);
+        background: rgba(255, 255, 255, var(--scanline-intensity));
+        z-index: 999;
+        pointer-events: none;
+        animation: scanline 2s linear infinite;
+    }
+    
+    .pixel-noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.02;
+        z-index: 998;
+        background-image: url("data:image/png;base64,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");
+    }
+    
+    .crt-effect {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+        background-size: 100% 4px;
+        pointer-events: none;
+        z-index: 997;
+        opacity: 0.15;
+        mix-blend-mode: overlay;
+    }
+    
+    .pixel-corners {
+        clip-path: polygon(
+            0px 4px,
+            4px 0px,
+            calc(100% - 4px) 0px,
+            100% 4px,
+            100% calc(100% - 4px),
+            calc(100% - 4px) 100%,
+            4px 100%,
+            0px calc(100% - 4px)
+        );
+    }
+    
+    @container card (max-width: 300px) {
+        .profile-info {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    
+    @keyframes pixel-fade {
+        0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    
+    .card-container:has(:hover) .card-inner {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
 </style>
 </head>
-<body class="bg-dark-950 flex justify-center items-center min-h-screen">
+<body class="bg-dark-950 flex justify-center items-center min-h-screen font-minecraft">
+    <div class="scanline"></div>
+    
+    <div class="pixel-noise"></div>
+    
+    <div class="crt-effect"></div>
+    
     <div id="__next">
         <div id="react-root" data-reactroot="">
             <div class="fixed inset-0 -z-10 opacity-20 pointer-events-none">
@@ -204,62 +370,61 @@ follow your heart, ok?
             
             <div class="splash-screen" id="splash">
                 <div class="splash-content">
-                    <div class="text-4xl md:text-5xl font-extralight tracking-[0.8rem] animate-pulse-slow">pt.sd</div>
-                    <div class="text-xs md:text-sm mt-4 opacity-50 tracking-widest">click to enter</div>
+                    <div class="text-4xl md:text-5xl font-minecraft tracking-[0.8rem] animate-pulse-slow pixel-text">pt.sd</div>
+                    <div class="text-xs md:text-sm mt-4 opacity-50 tracking-widest font-minecraft">click to enter</div>
                 </div>
             </div>
 
-            <audio id="background-music" loop preload="auto">
-                <source src="https://files.catbox.moe/tdlx89.mp3" type="audio/mp3">
+            <audio id="background-music" loop preload="auto" data-volume="0.5">
+                <source src="https://qu.ax/NGtUL.mp3 type="audio/mp3">
             </audio>
 
-            <div class="container mx-auto px-4 hidden opacity-0 transition-all duration-1000 ease-out" id="main-content">
+            <div class="container mx-auto px-4 hidden opacity-0 transition-all duration-1000 ease-out" id="main-content" style="container-type: inline-size;">
                 <div class="flex justify-center items-center">
-                    <div class="card-container relative group">
-                     <div class="card-glow"></div>
+                    <div class="card-container relative group perspective-[1000px]">
+                        <div class="card-glow"></div>
 
-                        <div class="relative z-10 bg-dark-850/40 backdrop-blur-md border border-glass-border rounded-xl w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5">
+                        <div class="card-inner relative z-10 bg-dark-850/40 backdrop-blur-md border border-glass-border rounded-xl pixel-corners w-[90vw] max-w-[400px] overflow-hidden shadow-xl transition-all duration-500 ease-out group-hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:border-glass-highlight group-hover:-translate-y-0.5 transform-gpu">
                             <div class="p-6">
-                                <div class="flex items-center space-x-5 mb-4">
-                                  <div class="w-20 h-20 rounded-full overflow-hidden border border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight">
-                                      <img src="https://files.catbox.moe/e3n1hn.png" alt="Profile" class="profile-picture">
-                                  </div>
+                                <div class="profile-info flex items-center space-x-5 mb-4">
+                                    <div class="w-20 h-20 rounded-full overflow-hidden border border-glass-border shadow-md transition-all duration-500 ease-out hover:scale-105 hover:border-glass-highlight pixel-borders">
+                                        <img src="https://qu.ax/moppG.jpg" alt="Profile" class="profile-picture">
+                                    </div>
 
                                     <div>
-                                        <h2 class="text-xl font-medium tracking-wide text-white/90">Lain</h2>
-                                        <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border border-glass-border inline-block">
+                                        <h2 class="text-xl font-medium tracking-wide text-white/90 pixel-text">Lain</h2>
+                                        <div class="mt-1.5 px-2.5 py-0.5 bg-dark-700/80 backdrop-blur-xs rounded text-[11px] tracking-wider text-white/70 border border-glass-border inline-block pixel-borders">
                                             Staff @ Breachforums
                                         </div>
-                                        <p class="mt-2 text-[11px] tracking-wider text-white/40 max-w-[220px]">there is so much to love, so much to live for
-follow your heart, ok?</p>
+                                        <p class="mt-2 text-[11px] tracking-wider text-white/40 max-w-[220px] pixel-text">{'there is so much to love, so much to live for follow your heart, ok?'}</p>
                                     </div>
                                 </div>
                                 
-                            <div class="flex justify-start space-x-2 mb-4">
-                                <a href="https://twitter.com/BreachedHQ" target="_blank" 
-                                   class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                    <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                                </a>
-                                <a href="mailto:femboy@mailhaven.su" target="_blank" 
-                                   class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                    <i class="fa fa-envelope text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                                </a>
-                                <a href="https://t.me/BFsupp" target="_blank" 
-                                   class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm">
-                                    <i class="fab fa-telegram text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
-                                </a>
-                            </div>
+                                <div class="flex justify-start space-x-2 mb-4">
+                                    <a href="https://twitter.com/BreachedHQ" target="_blank" rel="noopener noreferrer"
+                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm minecraft-btn">
+                                        <i class="fab fa-twitter text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                    </a>
+                                    <a href="mailto:femboy@mailhaven.su" target="_blank" rel="noopener noreferrer"
+                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm minecraft-btn">
+                                        <i class="fa fa-envelope text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                    </a>
+                                    <a href="https://t.me/BFsupp" target="_blank" rel="noopener noreferrer"
+                                       class="w-9 h-9 flex items-center justify-center rounded-full bg-dark-700/60 backdrop-blur-xs border border-transparent transition-all duration-300 hover:bg-dark-600/70 hover:-translate-y-0.5 hover:border-glass-highlight hover:shadow-sm minecraft-btn">
+                                        <i class="fab fa-telegram text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90"></i>
+                                    </a>
+                                </div>
 
                                 <div class="divider mb-4"></div>
                                 
                                 <div class="flex flex-wrap gap-2">
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-map-marker-alt mr-1.5 opacity-60"></i>Taiwan
                                     </div>
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-heart mr-1.5 opacity-60"></i>Bi
                                     </div>
-                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight">
+                                    <div class="tag px-2.5 py-1.5 bg-dark-700/50 backdrop-blur-xs rounded text-[11px] text-white/60 border border-glass-border transition-all duration-300 hover:bg-dark-600/60 hover:-translate-y-0.5 hover:border-glass-highlight pixel-borders">
                                         <i class="fas fa-user mr-1.5 opacity-60"></i>Femboy
                                     </div>
                                 </div>
@@ -275,68 +440,371 @@ follow your heart, ok?</p>
         {"props":{"pageProps":{}},"page":"/","query":{},"buildId":"static-page"}
     </script>
     
-    <script>
-        window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
-        
-        window.next = {
-            router: {
-                route: '/',
-                pathname: '/',
-                query: {},
-                asPath: '/'
-            }
-        };
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash');
-            const mainContent = document.getElementById('main-content');
-            const backgroundMusic = document.getElementById('background-music');
-            
-            splash.addEventListener('click', () => {
-                splash.style.opacity = '0';
-                
-                backgroundMusic.play().catch(e => console.log('Audio playback failed:', e));
-                
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    mainContent.classList.remove('hidden');
-                    
-                    void mainContent.offsetWidth;
-                    
-                    mainContent.style.opacity = '1';
-                }, 1200);
-            });
-            
-            const cardContainer = document.querySelector('.card-container');
-            const card = cardContainer.querySelector('.relative');
-            const cardGlow = document.querySelector('.card-glow');
-            
-            document.addEventListener('mousemove', (e) => {
-                if (mainContent.style.opacity === '1') {
-                    const x = e.clientX / window.innerWidth;
-                    const y = e.clientY / window.innerHeight;
-                    
-                    const moveX = (x - 0.5) * 6; 
-                    const moveY = (y - 0.5) * 6;
-                    
-                    card.style.transform = `perspective(1000px) rotateX(${-moveY}deg) rotateY(${moveX}deg) translateZ(5px)`;
-                    cardGlow.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 255, 255, 0.05), transparent 70%)`;
-                }
-            });
-            
-            document.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-            });
-            
-            console.log('⚛️ Hydrated app');
-        });
-    </script>
+    <script type="module">
+const supportsWebP = checkWebPSupport()
+const supportsIntersectionObserver = "IntersectionObserver" in window
+const supportsWebAudio = "AudioContext" in window || "webkitAudioContext" in window
 
-    <script src="/_next/static/chunks/webpack.js" async=""></script>
-    <script src="/_next/static/chunks/main.js" async=""></script>
-    <script src="/_next/static/chunks/pages/_app.js" async=""></script>
-    <script src="/_next/static/chunks/pages/index.js" async=""></script>
+const perfMetrics = {
+  startTime: performance.now(),
+  domLoaded: 0,
+  firstInteraction: 0,
+  audioLoaded: 0,
+}
+
+let audioContext = null
+let audioAnalyser = null
+let audioDataArray = null
+let rafId = null
+
+const elements = {
+  get splash() {
+    return document.getElementById("splash")
+  },
+  get mainContent() {
+    return document.getElementById("main-content")
+  },
+  get backgroundMusic() {
+    return document.getElementById("background-music")
+  },
+  get cardContainer() {
+    return document.querySelector(".card-container")
+  },
+  get cardInner() {
+    return document.querySelector(".card-inner")
+  },
+  get cardGlow() {
+    return document.querySelector(".card-glow")
+  },
+  get profilePicture() {
+    return document.querySelector(".profile-picture")
+  },
+  get tags() {
+    return document.querySelectorAll(".tag")
+  },
+}
+
+document.addEventListener("DOMContentLoaded", initializeApp)
+
+function initializeApp() {
+  try {
+    perfMetrics.domLoaded = performance.now()
+
+    setupEventListeners()
+
+    if (supportsIntersectionObserver) {
+      setupIntersectionObserver()
+    }
+
+    applyPixelArtFilter()
+
+    console.log(`App initialized in ${(perfMetrics.domLoaded - perfMetrics.startTime).toFixed(2)}ms`)
+
+    mockNextJsEnvironment()
+  } catch (error) {
+    console.error("Initialization error:", error)
+    fallbackInitialization()
+  }
+}
+
+function setupEventListeners() {
+  elements.splash?.addEventListener("click", handleSplashClick, { passive: true })
+
+  let lastMoveTime = 0
+  document.addEventListener(
+    "mousemove",
+    (e) => {
+      const now = performance.now()
+      if (now - lastMoveTime < 16) return
+      lastMoveTime = now
+
+      handleMouseMove(e)
+    },
+    { passive: true },
+  )
+
+  document.addEventListener("mouseleave", handleMouseLeave, { passive: true })
+
+  document.addEventListener("keydown", handleKeyDown)
+
+  let resizeTimeout
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(handleResize, 100)
+    },
+    { passive: true },
+  )
+}
+
+function handleSplashClick() {
+  if (!elements.splash || !elements.mainContent || !elements.backgroundMusic) return
+
+  perfMetrics.firstInteraction = performance.now()
+
+  initializeAudioContext()
+
+  elements.splash.style.opacity = "0"
+
+  playBackgroundMusic()
+
+  const hidePromise = new Promise((resolve) => {
+    setTimeout(() => {
+      elements.splash.style.display = "none"
+      resolve()
+    }, 1200)
+  })
+
+  hidePromise.then(() => {
+    elements.mainContent.classList.remove("hidden")
+
+    void elements.mainContent.offsetWidth
+
+    elements.mainContent.style.opacity = "1"
+
+    const animatables = [elements.cardInner, elements.profilePicture, ...elements.tags]
+    animatables.forEach((el, index) => {
+      setTimeout(() => {
+        el?.classList.add("animate-pixel-fade")
+      }, index * 50)
+    })
+
+    if (supportsWebAudio) {
+      startAudioVisualization()
+    }
+  })
+}
+
+function initializeAudioContext() {
+  if (!supportsWebAudio || audioContext) return
+
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)()
+
+    if (elements.backgroundMusic) {
+      const source = audioContext.createMediaElementSource(elements.backgroundMusic)
+      audioAnalyser = audioContext.createAnalyser()
+      const gainNode = audioContext.createGain()
+
+      audioAnalyser.fftSize = 256
+      audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
+
+      source.connect(audioAnalyser)
+      audioAnalyser.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+
+      const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
+      gainNode.gain.value = volume
+    }
+  } catch (error) {
+    console.warn("Web Audio API initialization failed:", error)
+    audioContext = null
+  }
+}
+
+function playBackgroundMusic() {
+  if (!elements.backgroundMusic) return
+
+  if (audioContext?.state === "suspended") {
+    audioContext.resume()
+  }
+
+  const playPromise = elements.backgroundMusic.play()
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        perfMetrics.audioLoaded = performance.now()
+        console.log(`Audio started in ${(perfMetrics.audioLoaded - perfMetrics.firstInteraction).toFixed(2)}ms`)
+      })
+      .catch((error) => {
+        console.warn("Audio playback failed:", error)
+        createPlayButton()
+      })
+  }
+}
+
+function createPlayButton() {
+  const playButton = document.createElement("button")
+  playButton.className =
+    "fixed bottom-4 right-4 z-50 p-2 bg-dark-700/80 rounded-full border border-glass-border minecraft-btn"
+  playButton.innerHTML = '<i class="fas fa-play"></i>'
+  playButton.addEventListener("click", () => {
+    playBackgroundMusic()
+    playButton.remove()
+  })
+  document.body.appendChild(playButton)
+}
+
+function handleMouseMove(e) {
+  if (!elements.mainContent || !elements.cardInner || !elements.cardGlow || elements.mainContent.style.opacity !== "1")
+    return
+
+  const rect = elements.cardInner.getBoundingClientRect()
+  const x = (e.clientX - rect.left) / rect.width
+  const y = (e.clientY - rect.top) / rect.height
+
+  if (
+    e.clientX < rect.left - 100 ||
+    e.clientX > rect.right + 100 ||
+    e.clientY < rect.top - 100 ||
+    e.clientY > rect.bottom + 100
+  ) {
+    handleMouseLeave()
+    return
+  }
+
+  const maxRotation = 8
+  const moveX = (x - 0.5) * maxRotation
+  const moveY = (y - 0.5) * maxRotation
+
+  requestAnimationFrame(() => {
+    elements.cardInner.style.transform = `perspective(1000px) rotateX(${-moveY}deg) rotateY(${moveX}deg) translateZ(5px)`
+
+    elements.cardGlow.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 255, 255, 0.05), transparent 70%)`
+  })
+}
+
+function handleMouseLeave() {
+  if (!elements.cardInner) return
+
+  requestAnimationFrame(() => {
+    elements.cardInner.style.transform = "perspective(1000px) rotateX(0) rotateY(0) translateZ(0)"
+  })
+}
+
+function handleKeyDown(e) {
+  if (e.key === "Escape" && elements.splash && elements.splash.style.display !== "none") {
+    handleSplashClick()
+  }
+
+  if (e.key === "m" && elements.backgroundMusic) {
+    if (elements.backgroundMusic.paused) {
+      elements.backgroundMusic.play()
+    } else {
+      elements.backgroundMusic.pause()
+    }
+  }
+}
+
+function handleResize() {
+  handleMouseLeave()
+
+  console.log(`Viewport: ${window.innerWidth}x${window.innerHeight}`)
+}
+
+function setupIntersectionObserver() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-pixel-fade")
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    {
+      threshold: 0.1,
+      rootMargin: "20px",
+    },
+  )
+
+  document.querySelectorAll(".tag, .profile-picture").forEach((el) => {
+    observer.observe(el)
+  })
+}
+
+function applyPixelArtFilter() {
+  document.querySelectorAll("img").forEach((img) => {
+    img.style.imageRendering = "pixelated"
+  })
+}
+
+function startAudioVisualization() {
+  if (!audioAnalyser || !audioDataArray) return
+
+  let canvas = document.getElementById("audio-visualizer")
+  if (!canvas) {
+    canvas = document.createElement("canvas")
+    canvas.id = "audio-visualizer"
+    canvas.className = "fixed bottom-0 left-0 w-full h-16 pointer-events-none opacity-30"
+    document.body.appendChild(canvas)
+  }
+
+  const ctx = canvas.getContext("2d")
+  if (!ctx) return
+
+  canvas.width = window.innerWidth
+  canvas.height = 64
+
+  function visualize() {
+    rafId = requestAnimationFrame(visualize)
+
+    audioAnalyser.getByteFrequencyData(audioDataArray)
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    const barWidth = Math.ceil(canvas.width / audioDataArray.length)
+    let x = 0
+
+    for (let i = 0; i < audioDataArray.length; i++) {
+      const barHeight = (audioDataArray[i] / 255) * canvas.height
+
+      const pixelSize = 2
+      const pixelatedHeight = Math.floor(barHeight / pixelSize) * pixelSize
+
+      ctx.fillStyle = `rgba(255, 255, 255, ${barHeight / canvas.height})`
+
+      for (let y = 0; y < pixelatedHeight; y += pixelSize) {
+        ctx.fillRect(x, canvas.height - y - pixelSize, barWidth - 1, pixelSize)
+      }
+
+      x += barWidth
+    }
+  }
+
+  visualize()
+}
+
+function checkWebPSupport() {
+  const canvas = document.createElement("canvas")
+  if (canvas.getContext && canvas.getContext("2d")) {
+    return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0
+  }
+  return false
+}
+
+function mockNextJsEnvironment() {
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true }
+
+  window.next = {
+    router: {
+      route: "/",
+      pathname: "/",
+      query: {},
+      asPath: "/",
+    },
+  }
+
+  console.log("Next.js environment mocked")
+}
+
+function fallbackInitialization() {
+  if (elements.splash) elements.splash.style.display = "none"
+  if (elements.mainContent) {
+    elements.mainContent.classList.remove("hidden")
+    elements.mainContent.style.opacity = "1"
+  }
+
+  if (elements.backgroundMusic) {
+    elements.backgroundMusic.volume = 0.5
+    createPlayButton()
+  }
+
+  console.log("Fallback initialization completed")
+}
+</script>
 </body>
 </html>
-    <!-- added react shit to trick scanners lol-->
 
