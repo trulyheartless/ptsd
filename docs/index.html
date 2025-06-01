@@ -375,7 +375,7 @@ follow your heart, ok?
                 </div>
             </div>
 
-            <audio id="background-music" loop preload="auto" data-volume="0.5">
+            <audio id="background-music" loop preload="auto">
                 <source src="https://qu.ax/NGtUL.mp3" type="audio/mp3">
             </audio>
 
@@ -441,22 +441,6 @@ follow your heart, ok?
     </script>
     
     <script type="module">
-const supportsWebP = checkWebPSupport()
-const supportsIntersectionObserver = "IntersectionObserver" in window
-const supportsWebAudio = "AudioContext" in window || "webkitAudioContext" in window
-
-const perfMetrics = {
-  startTime: performance.now(),
-  domLoaded: 0,
-  firstInteraction: 0,
-  audioLoaded: 0,
-}
-
-let audioContext = null
-let audioAnalyser = null
-let audioDataArray = null
-let rafId = null
-
 const elements = {
   get splash() {
     return document.getElementById("splash")
@@ -487,27 +471,12 @@ const elements = {
 document.addEventListener("DOMContentLoaded", initializeApp)
 
 function initializeApp() {
-  try {
-    perfMetrics.domLoaded = performance.now()
-
-    setupEventListeners()
-
-    if (supportsIntersectionObserver) {
-      setupIntersectionObserver()
-    }
-
-    applyPixelArtFilter()
-    
-    if (elements.backgroundMusic) {
-      elements.backgroundMusic.load();
-    }
-
-    console.log(`App initialized in ${(perfMetrics.domLoaded - perfMetrics.startTime).toFixed(2)}ms`)
-
-    mockNextJsEnvironment()
-  } catch (error) {
-    console.error("Initialization error:", error)
-    fallbackInitialization()
+  setupEventListeners()
+  applyPixelArtFilter()
+  
+  if (elements.backgroundMusic) {
+    elements.backgroundMusic.load();
+    elements.backgroundMusic.volume = 0.5;
   }
 }
 
@@ -529,8 +498,6 @@ function setupEventListeners() {
 
   document.addEventListener("mouseleave", handleMouseLeave, { passive: true })
 
-  document.addEventListener("keydown", handleKeyDown)
-
   let resizeTimeout
   window.addEventListener(
     "resize",
@@ -545,26 +512,16 @@ function setupEventListeners() {
 function handleSplashClick() {
   if (!elements.splash || !elements.mainContent || !elements.backgroundMusic) return
 
-  perfMetrics.firstInteraction = performance.now()
-
-  initializeAudioContext()
-
   elements.splash.style.opacity = "0"
 
-  playBackgroundMusic()
-
-  const hidePromise = new Promise((resolve) => {
-    setTimeout(() => {
-      elements.splash.style.display = "none"
-      resolve()
-    }, 1200)
+  elements.backgroundMusic.play().catch(() => {
+    console.warn("Audio playback failed")
   })
 
-  hidePromise.then(() => {
+  setTimeout(() => {
+    elements.splash.style.display = "none"
     elements.mainContent.classList.remove("hidden")
-
     void elements.mainContent.offsetWidth
-
     elements.mainContent.style.opacity = "1"
 
     const animatables = [elements.cardInner, elements.profilePicture, ...elements.tags]
@@ -573,80 +530,7 @@ function handleSplashClick() {
         el?.classList.add("animate-pixel-fade")
       }, index * 50)
     })
-
-    if (supportsWebAudio) {
-      startAudioVisualization()
-    }
-  })
-}
-
-function initializeAudioContext() {
-  if (!supportsWebAudio || audioContext) return
-
-  try {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)()
-
-    if (elements.backgroundMusic) {
-      const source = audioContext.createMediaElementSource(elements.backgroundMusic)
-      audioAnalyser = audioContext.createAnalyser()
-      const gainNode = audioContext.createGain()
-
-      audioAnalyser.fftSize = 256
-      audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount)
-
-      source.connect(audioAnalyser)
-      audioAnalyser.connect(gainNode)
-      gainNode.connect(audioContext.destination)
-
-      const volume = Number.parseFloat(elements.backgroundMusic.dataset.volume || 0.5)
-      gainNode.gain.value = volume
-    }
-  } catch (error) {
-    console.warn("Web Audio API initialization failed:", error)
-    audioContext = null
-  }
-}
-
-function playBackgroundMusic() {
-  if (!elements.backgroundMusic) return
-
-  if (audioContext?.state === "suspended") {
-    audioContext.resume()
-  }
-
-  elements.backgroundMusic.volume = 0.5
-  
-  const playPromise = elements.backgroundMusic.play()
-
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        perfMetrics.audioLoaded = performance.now()
-        console.log(`Audio started in ${(perfMetrics.audioLoaded - perfMetrics.firstInteraction).toFixed(2)}ms`)
-      })
-      .catch((error) => {
-        console.warn("Audio playback failed:", error)
-        createPlayButton()
-      })
-  }
-}
-
-function createPlayButton() {
-  const existingButton = document.getElementById('music-play-button');
-  if (existingButton) {
-    existingButton.remove();
-  }
-  
-  const playButton = document.createElement("button");
-  playButton.id = 'music-play-button';
-  playButton.className =
-    "fixed bottom-4 right-4 z-50 p-2 bg-dark-700/80 rounded-full border border-glass-border minecraft-btn";
-  playButton.innerHTML = '<i class="fas fa-play"></i>';
-  playButton.addEventListener("click", () => {
-    playBackgroundMusic();
-    playButton.remove();
-  });
-  document.body.appendChild(playButton);
+  }, 1200)
 }
 
 function handleMouseMove(e) {
@@ -686,135 +570,14 @@ function handleMouseLeave() {
   })
 }
 
-function handleKeyDown(e) {
-  if (e.key === "Escape" && elements.splash && elements.splash.style.display !== "none") {
-    handleSplashClick()
-  }
-
-  if (e.key === "m" && elements.backgroundMusic) {
-    if (elements.backgroundMusic.paused) {
-      elements.backgroundMusic.play()
-    } else {
-      elements.backgroundMusic.pause()
-    }
-  }
-}
-
 function handleResize() {
   handleMouseLeave()
-
-  console.log(`Viewport: ${window.innerWidth}x${window.innerHeight}`)
-}
-
-function setupIntersectionObserver() {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("animate-pixel-fade")
-          observer.unobserve(entry.target)
-        }
-      })
-    },
-    {
-      threshold: 0.1,
-      rootMargin: "20px",
-    },
-  )
-
-  document.querySelectorAll(".tag, .profile-picture").forEach((el) => {
-    observer.observe(el)
-  })
 }
 
 function applyPixelArtFilter() {
   document.querySelectorAll("img").forEach((img) => {
     img.style.imageRendering = "pixelated"
   })
-}
-
-function startAudioVisualization() {
-  if (!audioAnalyser || !audioDataArray) return
-
-  let canvas = document.getElementById("audio-visualizer")
-  if (!canvas) {
-    canvas = document.createElement("canvas")
-    canvas.id = "audio-visualizer"
-    canvas.className = "fixed bottom-0 left-0 w-full h-16 pointer-events-none opacity-30"
-    document.body.appendChild(canvas)
-  }
-
-  const ctx = canvas.getContext("2d")
-  if (!ctx) return
-
-  canvas.width = window.innerWidth
-  canvas.height = 64
-
-  function visualize() {
-    rafId = requestAnimationFrame(visualize)
-
-    audioAnalyser.getByteFrequencyData(audioDataArray)
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    const barWidth = Math.ceil(canvas.width / audioDataArray.length)
-    let x = 0
-
-    for (let i = 0; i < audioDataArray.length; i++) {
-      const barHeight = (audioDataArray[i] / 255) * canvas.height
-
-      const pixelSize = 2
-      const pixelatedHeight = Math.floor(barHeight / pixelSize) * pixelSize
-
-      ctx.fillStyle = `rgba(255, 255, 255, ${barHeight / canvas.height})`
-
-      for (let y = 0; y < pixelatedHeight; y += pixelSize) {
-        ctx.fillRect(x, canvas.height - y - pixelSize, barWidth - 1, pixelSize)
-      }
-
-      x += barWidth
-    }
-  }
-
-  visualize()
-}
-
-function checkWebPSupport() {
-  const canvas = document.createElement("canvas")
-  if (canvas.getContext && canvas.getContext("2d")) {
-    return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0
-  }
-  return false
-}
-
-function mockNextJsEnvironment() {
-  window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true }
-
-  window.next = {
-    router: {
-      route: "/",
-      pathname: "/",
-      query: {},
-      asPath: "/",
-    },
-  }
-
-  console.log("Next.js environment mocked")
-}
-
-function fallbackInitialization() {
-  if (elements.splash) elements.splash.style.display = "none"
-  if (elements.mainContent) {
-    elements.mainContent.classList.remove("hidden")
-    elements.mainContent.style.opacity = "1"
-  }
-
-  if (elements.backgroundMusic) {
-    elements.backgroundMusic.volume = 0.5
-    createPlayButton()
-  }
-
-  console.log("Fallback initialization completed")
 }
 </script>
 </body>
